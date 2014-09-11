@@ -1,3 +1,7 @@
+"
+A TabularExperimenting is xxxxxxxxx.
+
+"
 Class {
 	#name : #TabularExperimenting,
 	#superclass : #Object,
@@ -5,11 +9,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-TabularExperimenting class >> createZip:filename content: aTextFileString [
+TabularExperimenting class >> createZip:filename content: aByteArray [
 	|z|
 	z:= ZipArchive new.
-	z addString: aTextFileString as: 'test.txt'.
-	z addString: aTextFileString as: '/dir/again.txt'.		
+	z addString: aByteArray as: 'test.txt'.
+	z addString: aByteArray as: '/dir/again.txt'.		
 	z writeToFileNamed: filename.
 	
 ]
@@ -21,8 +25,8 @@ TabularExperimenting class >> test [
 	text
 		nextPutAll: 'This is a demo text to test ZIP posibilities of Pharo';
 		cr;cr;
-		"nextPutAll: 'А теперь и с русскими буквами!';"
+		nextPutAll: 'А теперь и с русскими буквами!';
 		yourself.
 	
-	self createZip: 'helloWorld.zip' content: text contents
+	self createZip: 'helloWorld.zip' content: (text contents convertToEncoding: 'utf-8')
 ]
