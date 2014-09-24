@@ -1,9 +1,7 @@
 Class {
-	#name : #Cell,
+	#name : #TabularStyle,
 	#superclass : #Object,
 	#instVars : [
-		'value',
-		'style',
 		'attributes'
 	],
 	#category : #Tabular

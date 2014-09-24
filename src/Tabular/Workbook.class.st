@@ -2,7 +2,9 @@ Class {
 	#name : #Workbook,
 	#superclass : #Object,
 	#instVars : [
-		'worksheets'
+		'worksheets',
+		'styles',
+		'attributes'
 	],
 	#category : #Tabular
 }
