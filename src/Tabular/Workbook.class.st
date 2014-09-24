@@ -9,6 +9,16 @@ Class {
 	#category : #Tabular
 }
 
+{ #category : #'instance creation' }
+Workbook class >> withSheets: n [
+]
+
+{ #category : #initialization }
+Workbook >> initialize [
+	worksheets := OrderedCollection new.
+	super initialize.
+]
+
 { #category : #accessing }
 Workbook >> worksheets [
 	^worksheets
