@@ -7,7 +7,7 @@ Class {
 { #category : #'as yet unclassified' }
 WorkbookTest >> testCreation [
 |w|
-	w := Workbook withSheets: 5.
+	w := TabularWorkbook withSheets: 5.
 	self assert: (w worksheets size = 5).
 	
 ]
@@ -15,7 +15,7 @@ WorkbookTest >> testCreation [
 { #category : #'as yet unclassified' }
 WorkbookTest >> testCreationEmpty [
 |w|
-	w := Workbook withSheets: 0.
+	w := TabularWorkbook withSheets: 0.
 	self assert:  (w worksheets isEmpty).
 	
 ]
@@ -23,7 +23,7 @@ WorkbookTest >> testCreationEmpty [
 { #category : #'as yet unclassified' }
 WorkbookTest >> testNew [
 |w|
-	w := Workbook new.
+	w := TabularWorkbook new.
 	self assert:  (w worksheets isEmpty).
 	
 ]
