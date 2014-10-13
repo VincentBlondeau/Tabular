@@ -93,7 +93,7 @@ TabularExperimenting >> mergeCells [
 	res := Dictionary new.
 	sheet cells keysAndValuesDo:[:coord :cell|
 		(cell colspan notNil | cell rowspan notNil) ifTrue:[ |offset|
-			offset := (cell colspan ifNil:0) @ (cell rowspan ifNil:0). "Should upgrade it with Protected Arithmetic"
+			offset := (cell colspan ifNil:[0]) @ (cell rowspan ifNil:[0]). "Should upgrade it with Protected Arithmetic"
 			res at: coord put: (coord + offset).
 		].
 	].
