@@ -66,7 +66,26 @@ TabularExperimenting >> generateXLSX [
 	zip addString: self content_types_xml as: '[Content_Types].xml'.
 	zip addString: self rels as: '_rels/.rels'.
 	zip addString: self workbook_xml_rels as: '_rels/workbook.xml.rels'.
-	zip writeToFileNamed: ((OSEnvironment default at: 'HOME') asPath / workbook filename).
+	zip writeToFileNamed: (FileDirectory default / workbook filename) fullName.
+	
+]
+
+{ #category : #'as yet unclassified' }
+TabularExperimenting >> generateXLSX: aWorkbook to: aStream [
+	workbook := aWorkbook.
+	sheet := workbook worksheets first.
+	^self generateXLSXto: aStream.
+]
+
+{ #category : #'as yet unclassified' }
+TabularExperimenting >> generateXLSXto: aStream [
+	zip:= ZipArchive new.
+	zip addString: self workbook_xml as: 'workbook.xml'.
+	zip addString: (self worksheet_xml convertToEncoding: 'utf-8') as: 'worksheet.xml'.
+	zip addString: self content_types_xml as: '[Content_Types].xml'.
+	zip addString: self rels as: '_rels/.rels'.
+	zip addString: self workbook_xml_rels as: '_rels/workbook.xml.rels'.
+	zip writeTo: aStream.
 	
 ]
 
@@ -93,7 +112,7 @@ TabularExperimenting >> mergeCells [
 	res := Dictionary new.
 	sheet cells keysAndValuesDo:[:coord :cell|
 		(cell colspan notNil | cell rowspan notNil) ifTrue:[ |offset|
-			offset := (cell colspan ifNil:[0]) @ (cell rowspan ifNil:[0]). "Should upgrade it with Protected Arithmetic"
+			offset := ((cell colspan ifNil:[1]) - 1) @ ((cell rowspan ifNil:[1]) - 1). "Should upgrade it with Protected Arithmetic"
 			res at: coord put: (coord + offset).
 		].
 	].
@@ -106,6 +125,15 @@ TabularExperimenting >> rels [
 <Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
   <Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="workbook.xml"/>
 </Relationships>'.
+]
+
+{ #category : #files }
+TabularExperimenting >> renderDataCell: cell coord: coord on: writer [
+	writer tag
+		name: 'c';
+		attributeAt: 'r' put: (self cellName: coord);
+		attributeAt: 't' put: 'inlineStr';
+		with:[ writer tag: 'is' with: [ writer tag: 't' with: (cell data ddmmyyyy)]]
 ]
 
 { #category : #files }
@@ -140,7 +168,11 @@ TabularExperimenting >> renderRow: rowN on: writer [
 		cell := sheet cells at: coord.
 		cell data isNumber
 			ifTrue: [ self renderNumberCell: cell coord: coord on: writer ]
-			ifFalse: [ self renderStringCell: cell coord: coord on: writer ].
+			ifFalse: [ 
+				(cell data isKindOf: Date)
+					ifTrue: [self renderDataCell: cell coord: coord on: writer ]
+					ifFalse:  [self renderStringCell: cell coord: coord on: writer ]
+				].
 	]
 ]
 
@@ -168,7 +200,7 @@ TabularExperimenting >> workbook_xml [
 ^'<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships">
   <sheets>
-    <sheet name="Brian" sheetId="1" r:id="rId1"/>
+    <sheet name="Page 1" sheetId="1" r:id="rId1"/>
   </sheets>
 </workbook>'.
 ]
