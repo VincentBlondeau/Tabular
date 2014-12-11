@@ -1,5 +1,10 @@
 Class {
 	#name : #TabularRow,
-	#superclass : #TabularDimention,
+	#superclass : #TabularDimension,
 	#category : #'Tabular-Model'
 }
+
+{ #category : #'as yet unclassified' }
+TabularRow >> extractFromXml: aXMLElement [ 
+	self flag: #todo
+]

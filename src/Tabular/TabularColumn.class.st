@@ -1,5 +1,5 @@
 Class {
 	#name : #TabularColumn,
-	#superclass : #TabularDimention,
+	#superclass : #TabularDimension,
 	#category : #'Tabular-Model'
 }

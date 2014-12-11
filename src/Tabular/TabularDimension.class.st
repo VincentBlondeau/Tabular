@@ -1,5 +1,5 @@
 Class {
-	#name : #TabularDimention,
+	#name : #TabularDimension,
 	#superclass : #TabularObject,
 	#instVars : [
 		'i'

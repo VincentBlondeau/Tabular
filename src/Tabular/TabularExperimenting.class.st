@@ -66,7 +66,7 @@ TabularExperimenting >> generateXLSX [
 	zip addString: self content_types_xml as: '[Content_Types].xml'.
 	zip addString: self rels as: '_rels/.rels'.
 	zip addString: self workbook_xml_rels as: '_rels/workbook.xml.rels'.
-	zip writeToFileNamed: (FileDirectory default / workbook filename) fullName.
+	zip writeToFileNamed: ((OSEnvironment default at: 'HOME') asPath / workbook filename).
 	
 ]
 
@@ -112,7 +112,7 @@ TabularExperimenting >> mergeCells [
 	res := Dictionary new.
 	sheet cells keysAndValuesDo:[:coord :cell|
 		(cell colspan notNil | cell rowspan notNil) ifTrue:[ |offset|
-			offset := ((cell colspan ifNil:[1]) - 1) @ ((cell rowspan ifNil:[1]) - 1). "Should upgrade it with Protected Arithmetic"
+			offset := (cell colspan ifNil:[0]) @ (cell rowspan ifNil:[0]). "Should upgrade it with Protected Arithmetic"
 			res at: coord put: (coord + offset).
 		].
 	].
