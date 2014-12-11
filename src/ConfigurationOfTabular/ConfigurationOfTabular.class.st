@@ -120,6 +120,45 @@ ConfigurationOfTabular >> baseline01: spec [
 
 ]
 
+{ #category : #catalog }
+ConfigurationOfTabular >> catalogChangeLog [
+	"Returns a paragraph describing the most important changes in the configuration class."
+	^ '- Version number - Date - topics
+[[[
+	ConfigurationOfXXX project version: ''xx'' ) load					
+]]]
+or simply
+- Version number - Date - topics
+- Version number - Date - topics
+- Version number - Date - topics.'
+]
+
+{ #category : #catalog }
+ConfigurationOfTabular >> catalogContactInfo [
+	"Returns a paragraph describing contact information such as email, mailing lists and website."
+	^ 'MyProject is an amazing project . You can get in contact with our great MyProject programmer at myProject@gmail.com'
+]
+
+{ #category : #catalog }
+ConfigurationOfTabular >> catalogDescription [
+	"Returns a paragraph describing the project"
+	^ 'MyProject is an amazing project that will change your life.'
+]
+
+{ #category : #catalog }
+ConfigurationOfTabular >> catalogKeyClassesAndExample [
+	"Returns a paragraph or more describing the key classes of your project. You can use Pillar/Pier syntax to layout out the text i.e., ==Code== and - for bullet."
+	^ 'MyProject is composed of one cool key class named ==MyProject==. There is also ==MyKeyHelper==
+- ==MyProject== is the responsible for many cool aspects.
+- ==MyKeyHelper== is helping ==MyProject=='
+]
+
+{ #category : #catalog }
+ConfigurationOfTabular >> catalogKeywords [
+	"Returns an array of symbols"
+	^ #(web fun) 
+]
+
 { #category : #accessing }
 ConfigurationOfTabular >> customProjectAttributes [
 	 "Edit to return a collection of any custom attributes e.g. for conditional loading: Array with: #'Condition1' with: #'Condition2.
@@ -147,4 +186,25 @@ ConfigurationOfTabular >> project [
 		(Smalltalk at: #MetacelloVersionConstructor) on: self project: project.
 		project loadType: #linear. "change to #atomic if desired"
 		project ]
+]
+
+{ #category : #'symbolic versions' }
+ConfigurationOfTabular >> stable: spec [
+	<symbolicVersion: #'stable'>
+
+	spec for: #'common' version: '0.1'.
+
+]
+
+{ #category : #versions }
+ConfigurationOfTabular >> version01: spec [
+	<version: '0.1' imports: #('0.1-baseline' )>
+
+	spec for: #'common' do: [
+		spec blessing: #'stable'.
+		spec description: 'version 0.1'.
+		spec author: 'VincentBlondeau'.
+		spec timestamp: '12/11/2014 11:00'.
+		spec package: 'Tabular' with: 'Tabular-MYI.7'. ].
+
 ]
