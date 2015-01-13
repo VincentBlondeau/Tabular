@@ -42,11 +42,6 @@ TabularWorkbook >> filename: anObject [
 	^ self attributeAt: #filename put: anObject 
 ]
 
-{ #category : #finding }
-TabularWorkbook >> findWorksheetNamed: aString [ 
-	^ self worksheets detect: [ :aSheet | aSheet name = aString ] 
-]
-
 { #category : #initialization }
 TabularWorkbook >> initialize [
 	super initialize.
@@ -61,6 +56,21 @@ TabularWorkbook >> stringTable [
 { #category : #accessing }
 TabularWorkbook >> stringTable: aTabularSharedStrings [ 
 	strings := aTabularSharedStrings 
+]
+
+{ #category : #accessing }
+TabularWorkbook >> styles [
+	^ styles 
+]
+
+{ #category : #accessing }
+TabularWorkbook >> styles: aTabularStyleContainer [
+	styles := aTabularStyleContainer 
+]
+
+{ #category : #finding }
+TabularWorkbook >> worksheetNamed: aString [ 
+	^ self worksheets detect: [ :aSheet | aSheet name = aString ] 
 ]
 
 { #category : #accessing }

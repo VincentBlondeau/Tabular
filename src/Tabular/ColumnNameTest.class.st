@@ -7,42 +7,42 @@ Class {
 	#category : #'Tabular-Tests'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #running }
 ColumnNameTest >> setUp [
 	t:=TabularExperimenting new.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 ColumnNameTest >> testA [
-	self assert: ((t columnName: 1) = 'A')
+	self assert: (t columnName: 1) equals: 'A'
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 ColumnNameTest >> testAA [
-	self assert: ((t columnName: 27) = 'AA')
+	self assert: (t columnName: 27) equals:'AA'
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 ColumnNameTest >> testAAA [
-	self assert: ((t columnName: 703) = 'AAA')
+	self assert: (t columnName: 703) equals: 'AAA'
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 ColumnNameTest >> testAZ [
-	self assert: ((t columnName: 52) = 'AZ')
+	self assert: (t columnName: 52) equals: 'AZ'
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 ColumnNameTest >> testBA [
-	self assert: ((t columnName: 53) = 'BA')
+	self assert: (t columnName: 53)equals: 'BA'
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 ColumnNameTest >> testZ [
-	self assert: ((t columnName: 26) = 'Z')
+	self assert: (t columnName: 26) equals: 'Z'
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 ColumnNameTest >> testZZ [
-	self assert: ((t columnName: 702) = 'ZZ')
+	self assert: (t columnName: 702) equals: 'ZZ'
 ]

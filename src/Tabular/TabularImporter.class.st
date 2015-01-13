@@ -10,8 +10,8 @@ Class {
 }
 
 { #category : #importing }
-TabularImporter class >> import: aPath [
-	^ self new import: aPath
+TabularImporter class >> import: aStream [
+	^ self new import: aStream
 
 	
 ]
@@ -25,6 +25,18 @@ TabularImporter >> extractSharedStrings [
 		stringTable:
 			((TabularSharedStrings newFrom: workbook)
 				extractFromXml: strings;
+				yourself)
+]
+
+{ #category : #importing }
+TabularImporter >> extractStyles [
+	| styles |
+	styles := XMLDOMParser
+		parse: ((archive memberNamed: 'xl/styles.xml') contentStreamFromEncoding: 'utf8') contents asString.
+	workbook
+		styles:
+			((TabularStylesContainer newFrom: workbook)
+				extractFromXml: styles;
 				yourself)
 ]
 
@@ -53,11 +65,12 @@ TabularImporter >> extractWorksheets [
 ]
 
 { #category : #importing }
-TabularImporter >> import: aString [
-	archive := ZipArchive new readFrom: aString.
-	workbook := TabularWorkbook new filename: aString.
+TabularImporter >> import: aStream [
+	archive := ZipArchive new readFrom: aStream.
+	workbook := TabularWorkbook new filename: 'import'.
 	self extractWorkbook.
 	self extractWorksheets.
 	self extractSharedStrings.
+	self extractStyles.
 	^ workbook
 ]

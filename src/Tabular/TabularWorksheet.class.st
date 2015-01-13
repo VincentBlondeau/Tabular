@@ -11,22 +11,31 @@ Class {
 
 { #category : #accessing }
 TabularWorksheet >> at: coord [
-	| cell |
-	cell := cells at: coord ifAbsent: [ ^ nil ].
-	^ cell data
+	^ cells at: coord ifAbsent: [ ^ nil ].
+
 ]
 
 { #category : #accessing }
 TabularWorksheet >> at: coord putData: anObject [
-| cell |
+	| cell |
 	anObject ifNil: [ ^ self eraseCellAt: coord ].
 	cell := cells at: coord ifAbsentPut: [ TabularCell new ].
-	cell data: anObject.
+	cell data: anObject
 ]
 
 { #category : #accessing }
 TabularWorksheet >> cells [
 	^cells
+]
+
+{ #category : #accessing }
+TabularWorksheet >> cellsAsMatrix [
+	| matrix |
+	cols := self cells keys max x.
+	rows := self cells keys max y.
+	matrix := Matrix rows: rows columns: cols.
+	cells associationsDo: [ :assoc | matrix at: assoc key y at: assoc key x put: assoc value ].
+	^ matrix
 ]
 
 { #category : #accessing }
@@ -41,7 +50,7 @@ TabularWorksheet >> col: col row: row putData: anObject [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #removing }
 TabularWorksheet >> eraseCellAt: coord [
 	cells removeKey: coord ifAbsent: [^self].
 
@@ -82,22 +91,22 @@ TabularWorksheet >> initialize [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 TabularWorksheet >> name [
 	^ self attributeAt: #name 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 TabularWorksheet >> name: aString [ 
 	self attributeAt: #name put: aString
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #printing }
 TabularWorksheet >> printOn: aStream [
 	super printOn: aStream.
-	aStream << ' "' .
+	aStream << ' ''' .
 	aStream << self name.
-	aStream << '"' 
+	aStream << '''' 
 ]
 
 { #category : #accessing }
@@ -105,7 +114,7 @@ TabularWorksheet >> rID [
 	^ (self attributeAt: #rID) copyWithoutAll: 'rId'
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 TabularWorksheet >> rID: aString [
 	self attributeAt: #rID put: aString
 ]
@@ -116,7 +125,42 @@ TabularWorksheet >> rows [
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 TabularWorksheet >> sheetId: aString [ 
 	self attributeAt: #sheetId put: aString
+]
+
+{ #category : #opening }
+TabularWorksheet >> show [
+	self showWithGlamour
+]
+
+{ #category : #opening }
+TabularWorksheet >> showWithGlamour [
+	| wrapper matrix table |
+	matrix := self cellsAsMatrix.
+	wrapper := GLMWrapper new.
+	wrapper
+		show: [ :a | 
+			table := a table.
+			1 to: matrix columnCount do: [ :i | table column: i asString evaluated: [ :col | col at: i ] width: 50 ] ].
+	wrapper openOn: ((1 to: matrix rowCount) collect: [ :i | matrix atRow: i ])
+]
+
+{ #category : #opening }
+TabularWorksheet >> showWithSpec [
+	| matrix tree specCols |
+	matrix := self cellsAsMatrix.
+	tree := TreeModel new.
+	specCols := (1 to: matrix columnCount)
+		collect: [ :i | 
+			TreeColumnModel new
+				displayBlock: [ :node | (node content at: i) asString ];
+				headerLabel: i asString;
+				yourself ].
+	tree columns: specCols.
+	tree roots: ((1 to: matrix rowCount) collect: [ :i | matrix atRow: i ]).
+	tree openWithSpec.
+		
+
 ]

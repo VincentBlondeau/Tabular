@@ -4,7 +4,7 @@ Class {
 	#category : #'Tabular-Tests'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 WorkbookTest >> testCreation [
 |w|
 	w := TabularWorkbook withSheets: 5.
@@ -12,7 +12,7 @@ WorkbookTest >> testCreation [
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 WorkbookTest >> testCreationEmpty [
 |w|
 	w := TabularWorkbook withSheets: 0.
@@ -20,7 +20,7 @@ WorkbookTest >> testCreationEmpty [
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 WorkbookTest >> testNew [
 |w|
 	w := TabularWorkbook new.

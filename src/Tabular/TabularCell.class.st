@@ -33,6 +33,11 @@ TabularCell >> data: anObject [
 ]
 
 { #category : #'as yet unclassified' }
+TabularCell >> dataIfNotNil [
+	^ self data ifNil: [ self error: 'The accessed data is nil!' ]
+]
+
+{ #category : #'as yet unclassified' }
 TabularCell >> extractFromXml: aXMLElement [
 	self style: (aXMLElement attributeAt: 's').
 	self type: (aXMLElement attributeAt: 't' ifAbsent: [ nil ]).
@@ -48,6 +53,12 @@ TabularCell >> formula [
 { #category : #'accessing - attributes' }
 TabularCell >> formula: anObject [
 	^ self attributeAt: #formula put: anObject
+]
+
+{ #category : #'as yet unclassified' }
+TabularCell >> printOn: stream [
+	"super printOn: stream."
+	stream << self data asString.
 ]
 
 { #category : #'accessing - attributes' }
