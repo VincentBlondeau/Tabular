@@ -16,7 +16,11 @@ TabularSharedStrings >> at: anIndex [
 TabularSharedStrings >> extractFromXml: aXMLDocument [
 	aXMLDocument
 		allElementsNamed: 'si'
-		do: [ :aXmlTextElement | aXmlTextElement allElementsNamed: 't' do: [ :xmlElement | strings add: xmlElement firstNode string ] ]
+		do: [ :aXmlTextElement | 
+			strings
+				add:
+					(((aXmlTextElement allElementsNamed: 't') collect: [ :xmlElement | xmlElement hasStringNodes ifTrue: [xmlElement firstNode string] ifFalse: [ '' ] ])
+						reduce: [ :a :b | a , b ]) ]
 ]
 
 { #category : #'as yet unclassified' }

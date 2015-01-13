@@ -84,6 +84,11 @@ TabularWorksheet >> extractFromXml: aXMLElement [
 		yourself
 ]
 
+{ #category : #accessing }
+TabularWorksheet >> findCellsWithContent: aContent [
+	^ self cells select: [ :cell | cell data = aContent ]
+]
+
 { #category : #initialization }
 TabularWorksheet >> initialize [
 	super initialize.

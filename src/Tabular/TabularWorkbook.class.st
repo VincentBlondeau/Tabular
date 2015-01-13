@@ -73,6 +73,11 @@ TabularWorkbook >> worksheetNamed: aString [
 	^ self worksheets detect: [ :aSheet | aSheet name = aString ] 
 ]
 
+{ #category : #finding }
+TabularWorkbook >> worksheetNamed: aString ifNone: aBlock [
+	^ self worksheets detect: [ :aSheet | aSheet name = aString ] ifNone: aBlock
+]
+
 { #category : #accessing }
 TabularWorkbook >> worksheets [
 	^worksheets
