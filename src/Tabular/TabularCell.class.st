@@ -3,7 +3,9 @@ Class {
 	#superclass : #TabularObject,
 	#instVars : [
 		'data',
-		'style'
+		'style',
+		'type',
+		'formula'
 	],
 	#category : #'Tabular-Model'
 }
@@ -47,12 +49,16 @@ TabularCell >> extractFromXml: aXMLElement [
 
 { #category : #'accessing - attributes' }
 TabularCell >> formula [
-	^ self attributeAt: #formula
+	"not in attributes for performance issues"
+
+	^ formula
 ]
 
 { #category : #'accessing - attributes' }
 TabularCell >> formula: anObject [
-	^ self attributeAt: #formula put: anObject
+	"not in attributes for performance issues"
+
+	formula := anObject
 ]
 
 { #category : #printing }
@@ -88,10 +94,12 @@ TabularCell >> style: anObject [
 
 { #category : #'accessing - attributes' }
 TabularCell >> type [
-	^ self attributeAt: #type
+	^ type
 ]
 
 { #category : #'accessing - attributes' }
 TabularCell >> type: anObject [
-	^ self attributeAt: #type put: anObject
+	"not in attributes for performance issues"
+
+	type := anObject
 ]

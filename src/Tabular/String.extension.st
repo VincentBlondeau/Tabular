@@ -5,7 +5,9 @@ String >> asPoint [
 	"'A1' asPoint -> 1 @ 1
 	'B3' asPoint -> 2 @ 3"
 
-	^ self onlyLetters base26AsInteger @ self numericSuffix
+	| decomp |
+	decomp := self stemAndNumericSuffix.
+	^ decomp first base26AsInteger @ decomp second
 ]
 
 { #category : #'*Tabular' }
