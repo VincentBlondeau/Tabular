@@ -22,10 +22,13 @@ TabularCell >> colspan: anObject [
 
 { #category : #accessing }
 TabularCell >> data [
+	data ifNil: [ ^ nil ].
 	self type = 'str'
 		ifTrue: [ ^ data ].
 	self type = 's'
 		ifTrue: [ ^ (self stringAt: data) asString ].
+	self style isDate
+		ifTrue: [ ^ Date fromExcelDays: data asString ].
 	self type ifNil: [ ^ data ]
 ]
 
@@ -84,12 +87,18 @@ TabularCell >> stringAt: aXMLString [
 
 { #category : #'accessing - attributes' }
 TabularCell >> style [
-	^ style 
+	^ self styleAt: style 
 ]
 
 { #category : #'accessing - attributes' }
 TabularCell >> style: anObject [
 	style := anObject
+]
+
+{ #category : #accessing }
+TabularCell >> styleAt: aString [
+	aString ifEmpty: [ ^ TabularStyle newFrom: self workbook ].
+	^ self workbook styles at: aString
 ]
 
 { #category : #'accessing - attributes' }

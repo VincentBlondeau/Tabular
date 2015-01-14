@@ -104,6 +104,12 @@ TabularStyle >> fontId: anObject [
 	fontId := anObject
 ]
 
+{ #category : #'as yet unclassified' }
+TabularStyle >> isDate [
+	^ ((self workbook styles formats at: self numFmtId ifAbsent: [ '' ]) includes: $y)
+		or: [ #(14 15 16 17 22) includes: self numFmtId ]
+]
+
 { #category : #accessing }
 TabularStyle >> numFmtId [
 	^ numFmtId

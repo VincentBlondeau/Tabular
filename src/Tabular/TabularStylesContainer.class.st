@@ -2,13 +2,22 @@ Class {
 	#name : #TabularStylesContainer,
 	#superclass : #TabularObject,
 	#instVars : [
-		'styles'
+		'styles',
+		'formats'
 	],
 	#category : #'Tabular-Model'
 }
 
+{ #category : #initialization }
+TabularStylesContainer >> at: anIndex [
+	^ styles at: anIndex + 1 "Because the array begin at 0."
+]
+
 { #category : #conversion }
 TabularStylesContainer >> extractFromXml: aXMLDocument [
+	aXMLDocument
+		allElementsNamed: 'numFmt'
+		do: [ :aXmlTextElement | formats at: (aXmlTextElement attributeAt: 'numFmtId') put: (aXmlTextElement attributeAt: 'formatCode') ].
 	aXMLDocument
 		allElementsNamed: 'cellXfs'
 		do: [ :aXmlTextElement | 
@@ -28,7 +37,13 @@ TabularStylesContainer >> extractFromXml: aXMLDocument [
 ]
 
 { #category : #initialization }
+TabularStylesContainer >> formats [
+	^ formats
+]
+
+{ #category : #initialization }
 TabularStylesContainer >> initialize [
 	super initialize.
-	styles := OrderedCollection new
+	styles := OrderedCollection new.
+	formats := Dictionary new
 ]
