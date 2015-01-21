@@ -17,7 +17,7 @@ TabularStylesContainer >> at: anIndex [
 TabularStylesContainer >> extractFromXml: aXMLDocument [
 	aXMLDocument
 		allElementsNamed: 'numFmt'
-		do: [ :aXmlTextElement | formats at: (aXmlTextElement attributeAt: 'numFmtId') put: (aXmlTextElement attributeAt: 'formatCode') ].
+		do: [ :aXmlTextElement | formats at: (aXmlTextElement attributeAt: 'numFmtId') asNumber put: (aXmlTextElement attributeAt: 'formatCode')  ].
 	aXMLDocument
 		allElementsNamed: 'cellXfs'
 		do: [ :aXmlTextElement | 
@@ -27,11 +27,11 @@ TabularStylesContainer >> extractFromXml: aXMLDocument [
 					styles
 						add:
 							(TabularStyle new
-								numFmtId: (xmlElement attributeAt: 'numFmtId');
-								fontId: (xmlElement attributeAt: 'fontId');
-								fillId: (xmlElement attributeAt: 'fillId');
-								borderId: (xmlElement attributeAt: 'borderId');
-								xfId: (xmlElement attributeAt: 'xfId');
+								numFmtId: (xmlElement attributeAt: 'numFmtId') asNumber;
+								fontId: (xmlElement attributeAt: 'fontId') asNumber;
+								fillId: (xmlElement attributeAt: 'fillId') asNumber;
+								borderId: (xmlElement attributeAt: 'borderId') asNumber;
+								xfId: (xmlElement attributeAt: 'xfId') asNumber;
 								workbook: self workbook;
 								yourself) ] ]
 ]
