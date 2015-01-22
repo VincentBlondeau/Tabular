@@ -32,6 +32,12 @@ TabularWorkbook >> addSheet: aTabularWorksheet [
 	worksheets add: aTabularWorksheet 
 ]
 
+{ #category : #'as yet unclassified' }
+TabularWorkbook >> containsWorksheetNamed: aString [
+	self worksheetNamed: aString ifNone: [ ^ false ].
+	^ true
+]
+
 { #category : #'accessing - attributes' }
 TabularWorkbook >> filename [
 	^ self attributeAt: #filename

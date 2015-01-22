@@ -44,10 +44,10 @@ TabularCell >> dataIfNotNil [
 
 { #category : #conversion }
 TabularCell >> extractFromXml: aXMLElement [
-	self style: (aXMLElement attributeAt: 's').
-	self type: (aXMLElement attributeAt: 't' ifAbsent: [ nil ]).
-	self data: ((aXMLElement elementAt: 'v') ifNotNil: [ :e | e firstNode ]).
-	self formula: ((aXMLElement elementAt: 'f') ifNotNil: [ :e | e firstNode ])
+	self style: (aXMLElement attributeAt: 's') asString.
+	self type: ((aXMLElement attributeAt: 't') asString ifEmpty: [nil]).
+	self data: ((aXMLElement elementAt: 'v') ifNotNil: [ :e | e firstNode asString ]).
+	self formula: ((aXMLElement elementAt: 'f') ifNotNil: [ :e | e firstNode asString ])
 ]
 
 { #category : #'accessing - attributes' }
