@@ -29,7 +29,7 @@ TabularCell >> data [
 		ifTrue: [ ^ (self stringAt: data) asString ].
 	self style isDate
 		ifTrue: [ ^ Date fromExcelDays: data asString ].
-	self type ifNil: [ ^ data asString ]
+	self type ifNil: [ ^ data asNumber ]
 ]
 
 { #category : #accessing }
