@@ -22,6 +22,7 @@ TabularCell >> colspan: anObject [
 
 { #category : #accessing }
 TabularCell >> data [
+	"Should not send self or you will fall into an infinite loop while printing..."
 	data ifNil: [ ^ nil ].
 	self type = 'str'
 		ifTrue: [ ^ data ].
@@ -29,7 +30,8 @@ TabularCell >> data [
 		ifTrue: [ ^ (self stringAt: data) asString ].
 	self style isDate
 		ifTrue: [ ^ Date fromExcelDays: data asString ].
-	self type ifNil: [ ^ data asNumber ]
+	self type ifNil: [ ^ data asNumber ].
+	^ nil
 ]
 
 { #category : #accessing }

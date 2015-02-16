@@ -81,9 +81,9 @@ TabularImporter >> import: aStream [
 	archive := ZipArchive new readFrom: aStream.
 	workbook := TabularWorkbook new filename: 'import'.
 	self extractWorkbook.
-	self extractWorksheets.
 	self extractSharedStrings.
 	self extractStyles.
+	self extractWorksheets.
 	^ workbook
 ]
 
