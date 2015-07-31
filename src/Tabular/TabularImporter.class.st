@@ -63,8 +63,6 @@ TabularImporter >> extractWorkbook [
 
 { #category : #extracting }
 TabularImporter >> extractWorksheets [
-	"For now we suppose that the Sheet has the same number that the rId. So if the rId is 2, the sheet will be worksheets/sheet2.xml"
-
 	| xmlSheet |
 	workbook worksheets
 		do: [ :aSheet | 
@@ -72,8 +70,20 @@ TabularImporter >> extractWorksheets [
 				ifTrue: [ 
 					xmlSheet := XMLDOMParser
 						parse:
-							((archive memberNamed: 'xl/worksheets/sheet' , aSheet rID , '.xml') contentStreamFromEncoding: 'utf8') contents asString.
+							((archive memberNamed: (self getPathForSheet: aSheet rID)) contentStreamFromEncoding: 'utf8') contents asString.
 					aSheet extractContentsFromXml: xmlSheet ] ]
+]
+
+{ #category : #extracting }
+TabularImporter >> getPathForSheet: rID [
+	| relation |
+	relation:=((XMLDOMParser parse:(
+		(archive memberNamed: 'xl/_rels/workbook.xml.rels') contentStreamFromEncoding: 'utf8'
+	)) findElementNamed: 'Relationships')
+			elementsDetect: [:rel| (rel attributeAt: 'Id') = ('rId', rID)]
+			ifNone: [^'xl/worksheets/sheet' , rID , '.xml'].
+	^'xl/',(relation attributeAt: 'Target').
+	
 ]
 
 { #category : #importing }
