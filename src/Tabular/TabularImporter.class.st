@@ -26,7 +26,7 @@ TabularImporter class >> import: aFileReferenceOrAStream onlySheetsNamed: aColle
 TabularImporter >> extractSharedStrings [
 	| strings |
 	strings := XMLDOMParser
-		parse: ((archive memberNamed: 'xl/sharedStrings.xml') contentStreamFromEncoding: 'utf8') contents asString.
+		parse: (((archive memberNamed: 'xl/sharedStrings.xml') "contentStreamFromEncoding: 'utf8'") contents asString convertFromEncoding: 'utf-8').
 	workbook
 		stringTable:
 			((TabularSharedStrings newFrom: workbook)
