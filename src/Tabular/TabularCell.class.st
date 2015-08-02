@@ -22,16 +22,7 @@ TabularCell >> colspan: anObject [
 
 { #category : #accessing }
 TabularCell >> data [
-	"Should not send self or you will fall into an infinite loop while printing..."
-	data ifNil: [ ^ nil ].
-	self type = 'str'
-		ifTrue: [ ^ data ].
-	self type = 's'
-		ifTrue: [ ^ (self stringAt: data) asString ].
-	self style isDate
-		ifTrue: [ ^ Date fromExcelDays: data asString ].
-	self type ifNil: [ ^ data asNumber ].
-	^ nil
+	^data
 ]
 
 { #category : #accessing }
@@ -89,18 +80,12 @@ TabularCell >> stringAt: aXMLString [
 
 { #category : #'accessing - attributes' }
 TabularCell >> style [
-	^ self styleAt: style 
+	^ style 
 ]
 
 { #category : #'accessing - attributes' }
 TabularCell >> style: anObject [
 	style := anObject
-]
-
-{ #category : #accessing }
-TabularCell >> styleAt: aString [
-	aString ifEmpty: [ ^ TabularStyle newFrom: self workbook ].
-	^ self workbook styles at: aString
 ]
 
 { #category : #'accessing - attributes' }

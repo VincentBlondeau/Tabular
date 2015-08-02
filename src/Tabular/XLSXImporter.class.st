@@ -2,7 +2,6 @@ Class {
 	#name : #XLSXImporter,
 	#superclass : #XMLZipImporter,
 	#instVars : [
-		'archive',
 		'sharedStrings',
 		'sheetsToExtract'
 	],
@@ -24,8 +23,7 @@ XLSXImporter class >> import: aFileReferenceOrAStream onlySheetsNamed: aCollecti
 { #category : #extracting }
 XLSXImporter >> extractSharedStrings [
 	| strings |
-	strings := XMLDOMParser
-		parse: (((archive memberNamed: 'xl/sharedStrings.xml') "contentStreamFromEncoding: 'utf8'") contents asString convertFromEncoding: 'utf8').
+	strings := self DOMfor: 'xl/sharedStrings.xml'.
 	workbook
 		stringTable:
 			((TabularSharedStrings newFrom: workbook)
@@ -36,8 +34,7 @@ XLSXImporter >> extractSharedStrings [
 { #category : #importing }
 XLSXImporter >> extractStyles [
 	| styles |
-	styles := XMLDOMParser
-		parse: ((archive memberNamed: 'xl/styles.xml') contentStreamFromEncoding: 'utf8') contents asString.
+	styles := self DOMfor: 'xl/styles.xml'.
 	workbook
 		styles:
 			((TabularStylesContainer newFrom: workbook)
@@ -48,8 +45,7 @@ XLSXImporter >> extractStyles [
 { #category : #extracting }
 XLSXImporter >> extractWorkbook [
 	| workbookXML |
-	workbookXML := XMLDOMParser
-		parse: ((archive memberNamed: 'xl/workbook.xml') contentStreamFromEncoding: 'utf8') contents asString.
+	workbookXML := self DOMfor: 'xl/workbook.xml'.
 	workbookXML
 		allElementsNamed: 'sheet'
 		do: [ :aXmlSheet | 
@@ -65,27 +61,26 @@ XLSXImporter >> extractWorksheets [
 	| xmlSheet |
 	workbook worksheets
 		do: [ :aSheet | 
-			(sheetsToExtract isNil or: [ sheetsToExtract includes: aSheet name ])
+			(sheetsToExtract isNil or: [sheetsToExtract includes: aSheet name])
 				ifTrue: [ 
-					xmlSheet := XMLDOMParser
-						parse:
-							((archive memberNamed: (self getPathForSheet: aSheet rID)) contentStreamFromEncoding: 'utf8') contents asString.
-					aSheet extractContentsFromXml: xmlSheet ] ]
+					xmlSheet := 	self DOMfor: (self getPathForSheet: aSheet rID).
+					aSheet extractContentsFromXml: xmlSheet.
+				]
+		]
 ]
 
 { #category : #extracting }
 XLSXImporter >> getPathForSheet: rID [
 	| relation |
-	relation:=((XMLDOMParser parse:(
-		(archive memberNamed: 'xl/_rels/workbook.xml.rels') contentStreamFromEncoding: 'utf8'
-	)) findElementNamed: 'Relationships')
+	relation:=((self DOMfor: 'xl/_rels/workbook.xml.rels')
+		findElementNamed: 'Relationships')
 			elementsDetect: [:rel| (rel attributeAt: 'Id') = ('rId', rID)]
 			ifNone: [^'xl/worksheets/sheet' , rID , '.xml'].
 	^'xl/',(relation attributeAt: 'Target').
 	
 ]
 
-{ #category : #importing }
+{ #category : #'as yet unclassified' }
 XLSXImporter >> import: aStream [
 	archive := ZipArchive new readFrom: aStream.
 	workbook := TabularWorkbook new filename: 'import'.

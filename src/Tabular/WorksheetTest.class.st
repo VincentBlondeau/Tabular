@@ -16,7 +16,7 @@ WorksheetTest >> setUp [
 WorksheetTest >> testCellsReadingWriting [
 	| endOfTheWorld |
 	ws col: 7 row: 12 putData: 'aTest'.
-	self assert: (ws col: 7 row: 12) data equals: 'aTest'.
+	self assert: ((ws col: 7 row: 12) data = 'aTest').
 	ws col: 7 row: 12 putData: 666.
 	self assert: (ws col: 7 row: 12) data equals: 666.
 	endOfTheWorld := Date year: 2012 month: 12 day: 21.

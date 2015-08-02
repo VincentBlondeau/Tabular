@@ -10,13 +10,13 @@ Class {
 { #category : #running }
 TabularImporterTest >> setUp [
 	| file |
-	file := TabularRessources testExcelSheet readStream.
+	file := TabularResources testExcelSheet readStream.
 	workbook := XLSXImporter import: file
 ]
 
 { #category : #tests }
 TabularImporterTest >> testAccessElementFromASheet [
-	self assert: ((workbook worksheetNamed: 'Feuil1') at: 1@1) data equals: 'concatenation table'.
+	self assert: (((workbook worksheetNamed: 'Feuil1') at: 1@1) data = '6').
 
 ]
 
