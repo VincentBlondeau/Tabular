@@ -11,7 +11,7 @@ Class {
 TabularImporterTest >> setUp [
 	| file |
 	file := TabularRessources testExcelSheet readStream.
-	workbook := TabularImporter import: file
+	workbook := XLSXImporter import: file
 ]
 
 { #category : #tests }
