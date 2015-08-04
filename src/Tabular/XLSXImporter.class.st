@@ -3,6 +3,7 @@ Class {
 	#superclass : #XMLZipImporter,
 	#instVars : [
 		'sharedStrings',
+		'workbookRels',
 		'sheetsToExtract'
 	],
 	#category : #'Tabular-Importers'
@@ -22,72 +23,62 @@ XLSXImporter class >> import: aFileReferenceOrAStream onlySheetsNamed: aCollecti
 
 { #category : #extracting }
 XLSXImporter >> extractSharedStrings [
-	| strings |
-	strings := self DOMfor: 'xl/sharedStrings.xml'.
-	workbook
-		stringTable:
-			((TabularSharedStrings newFrom: workbook)
-				extractFromXml: strings;
-				yourself)
+	^sharedStrings := XLSXSharedStringsParser parse: (archive memberNamed: 'xl/sharedStrings.xml') contentStream.
+
 ]
 
-{ #category : #importing }
+{ #category : #extracting }
 XLSXImporter >> extractStyles [
-	| styles |
+	self notYetImplemented.
+	"| styles |
 	styles := self DOMfor: 'xl/styles.xml'.
 	workbook
 		styles:
 			((TabularStylesContainer newFrom: workbook)
 				extractFromXml: styles;
-				yourself)
+				yourself)"
 ]
 
 { #category : #extracting }
-XLSXImporter >> extractWorkbook [
-	| workbookXML |
-	workbookXML := self DOMfor: 'xl/workbook.xml'.
-	workbookXML
-		allElementsNamed: 'sheet'
-		do: [ :aXmlSheet | 
-			workbook
-				addSheet:
-					((TabularWorksheet newFrom: workbook)
-						extractFromXml: aXmlSheet;
-						yourself) ]
+XLSXImporter >> extractWorkbookRels [
+	^workbookRels := XLSXRelsParser parse: (archive memberNamed: 'xl/_rels/workbook.xml.rels') contentStream.
 ]
 
 { #category : #extracting }
 XLSXImporter >> extractWorksheets [
-	| xmlSheet |
-	workbook worksheets
-		do: [ :aSheet | 
-			(sheetsToExtract isNil or: [sheetsToExtract includes: aSheet name])
-				ifTrue: [ 
-					xmlSheet := 	self DOMfor: (self getPathForSheet: aSheet rID).
-					aSheet extractContentsFromXml: xmlSheet.
-				]
-		]
+	self extractWorkbookRels.
+	self extractWorksheetsList keysAndValuesDo: [ :id :sheetName | | aSheet |
+			aSheet := XLSXSheetParser	parse: ((archive memberNamed: (self getPathForSheet: id)) contentStream).				
+			aSheet name: sheetName.
+			workbook addSheet: aSheet.
+		].
+	^workbook worksheets.
+]
+
+{ #category : #extracting }
+XLSXImporter >> extractWorksheetsList [
+| list |
+	list:=XLSXWorkbookParser parse: (archive memberNamed: 'xl/workbook.xml') contentStream.
+	sheetsToExtract ifNotNil:[list := list associationsSelect: [:assoc| sheetsToExtract includes: assoc value] ].
+	^list.
+
 ]
 
 { #category : #extracting }
 XLSXImporter >> getPathForSheet: rID [
-	| relation |
-	relation:=((self DOMfor: 'xl/_rels/workbook.xml.rels')
-		findElementNamed: 'Relationships')
-			elementsDetect: [:rel| (rel attributeAt: 'Id') = ('rId', rID)]
-			ifNone: [^'xl/worksheets/sheet' , rID , '.xml'].
-	^'xl/',(relation attributeAt: 'Target').
+	^'xl/',(workbookRels at: rID).
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #importing }
 XLSXImporter >> import: aStream [
 	archive := ZipArchive new readFrom: aStream.
-	workbook := TabularWorkbook new filename: 'import'.
-	self extractWorkbook.
+	workbook := TabularWorkbook new.
+	"self extractStyles."
 	self extractSharedStrings.
-	self extractStyles.
 	self extractWorksheets.
+
+	self resolveSharedStrings.
 	^ workbook
 ]
 
@@ -97,4 +88,15 @@ XLSXImporter >> import: aFileReference onlySheetsNamed: aCollection [
 
 	sheetsToExtract := aCollection.
 	^ self import: aFileReference
+]
+
+{ #category : #'as yet unclassified' }
+XLSXImporter >> resolveSharedStrings [
+"Replace shared strings pointers to real strings"
+	workbook worksheets do:[:worksheet|
+		worksheet cells do:[:cell| 
+			((cell attributeAt: #xlsx:t) = 's')
+				ifTrue:[cell data: (sharedStrings at: (cell data + 1))] "XLSX uses 0-based arrays"
+		]
+	]
 ]

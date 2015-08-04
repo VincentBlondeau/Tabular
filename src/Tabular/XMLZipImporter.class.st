@@ -8,21 +8,9 @@ Class {
 	#category : #'Tabular-Importers'
 }
 
-{ #category : #extracting }
-XMLZipImporter >> DOMfor: aPathString [
-	^xmlDOMs
-		at: aPathString
-		ifAbsentPut:[XMLDOMParser parse: (archive memberNamed: aPathString) contentStream].
-]
-
 { #category : #importing }
 XMLZipImporter >> import: aStream [
 	archive := ZipArchive new readFrom: aStream.
-	^workbook
-]
+	^super import: aStream.
 
-{ #category : #'as yet unclassified' }
-XMLZipImporter >> initialize [
-	super initialize.
-	xmlDOMs := Dictionary new.
 ]

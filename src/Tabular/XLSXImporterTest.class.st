@@ -1,5 +1,5 @@
 Class {
-	#name : #TabularImporterTest,
+	#name : #XLSXImporterTest,
 	#superclass : #TestCase,
 	#instVars : [
 		'workbook'
@@ -8,20 +8,20 @@ Class {
 }
 
 { #category : #running }
-TabularImporterTest >> setUp [
+XLSXImporterTest >> setUp [
 	| file |
 	file := TabularResources testExcelSheet readStream.
 	workbook := XLSXImporter import: file
 ]
 
 { #category : #tests }
-TabularImporterTest >> testAccessElementFromASheet [
-	self assert: (((workbook worksheetNamed: 'Feuil1') at: 1@1) data = '6').
+XLSXImporterTest >> testAccessElementFromASheet [
+	self assert: (((workbook worksheetNamed: 'Feuil1') at: 1@1) data = 'concatenation table').
 
 ]
 
 { #category : #tests }
-TabularImporterTest >> testAccessSheetByName [
+XLSXImporterTest >> testAccessSheetByName [
 	self assert: (workbook worksheetNamed: 'Feuil1') name equals: 'Feuil1'.
 	self assert: (workbook worksheetNamed: 'Feuil2') name equals: 'Feuil2'.
 	self assert: (workbook worksheetNamed: 'Feuil3') name equals: 'Feuil3'.
@@ -29,23 +29,18 @@ TabularImporterTest >> testAccessSheetByName [
 ]
 
 { #category : #tests }
-TabularImporterTest >> testColumnConversion [
+XLSXImporterTest >> testColumnConversion [
 	self assert: 'A1' asPoint equals: 1 @ 1.
 	self assert: 'B3' asPoint equals: 2 @ 3.
 	self assert: 'AA321' asPoint equals: 27 @ 321
 ]
 
 { #category : #tests }
-TabularImporterTest >> testImport [
+XLSXImporterTest >> testImport [
 	self assert: (workbook isKindOf: TabularWorkbook)
 ]
 
 { #category : #tests }
-TabularImporterTest >> testNumberOfSheetsIs3 [
+XLSXImporterTest >> testNumberOfSheetsIs3 [
 	self assert: workbook worksheets size equals: 3
-]
-
-{ #category : #tests }
-TabularImporterTest >> testStringTableShouldNotBeNil [
-	self assert: (workbook stringTable isKindOf: TabularSharedStrings)
 ]

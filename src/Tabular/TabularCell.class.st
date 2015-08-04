@@ -39,7 +39,11 @@ TabularCell >> dataIfNotNil [
 TabularCell >> extractFromXml: aXMLElement [
 	self style: (aXMLElement attributeAt: 's') asString.
 	self type: ((aXMLElement attributeAt: 't') asString ifEmpty: [ nil ]).
-	self data: ((aXMLElement elementAt: 'v') ifNotNil: [ :e | e firstNode ifNotNil: [ :s | s asString ] ]).
+	self data: (
+		(self type = 's')
+			ifTrue: [ (self stringAt: ((aXMLElement elementAt: 'v') ifNotNil: [ :e | e firstNode ifNotNil: [ :s | s asString ] ])) asString ]
+			ifFalse: [((aXMLElement elementAt: 'v') ifNotNil: [ :e | e firstNode ifNotNil: [ :s | s asString ] ])]
+	).
 	self formula: ((aXMLElement elementAt: 'f') ifNotNil: [ :e | e firstNode asString ])
 ]
 
@@ -55,6 +59,11 @@ TabularCell >> formula: anObject [
 	"not in attributes for performance issues"
 
 	formula := anObject
+]
+
+{ #category : #testing }
+TabularCell >> isTabularCell [
+	^ true
 ]
 
 { #category : #printing }

@@ -36,7 +36,17 @@ TabularObject >> initialize [
 	attributes := Dictionary new.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #testing }
+TabularObject >> isTabularCell [
+	^false.
+]
+
+{ #category : #testing }
+TabularObject >> isTabularWorksheet [
+	^false.
+]
+
+{ #category : #accessing }
 TabularObject >> rID: aString [
 	self attributeAt: #rID put: aString
 ]

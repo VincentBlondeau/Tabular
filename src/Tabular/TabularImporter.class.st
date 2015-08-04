@@ -20,11 +20,11 @@ TabularImporter class >> fromStream: aStream [
 
 { #category : #importing }
 TabularImporter >> import: aStream [
+	workbook := TabularWorkbook new.
 	^workbook.
 ]
 
 { #category : #'as yet unclassified' }
 TabularImporter >> initialize [
-	workbook := TabularWorkbook new.
 	parameters := Dictionary new.
 ]

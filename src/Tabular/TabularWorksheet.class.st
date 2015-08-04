@@ -93,7 +93,12 @@ TabularWorksheet >> findCellsWithContent: aContent [
 TabularWorksheet >> initialize [
 	super initialize.
 	cells := Dictionary new.
+	self name: 'New sheet'.
+]
 
+{ #category : #testing }
+TabularWorksheet >> isTabularWorksheet [
+	^true
 ]
 
 { #category : #accessing }
