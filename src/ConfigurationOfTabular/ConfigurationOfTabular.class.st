@@ -29,6 +29,48 @@ ConfigurationOfTabular class >> baseConfigurationClassIfAbsent: aBlock [
 
 ]
 
+{ #category : #catalog }
+ConfigurationOfTabular class >> catalogChangeLog [
+	"Returns a paragraph describing the most important changes in the configuration class."
+
+	^ 'Not released yet!'"
+	- Version number - Date - topics
+[[[
+	ConfigurationOfXXX project version: ''xx'' ) load					
+]]]"
+
+]
+
+{ #category : #catalog }
+ConfigurationOfTabular class >> catalogContactInfo [
+	"Returns a paragraph describing contact information such as email, mailing lists and website."
+
+	^ 'Tabular is an amazing project . You can get in contact with our great Tabular programmers at assargaddon@gmail.com and vincent.blondeau@polytech-lille.net'
+]
+
+{ #category : #catalog }
+ConfigurationOfTabular class >> catalogDescription [
+	"Returns a paragraph describing the project"
+
+	^ 'Tabular is an importer/exporter of Microsoft Office and OpenOffice (to be implemented) documents. For now, it handles only the Excel importing but it can be enhanced to import any file based on the Office Open XML format.'
+]
+
+{ #category : #catalog }
+ConfigurationOfTabular class >> catalogKeyClassesAndExample [
+	"Returns a paragraph or more describing the key classes of your project. You can use Pillar/Pier syntax to layout out the text i.e., ==Code== and - for bullet."
+
+	^ 'Tabular is composed of one cool key class named ==TabularXLSXImporter==. There is also ==TabularExperimenting==
+- ==TabularXLSXImporter== is responsible for the import of XLSX files. Just do ==TabularXLSXImporter fromFileNamed: <your file>== to import your file. 
+- ==TabularExperimenting== is responsible for creating XLSX file from the model'
+]
+
+{ #category : #catalog }
+ConfigurationOfTabular class >> catalogKeywords [
+	"Returns an array of symbols"
+
+	^ #(#XLSX #Excel #Importer #SAXHandler #'Office OpenXML' #Office)
+]
+
 { #category : #private }
 ConfigurationOfTabular class >> ensureMetacello [
 
@@ -118,45 +160,6 @@ ConfigurationOfTabular >> baseline01: spec [
 		spec package: 'Tabular'.
 		spec group: 'Core' with: #('Tabular' ). ].
 
-]
-
-{ #category : #catalog }
-ConfigurationOfTabular >> catalogChangeLog [
-	"Returns a paragraph describing the most important changes in the configuration class."
-	^ '- Version number - Date - topics
-[[[
-	ConfigurationOfXXX project version: ''xx'' ) load					
-]]]
-or simply
-- Version number - Date - topics
-- Version number - Date - topics
-- Version number - Date - topics.'
-]
-
-{ #category : #catalog }
-ConfigurationOfTabular >> catalogContactInfo [
-	"Returns a paragraph describing contact information such as email, mailing lists and website."
-	^ 'MyProject is an amazing project . You can get in contact with our great MyProject programmer at myProject@gmail.com'
-]
-
-{ #category : #catalog }
-ConfigurationOfTabular >> catalogDescription [
-	"Returns a paragraph describing the project"
-	^ 'MyProject is an amazing project that will change your life.'
-]
-
-{ #category : #catalog }
-ConfigurationOfTabular >> catalogKeyClassesAndExample [
-	"Returns a paragraph or more describing the key classes of your project. You can use Pillar/Pier syntax to layout out the text i.e., ==Code== and - for bullet."
-	^ 'MyProject is composed of one cool key class named ==MyProject==. There is also ==MyKeyHelper==
-- ==MyProject== is the responsible for many cool aspects.
-- ==MyKeyHelper== is helping ==MyProject=='
-]
-
-{ #category : #catalog }
-ConfigurationOfTabular >> catalogKeywords [
-	"Returns an array of symbols"
-	^ #(web fun) 
 ]
 
 { #category : #accessing }
