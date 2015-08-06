@@ -72,9 +72,8 @@ XLSXSheetParser >> row_end [
 
 { #category : #elements }
 XLSXSheetParser >> row_start: properties [
-	properties at: 'r' ifPresent: [ :r| rowCounter := r ].
-	colCounter := 1.
-	
+	properties at: 'r' ifPresent: [ :r | rowCounter := r asNumber ].
+	colCounter := 1
 ]
 
 { #category : #elements }
@@ -84,9 +83,9 @@ XLSXSheetParser >> v_characters: aString [
 
 { #category : #accessing }
 XLSXSheetParser >> worksheet [
-| current |
+	| current |
 	current := parsingStack top.
-	^current isTabularWorksheet
+	^ current isTabularWorksheet
 		ifTrue: [ current ]
-		ifFalse: [ self error: '(Tabular)Worksheet expected at this stage of parsing, but found: ', current class name]
+		ifFalse: [ self error: '(Tabular)Worksheet expected at this stage of parsing, but found: ' , current class name ]
 ]

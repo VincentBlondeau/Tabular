@@ -96,7 +96,7 @@ XLSXImporter >> resolveSharedStrings [
 	workbook worksheets do:[:worksheet|
 		worksheet cells do:[:cell| 
 			((cell attributeAt: #xlsx:t) = 's')
-				ifTrue:[cell data: (sharedStrings at: (cell data + 1))] "XLSX uses 0-based arrays"
+				ifTrue:[cell data: (sharedStrings at: (cell data asNumber + 1))] "XLSX uses 0-based arrays"
 		]
 	]
 ]

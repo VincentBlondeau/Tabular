@@ -26,10 +26,7 @@ XLSXSharedStringsParser >> si_start: properties [
 
 { #category : #elements }
 XLSXSharedStringsParser >> t_characters: aString [
-|table|
-	table:=self sharedStringsTable.
-	table atLast:1 put: ((table last)
-		ifNil:[aString]
-		ifNotNilDo: [ :str| str, aString] "whe we have multiple <t> inside <si>, which is possible if in-cell formatting used"
-	) 
+	| table |
+	table := self sharedStringsTable.
+	table atLast: 1 put: (table last ifNil: [ aString ] ifNotNil: [ :str | str , aString ])	"whe we have multiple <t> inside <si>, which is possible if in-cell formatting used"
 ]
