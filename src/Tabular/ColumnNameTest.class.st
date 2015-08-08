@@ -9,7 +9,7 @@ Class {
 
 { #category : #running }
 ColumnNameTest >> setUp [
-	t:=TabularExperimenting new.
+	t:=TabularExperimentalExport new.
 ]
 
 { #category : #tests }
