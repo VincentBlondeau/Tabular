@@ -162,6 +162,30 @@ ConfigurationOfTabular >> baseline01: spec [
 
 ]
 
+{ #category : #baselines }
+ConfigurationOfTabular >> baseline02: spec [
+	<version: '0.2-baseline'>
+
+	spec for: #'common' do: [
+		spec blessing: #'baseline'.
+		spec repository: 'http://ss3.gemstone.com/ss/Tabular'.
+		spec 
+			project: 'XMLWriter' with: [
+				spec
+					className: #ConfigurationOfXMLWriter;
+					versionString: #'stable';
+					repository: 'http://smalltalkhub.com/mc/PharoExtras/XMLWriter/main/' ];
+			project: 'XMLParser' with: [
+				spec
+					className: #ConfigurationOfXMLParser;
+					versionString: #'stable';
+					repository: 'http://smalltalkhub.com/mc/PharoExtras/XMLParser/main/' ].
+		spec package: 'Tabular' with: [
+				spec requires: #('XMLWriter' 'XMLParser' ). ].
+		spec group: 'Core' with: #('Tabular' ). ].
+
+]
+
 { #category : #accessing }
 ConfigurationOfTabular >> customProjectAttributes [
 	 "Edit to return a collection of any custom attributes e.g. for conditional loading: Array with: #'Condition1' with: #'Condition2.
@@ -174,7 +198,7 @@ ConfigurationOfTabular >> customProjectAttributes [
 ConfigurationOfTabular >> development: spec [
 	<symbolicVersion: #'development'>
 
-	spec for: #'common' version: '0.1-baseline'.
+	spec for: #'common' version: '0.2-baseline'.
 
 ]
 
@@ -195,7 +219,7 @@ ConfigurationOfTabular >> project [
 ConfigurationOfTabular >> stable: spec [
 	<symbolicVersion: #'stable'>
 
-	spec for: #'common' version: '0.1'.
+	spec for: #'common' version: '0.2'.
 
 ]
 
@@ -209,5 +233,21 @@ ConfigurationOfTabular >> version01: spec [
 		spec author: 'VincentBlondeau'.
 		spec timestamp: '12/11/2014 11:00'.
 		spec package: 'Tabular' with: 'Tabular-MYI.7'. ].
+
+]
+
+{ #category : #versions }
+ConfigurationOfTabular >> version02: spec [
+	<version: '0.2' imports: #('0.2-baseline' )>
+
+	spec for: #'common' do: [
+		spec blessing: #'stable'.
+		spec description: 'version 0.2'.
+		spec author: 'VincentBlondeau'.
+		spec timestamp: '8/8/2015 11:34'.
+		spec 
+			project: 'XMLWriter' with: '2.6.2';
+			project: 'XMLParser' with: '2.4.4'.
+		spec package: 'Tabular' with: 'Tabular-HannesHirzel.28'. ].
 
 ]
