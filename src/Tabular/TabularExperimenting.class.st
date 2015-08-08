@@ -36,12 +36,12 @@ TabularExperimenting class >> test [
 	self createZip: 'helloWorld.zip' content: (text contents convertToEncoding: 'utf-8')
 ]
 
-{ #category : #files }
+{ #category : #accessing }
 TabularExperimenting >> cellName: coord [
 	^((self columnName: coord x), (coord y asString))
 ]
 
-{ #category : #files }
+{ #category : #accessing }
 TabularExperimenting >> columnName: n [
 	(n <= 26) ifTrue: [^(Character value: 64 + n) asString].
 	
@@ -58,7 +58,7 @@ TabularExperimenting >> content_types_xml [
 </Types>'.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #generating }
 TabularExperimenting >> generateXLSX [
 	zip:= ZipArchive new.
 	zip addString: self workbook_xml as: 'workbook.xml'.
@@ -70,14 +70,14 @@ TabularExperimenting >> generateXLSX [
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #generating }
 TabularExperimenting >> generateXLSX: aWorkbook to: aStream [
 	workbook := aWorkbook.
 	sheet := workbook worksheets first.
 	^self generateXLSXto: aStream.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #generating }
 TabularExperimenting >> generateXLSXto: aStream [
 	zip:= ZipArchive new.
 	zip addString: self workbook_xml as: 'workbook.xml'.
@@ -106,7 +106,7 @@ TabularExperimenting >> initialize [
 	(sheet cells at: 1@2) rowspan: 3.
 ]
 
-{ #category : #files }
+{ #category : #generating }
 TabularExperimenting >> mergeCells [
 |res|
 	res := Dictionary new.
@@ -127,7 +127,7 @@ TabularExperimenting >> rels [
 </Relationships>'.
 ]
 
-{ #category : #files }
+{ #category : #rendering }
 TabularExperimenting >> renderDataCell: cell coord: coord on: writer [
 	writer tag
 		name: 'c';
@@ -136,7 +136,7 @@ TabularExperimenting >> renderDataCell: cell coord: coord on: writer [
 		with:[ writer tag: 'is' with: [ writer tag: 't' with: (cell data ddmmyyyy)]]
 ]
 
-{ #category : #files }
+{ #category : #rendering }
 TabularExperimenting >> renderMergeCellsOn: writer [
 	self mergeCells ifNotEmptyDo: [ : mergeCells |
 		writer tag: 'mergeCells' with:[
@@ -150,7 +150,7 @@ TabularExperimenting >> renderMergeCellsOn: writer [
 
 ]
 
-{ #category : #files }
+{ #category : #rendering }
 TabularExperimenting >> renderNumberCell: cell coord: coord on: writer [
 	writer tag
 		name: 'c';
@@ -159,7 +159,7 @@ TabularExperimenting >> renderNumberCell: cell coord: coord on: writer [
 		with:[ writer tag: 'v' with: (cell data asString)]
 ]
 
-{ #category : #files }
+{ #category : #rendering }
 TabularExperimenting >> renderRow: rowN on: writer [
 |keys|
 	keys := (sheet cells keys select:[:coord| coord y = rowN]) sort: [:coord1 :coord2| coord1 x < coord2 x].
@@ -176,7 +176,7 @@ TabularExperimenting >> renderRow: rowN on: writer [
 	]
 ]
 
-{ #category : #files }
+{ #category : #rendering }
 TabularExperimenting >> renderRowsOn: writer [
 	sheet rows do:[:rowN|
 		writer tag
@@ -186,7 +186,7 @@ TabularExperimenting >> renderRowsOn: writer [
 	] 
 ]
 
-{ #category : #files }
+{ #category : #rendering }
 TabularExperimenting >> renderStringCell: cell coord: coord on: writer [
 	writer tag
 		name: 'c';
