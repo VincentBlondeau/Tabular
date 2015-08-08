@@ -1,11 +1,11 @@
 Class {
 	#name : #XLSXSheetParser,
-	#superclass : #XLSXSaxParser,
+	#superclass : #TabularSAXParser,
 	#instVars : [
 		'rowCounter',
 		'colCounter'
 	],
-	#category : #'Tabular-Importers'
+	#category : #'Tabular-SAXParser'
 }
 
 { #category : #initialization }

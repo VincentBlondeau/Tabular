@@ -1,7 +1,7 @@
 Class {
 	#name : #XLSXSharedStringsParser,
-	#superclass : #XLSXSaxParser,
-	#category : #'Tabular-Importers'
+	#superclass : #TabularSAXParser,
+	#category : #'Tabular-SAXParser'
 }
 
 { #category : #initialization }

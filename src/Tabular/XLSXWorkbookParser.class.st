@@ -1,7 +1,7 @@
 Class {
 	#name : #XLSXWorkbookParser,
-	#superclass : #XLSXSaxParser,
-	#category : #'Tabular-Importers'
+	#superclass : #TabularSAXParser,
+	#category : #'Tabular-SAXParser'
 }
 
 { #category : #'as yet unclassified' }
