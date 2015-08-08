@@ -6,7 +6,7 @@ Subclasses HTMLImporter and ODSImporter will be added.
 
 Public API and Key Messages
 
-- message one   
+- import: aStream  (a Stream of a flat file)
 - message two 
 - what is the way to create instances is a plus.
 
