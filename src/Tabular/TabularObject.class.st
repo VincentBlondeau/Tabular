@@ -3,6 +3,9 @@ I am TabularObject, the root object of objects which model a workbook
 
 Diagram see: http://www.gliffy.com/go/publish/6148167
 
+See also http://davidgohel.github.io/ReporteRs/FlexTable.html for ideas 
+
+
 For the Responsibility part: Three sentences about my main responsibility, what I'm doing, what services do I offer.
 
 For the Collaborators Part: State my main collaborators and one line about how I interact with them. 

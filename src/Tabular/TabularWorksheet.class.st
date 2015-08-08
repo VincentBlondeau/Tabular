@@ -1,3 +1,30 @@
+"
+I am TabularWorksheet, the model of a sheet in a spreadsheet file.
+
+
+For the Responsibility part: Three sentences about my main responsibility, what I'm doing, what services do I offer.
+
+For the Collaborators Part:  I keep a dictionary of cells with TabularCell objects, TabularColumn and TabularRow objects
+
+
+Public API and Key Messages
+
+- message one   
+- message two 
+- what is the way to create instances is a plus.
+
+   One simple example is simply gorgeous.
+ 
+Internal Representation and Key Implementation Points.
+
+    Instance Variables
+	cells:		<Object>
+	cols:		<Object>
+	rows:		<Object>
+
+
+    Implementation Points
+"
 Class {
 	#name : #TabularWorksheet,
 	#superclass : #TabularObject,

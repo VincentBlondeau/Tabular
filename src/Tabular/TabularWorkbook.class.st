@@ -1,3 +1,26 @@
+"
+I am a TabularWorkbook the model for a spreadsheet file.
+
+
+For the Responsibility part: Three sentences about my main responsibility, what I'm doing, what services do I offer.
+
+For the Collaborators Part: 
+I keep one or more Worksheets
+
+
+Public API and Key Messages
+
+- message one   
+- message two 
+- what is the way to create instances is a plus.
+
+   One simple example is simply gorgeous.
+ 
+Internal Representation and Key Implementation Points.
+
+
+    Implementation Points
+"
 Class {
 	#name : #TabularWorkbook,
 	#superclass : #TabularObject,
