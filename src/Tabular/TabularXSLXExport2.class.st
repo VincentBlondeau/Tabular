@@ -10,6 +10,10 @@ NEXT STEPS:
 
 Keep the working TabularXSLXExport1 as reference in the image until TabularXSLXExport2 is fine.
 
+LIMITATIONS:
+
+see example2
+
 
 
 
@@ -25,18 +29,21 @@ Class {
 }
 
 { #category : #examples }
-TabularXSLXExport2 class >> example1b [
+TabularXSLXExport2 class >> example1 [
 
-    self workbook: (TabularWorkbook example1) fileName: 'Test21b.xlsx'
+    self workbook: (TabularWorkbook example1) fileName: 'TabularTest1.xlsx'
 ]
 
 { #category : #examples }
 TabularXSLXExport2 class >> example2 [
 
-	| aStream |
-	self halt.
-	"please complete"
-	self export: (TabularWorkbook example1) stream: aStream.
+    | file workbook |
+	file := TabularResources testfile2WithAlignment readStream.
+	workbook := XLSXImporter import: file.
+
+    self workbook: workbook fileName: 'TabularTest2WithAlingment.xlsx'
+
+"merged cells are not properly rendered; alingment is not rendered"
 ]
 
 { #category : #files }
@@ -53,7 +60,7 @@ TabularXSLXExport2 >> content_types_xml [
 TabularXSLXExport2 >> generate [
 	zip:= ZipArchive new.
 	zip addString: self workbook_xml as: 'workbook.xml'.
-	zip addString: (self worksheet_xml convertToEncoding: 'utf-8') as: 'worksheet.xml'.
+	zip addString: self worksheet_xml as: 'worksheet.xml'.
 	zip addString: self content_types_xml as: '[Content_Types].xml'.
 	zip addString: self rels as: '_rels/.rels'.
 	zip addString: self workbook_xml_rels as: '_rels/workbook.xml.rels'.
@@ -191,5 +198,5 @@ TabularXSLXExport2 >> worksheet_xml [
 	writer := XMLWriter new.
 	writer xml standalone: true.
 	self renderWorksheet.
-	^ writer write contents
+	^ writer write contents convertToEncoding: 'utf-8'
 ]
