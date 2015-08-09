@@ -1,14 +1,12 @@
 "
-I am TabularXSLXExport2 an experimental class which exports worksheets to Excel XSLX file format.
+I am TabularXSLXExport and exports worksheets to Excel XSLX file format.
 
 NEXT STEPS:
 
-1. Continue refactoring TabularXSLXExport2 
+1. Make workbook export functional. Currently only the first sheet is exported.
 2. Add more test cases and examples.
-3. Make workbook export functional. Currently only the first sheet is exported.
-4. Create a class TabularDOCXExport2 as a copy of this class and make it work.
+3. Create a class TabularDOCXExport as a copy of this class and make it work.
 
-Keep the working TabularXSLXExport1 as reference in the image until TabularXSLXExport2 is fine.
 
 LIMITATIONS:
 
@@ -19,7 +17,7 @@ see example2
 
 "
 Class {
-	#name : #TabularXSLXExport2,
+	#name : #TabularXSLXExport,
 	#superclass : #TabularExport,
 	#instVars : [
 		'zip',
@@ -29,13 +27,13 @@ Class {
 }
 
 { #category : #examples }
-TabularXSLXExport2 class >> example1 [
+TabularXSLXExport class >> example1 [
 
     self workbook: (TabularWorkbook example1) fileName: 'TabularTest1.xlsx'
 ]
 
 { #category : #examples }
-TabularXSLXExport2 class >> example2 [
+TabularXSLXExport class >> example2 [
 
     | file workbook |
 	file := TabularResources testfile2WithAlignment readStream.
@@ -47,7 +45,7 @@ TabularXSLXExport2 class >> example2 [
 ]
 
 { #category : #files }
-TabularXSLXExport2 >> content_types_xml [
+TabularXSLXExport >> content_types_xml [
 ^'<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">
   <Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>
@@ -57,7 +55,7 @@ TabularXSLXExport2 >> content_types_xml [
 ]
 
 { #category : #files }
-TabularXSLXExport2 >> generate [
+TabularXSLXExport >> generate [
 	zip:= ZipArchive new.
 	zip addString: self workbook_xml as: 'workbook.xml'.
 	zip addString: self worksheet_xml as: 'worksheet.xml'.
@@ -69,7 +67,7 @@ TabularXSLXExport2 >> generate [
 ]
 
 { #category : #rendering }
-TabularXSLXExport2 >> mergeCells [
+TabularXSLXExport >> mergeCells [
 |res|
 	res := Dictionary new.
 	sheet cells keysAndValuesDo:[:coord :cell|
@@ -82,7 +80,7 @@ TabularXSLXExport2 >> mergeCells [
 ]
 
 { #category : #files }
-TabularXSLXExport2 >> rels [
+TabularXSLXExport >> rels [
 ^'<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
   <Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="workbook.xml"/>
@@ -90,7 +88,7 @@ TabularXSLXExport2 >> rels [
 ]
 
 { #category : #rendering }
-TabularXSLXExport2 >> renderCell: coord [
+TabularXSLXExport >> renderCell: coord [
 	| cell |
 	cell := sheet cells at: coord.
 	^ cell data isNumber
@@ -102,7 +100,7 @@ TabularXSLXExport2 >> renderCell: coord [
 ]
 
 { #category : #rendering }
-TabularXSLXExport2 >> renderCellWithDate: coord [
+TabularXSLXExport >> renderCellWithDate: coord [
 	writer tag
 		name: 'c';
 		attributeAt: 'r' put: (self cellName: coord);
@@ -111,7 +109,7 @@ TabularXSLXExport2 >> renderCellWithDate: coord [
 ]
 
 { #category : #rendering }
-TabularXSLXExport2 >> renderCellWithNumber:  coord [
+TabularXSLXExport >> renderCellWithNumber:  coord [
 	writer tag
 		name: 'c';
 		attributeAt: 'r' put: (self cellName: coord);
@@ -120,7 +118,7 @@ TabularXSLXExport2 >> renderCellWithNumber:  coord [
 ]
 
 { #category : #rendering }
-TabularXSLXExport2 >> renderCellWithString: coord [
+TabularXSLXExport >> renderCellWithString: coord [
 
 	writer tag
 		name: 'c';
@@ -130,7 +128,7 @@ TabularXSLXExport2 >> renderCellWithString: coord [
 ]
 
 { #category : #rendering }
-TabularXSLXExport2 >> renderMergeCells [
+TabularXSLXExport >> renderMergeCells [
 	self mergeCells ifNotEmptyDo: [ : mergeCells |
 		writer tag: 'mergeCells' with:[
 			mergeCells keysAndValuesDo: [:topleft :bottomright|
@@ -144,7 +142,7 @@ TabularXSLXExport2 >> renderMergeCells [
 ]
 
 { #category : #rendering }
-TabularXSLXExport2 >> renderRow: rowN [
+TabularXSLXExport >> renderRow: rowN [
 	| keys |
 	keys := (sheet cells keys 
 	select: [ :coord | coord y = rowN ]) 
@@ -155,7 +153,7 @@ TabularXSLXExport2 >> renderRow: rowN [
 ]
 
 { #category : #rendering }
-TabularXSLXExport2 >> renderRows [
+TabularXSLXExport >> renderRows [
 	sheet rows do:[:rowN|
 		writer tag
 			name: 'row';
@@ -165,7 +163,7 @@ TabularXSLXExport2 >> renderRows [
 ]
 
 { #category : #rendering }
-TabularXSLXExport2 >> renderWorksheet [
+TabularXSLXExport >> renderWorksheet [
 	writer tag
 		name: 'worksheet';
 		attributeAt: 'xmlns' put: 'http://schemas.openxmlformats.org/spreadsheetml/2006/main';
@@ -176,7 +174,7 @@ TabularXSLXExport2 >> renderWorksheet [
 ]
 
 { #category : #files }
-TabularXSLXExport2 >> workbook_xml [
+TabularXSLXExport >> workbook_xml [
 ^'<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships">
   <sheets>
@@ -186,7 +184,7 @@ TabularXSLXExport2 >> workbook_xml [
 ]
 
 { #category : #files }
-TabularXSLXExport2 >> workbook_xml_rels [
+TabularXSLXExport >> workbook_xml_rels [
 ^'<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
   <Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheet.xml"/>
@@ -194,7 +192,7 @@ TabularXSLXExport2 >> workbook_xml_rels [
 ]
 
 { #category : #files }
-TabularXSLXExport2 >> worksheet_xml [
+TabularXSLXExport >> worksheet_xml [
 	writer := XMLWriter new.
 	writer xml standalone: true.
 	self renderWorksheet.
