@@ -1,61 +1,24 @@
 "
-A TabularExperimenting is xxxxxxxxx.
+I am TabularXSLXExport1 an experimental class which exports worksheets to Excel XSLX file format.
 
+
+Usage: 
+
+TabularXSLXExport1 new generate.
+
+Note: I need to be refactored.
 "
 Class {
-	#name : #TabularExperimentalExport,
-	#superclass : #Object,
+	#name : #TabularXSLXExport1,
+	#superclass : #TabularExport,
 	#instVars : [
-		'workbook',
-		'zip',
-		'sheet'
+		'zip'
 	],
 	#category : #'Tabular-Exporters'
 }
 
-{ #category : #'as yet unclassified' }
-TabularExperimentalExport class >> createZip:filename content: aByteArray [
-	|z|
-	z:= ZipArchive new.
-	z addString: aByteArray as: 'test.txt'.
-	z addString: aByteArray as: '/dir/again.txt'.		
-	z writeToFileNamed: filename.
-	
-]
-
-{ #category : #'as yet unclassified' }
-TabularExperimentalExport class >> test [
-|text|
-	text := WriteStream on: ''.
-	text
-		nextPutAll: 'This is a demo text to test ZIP posibilities of Pharo';
-		cr;cr;
-		nextPutAll: 'А теперь и с русскими буквами!';
-		yourself.
-	
-	self createZip: 'helloWorld.zip' content: (text contents convertToEncoding: 'utf-8')
-]
-
-{ #category : #'as yet unclassified' }
-TabularExperimentalExport class >> writeTestFile [
-  "self writeTestFile"
-self new generateXLSX 
-]
-
-{ #category : #accessing }
-TabularExperimentalExport >> cellName: coord [
-	^((self columnName: coord x), (coord y asString))
-]
-
-{ #category : #accessing }
-TabularExperimentalExport >> columnName: n [
-	(n <= 26) ifTrue: [^(Character value: 64 + n) asString].
-	
-	^(self columnName: ((n-1) quo: 26)), (self columnName: ((n-1) rem: 26) +1 )
-]
-
 { #category : #files }
-TabularExperimentalExport >> content_types_xml [
+TabularXSLXExport1 >> content_types_xml [
 ^'<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">
   <Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>
@@ -65,7 +28,7 @@ TabularExperimentalExport >> content_types_xml [
 ]
 
 { #category : #generating }
-TabularExperimentalExport >> generateXLSX [
+TabularXSLXExport1 >> generate [
 	zip:= ZipArchive new.
 	zip addString: self workbook_xml as: 'workbook.xml'.
 	zip addString: self worksheet_xml as: 'worksheet.xml'.
@@ -77,14 +40,14 @@ TabularExperimentalExport >> generateXLSX [
 ]
 
 { #category : #generating }
-TabularExperimentalExport >> generateXLSX: aWorkbook to: aStream [
+TabularXSLXExport1 >> generateXLSX: aWorkbook to: aStream [
 	workbook := aWorkbook.
 	sheet := workbook worksheets first.
 	^self generateXLSXto: aStream.
 ]
 
 { #category : #generating }
-TabularExperimentalExport >> generateXLSXto: aStream [
+TabularXSLXExport1 >> generateXLSXto: aStream [
 	zip:= ZipArchive new.
 	zip addString: self workbook_xml as: 'workbook.xml'.
 	zip addString: (self worksheet_xml convertToEncoding: 'utf-8') as: 'worksheet.xml'.
@@ -96,8 +59,15 @@ TabularExperimentalExport >> generateXLSXto: aStream [
 ]
 
 { #category : #initialization }
-TabularExperimentalExport >> initialize [
-	workbook := TabularWorkbook withSheets: 1.
+TabularXSLXExport1 >> initialize [
+     super initialize.
+     self initializeTestdata
+]
+
+{ #category : #initialization }
+TabularXSLXExport1 >> initializeTestdata [
+
+	| sheet |
 	workbook filename: 'Test.xlsx'.
 	
 	sheet := workbook worksheets first.
@@ -113,7 +83,7 @@ TabularExperimentalExport >> initialize [
 ]
 
 { #category : #generating }
-TabularExperimentalExport >> mergeCells [
+TabularXSLXExport1 >> mergeCells [
 |res|
 	res := Dictionary new.
 	sheet cells keysAndValuesDo:[:coord :cell|
@@ -126,7 +96,7 @@ TabularExperimentalExport >> mergeCells [
 ]
 
 { #category : #files }
-TabularExperimentalExport >> rels [
+TabularXSLXExport1 >> rels [
 ^'<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
   <Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="workbook.xml"/>
@@ -134,7 +104,7 @@ TabularExperimentalExport >> rels [
 ]
 
 { #category : #rendering }
-TabularExperimentalExport >> renderDataCell: cell coord: coord on: writer [
+TabularXSLXExport1 >> renderDataCell: cell coord: coord on: writer [
 	writer tag
 		name: 'c';
 		attributeAt: 'r' put: (self cellName: coord);
@@ -143,7 +113,7 @@ TabularExperimentalExport >> renderDataCell: cell coord: coord on: writer [
 ]
 
 { #category : #rendering }
-TabularExperimentalExport >> renderMergeCellsOn: writer [
+TabularXSLXExport1 >> renderMergeCellsOn: writer [
 	self mergeCells ifNotEmptyDo: [ : mergeCells |
 		writer tag: 'mergeCells' with:[
 			mergeCells keysAndValuesDo: [:topleft :bottomright|
@@ -157,7 +127,7 @@ TabularExperimentalExport >> renderMergeCellsOn: writer [
 ]
 
 { #category : #rendering }
-TabularExperimentalExport >> renderNumberCell: cell coord: coord on: writer [
+TabularXSLXExport1 >> renderNumberCell: cell coord: coord on: writer [
 	writer tag
 		name: 'c';
 		attributeAt: 'r' put: (self cellName: coord);
@@ -166,7 +136,7 @@ TabularExperimentalExport >> renderNumberCell: cell coord: coord on: writer [
 ]
 
 { #category : #rendering }
-TabularExperimentalExport >> renderRow: rowN on: writer [
+TabularXSLXExport1 >> renderRow: rowN on: writer [
 |keys|
 	keys := (sheet cells keys select:[:coord| coord y = rowN]) sort: [:coord1 :coord2| coord1 x < coord2 x].
 	"cells must be sorted by column in the file"
@@ -183,7 +153,7 @@ TabularExperimentalExport >> renderRow: rowN on: writer [
 ]
 
 { #category : #rendering }
-TabularExperimentalExport >> renderRowsOn: writer [
+TabularXSLXExport1 >> renderRowsOn: writer [
 	sheet rows do:[:rowN|
 		writer tag
 			name: 'row';
@@ -193,7 +163,7 @@ TabularExperimentalExport >> renderRowsOn: writer [
 ]
 
 { #category : #rendering }
-TabularExperimentalExport >> renderStringCell: cell coord: coord on: writer [
+TabularXSLXExport1 >> renderStringCell: cell coord: coord on: writer [
 	writer tag
 		name: 'c';
 		attributeAt: 'r' put: (self cellName: coord);
@@ -202,7 +172,7 @@ TabularExperimentalExport >> renderStringCell: cell coord: coord on: writer [
 ]
 
 { #category : #files }
-TabularExperimentalExport >> workbook_xml [
+TabularXSLXExport1 >> workbook_xml [
 ^'<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships">
   <sheets>
@@ -212,7 +182,7 @@ TabularExperimentalExport >> workbook_xml [
 ]
 
 { #category : #files }
-TabularExperimentalExport >> workbook_xml_rels [
+TabularXSLXExport1 >> workbook_xml_rels [
 ^'<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
   <Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheet.xml"/>
@@ -220,7 +190,7 @@ TabularExperimentalExport >> workbook_xml_rels [
 ]
 
 { #category : #files }
-TabularExperimentalExport >> worksheet_xml [
+TabularXSLXExport1 >> worksheet_xml [
 |writer|
 
 
@@ -239,7 +209,7 @@ TabularExperimentalExport >> worksheet_xml [
 ]
 
 { #category : #files }
-TabularExperimentalExport >> worksheet_xml_old [
+TabularXSLXExport1 >> worksheet_xml_old [
 ^'<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships">
   <sheetData>
