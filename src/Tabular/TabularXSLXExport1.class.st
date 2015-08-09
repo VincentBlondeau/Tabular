@@ -2,16 +2,12 @@
 I am TabularXSLXExport1 an experimental class which exports worksheets to Excel XSLX file format.
 
 
-Usage: 
+TabularXSLXExport1 example1
 
-
-TabularXSLXExport1 on: aWorkbook.
-
-TabularXSLXExport1 on: TabularWorkbook example1
+TabularXSLXExport2 is a refactored version.
 
 
 
-Note: I need to be refactored.
 "
 Class {
 	#name : #TabularXSLXExport1,
@@ -24,18 +20,9 @@ Class {
 }
 
 { #category : #examples }
-TabularXSLXExport1 class >> example1b [
+TabularXSLXExport1 class >> example1 [
 
-    self workbook: (TabularWorkbook example1) fileName: 'Test1b.xlsx'
-]
-
-{ #category : #examples }
-TabularXSLXExport1 class >> example2 [
-
-	| aStream |
-	self halt.
-	"please complete"
-	self export: (TabularWorkbook example1) stream: aStream.
+    self workbook: (TabularWorkbook example1) fileName: 'TabularExport1Test.xlsx'
 ]
 
 { #category : #files }
