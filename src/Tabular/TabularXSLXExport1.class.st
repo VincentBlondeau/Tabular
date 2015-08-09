@@ -17,10 +17,26 @@ Class {
 	#name : #TabularXSLXExport1,
 	#superclass : #TabularExport,
 	#instVars : [
-		'zip'
+		'zip',
+		'writer'
 	],
 	#category : #'Tabular-Exporters'
 }
+
+{ #category : #examples }
+TabularXSLXExport1 class >> example1b [
+
+    self workbook: (TabularWorkbook example1) fileName: 'Test1b.xlsx'
+]
+
+{ #category : #examples }
+TabularXSLXExport1 class >> example2 [
+
+	| aStream |
+	self halt.
+	"please complete"
+	self export: (TabularWorkbook example1) stream: aStream.
+]
 
 { #category : #files }
 TabularXSLXExport1 >> content_types_xml [
@@ -36,7 +52,7 @@ TabularXSLXExport1 >> content_types_xml [
 TabularXSLXExport1 >> generate [
 	zip:= ZipArchive new.
 	zip addString: self workbook_xml as: 'workbook.xml'.
-	zip addString: self worksheet_xml as: 'worksheet.xml'.
+	zip addString: (self worksheet_xml convertToEncoding: 'utf-8') as: 'worksheet.xml'.
 	zip addString: self content_types_xml as: '[Content_Types].xml'.
 	zip addString: self rels as: '_rels/.rels'.
 	zip addString: self workbook_xml_rels as: '_rels/workbook.xml.rels'.
