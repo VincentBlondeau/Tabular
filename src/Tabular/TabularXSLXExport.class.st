@@ -34,6 +34,19 @@ TabularXSLXExport class >> example1 [
 
 { #category : #examples }
 TabularXSLXExport class >> example2 [
+"round trip"
+ | workbook |
+
+self halt. "does not work yet"
+self workbook: (TabularWorkbook example1) fileName: 'TabularTest2Export.xlsx'.
+
+workbook := XLSXImporter import: (FileLocator home / 'TabularTest2Export.xlsx') asFileReference.
+
+self workbook: (TabularWorkbook example1) fileName: 'TabularTest2ExportAndReimported.xlsx'.
+]
+
+{ #category : #examples }
+TabularXSLXExport class >> example3 [
 
     | file workbook |
 	file := TabularResources testfile2WithAlignment readStream.
