@@ -1,5 +1,5 @@
 Class {
-	#name : #ColumnNameTest,
+	#name : #TabularColumnNameTest,
 	#superclass : #TestCase,
 	#instVars : [
 		't'
@@ -8,41 +8,41 @@ Class {
 }
 
 { #category : #running }
-ColumnNameTest >> setUp [
+TabularColumnNameTest >> setUp [
 	t:=TabularXSLXExport1 new.
 ]
 
 { #category : #tests }
-ColumnNameTest >> testA [
+TabularColumnNameTest >> testA [
 	self assert: (t columnName: 1) equals: 'A'
 ]
 
 { #category : #tests }
-ColumnNameTest >> testAA [
+TabularColumnNameTest >> testAA [
 	self assert: (t columnName: 27) equals:'AA'
 ]
 
 { #category : #tests }
-ColumnNameTest >> testAAA [
+TabularColumnNameTest >> testAAA [
 	self assert: (t columnName: 703) equals: 'AAA'
 ]
 
 { #category : #tests }
-ColumnNameTest >> testAZ [
+TabularColumnNameTest >> testAZ [
 	self assert: (t columnName: 52) equals: 'AZ'
 ]
 
 { #category : #tests }
-ColumnNameTest >> testBA [
+TabularColumnNameTest >> testBA [
 	self assert: (t columnName: 53)equals: 'BA'
 ]
 
 { #category : #tests }
-ColumnNameTest >> testZ [
+TabularColumnNameTest >> testZ [
 	self assert: (t columnName: 26) equals: 'Z'
 ]
 
 { #category : #tests }
-ColumnNameTest >> testZZ [
+TabularColumnNameTest >> testZZ [
 	self assert: (t columnName: 702) equals: 'ZZ'
 ]

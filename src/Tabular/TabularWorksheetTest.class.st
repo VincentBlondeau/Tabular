@@ -1,5 +1,5 @@
 Class {
-	#name : #WorksheetTest,
+	#name : #TabularWorksheetTest,
 	#superclass : #TestCase,
 	#instVars : [
 		'ws'
@@ -8,29 +8,42 @@ Class {
 }
 
 { #category : #running }
-WorksheetTest >> setUp [
+TabularWorksheetTest >> setUp [
 	ws := TabularWorksheet new.
 ]
 
 { #category : #tests }
-WorksheetTest >> testCellsReadingWriting [
+TabularWorksheetTest >> testCellsReadingWritingDate [
 	| endOfTheWorld |
-	ws col: 7 row: 12 putData: 'aTest'.
-	self assert: ((ws col: 7 row: 12) data = 'aTest').
-	ws col: 7 row: 12 putData: 666.
-	self assert: (ws col: 7 row: 12) data equals: 666.
-	endOfTheWorld := Date year: 2012 month: 12 day: 21.
+	
+	endOfTheWorld := Date year: 2020 month: 12 day: 31.
 	ws col: 7 row: 12 putData: endOfTheWorld.
 	self assert: (ws col: 7 row: 12) data equals: endOfTheWorld
 ]
 
 { #category : #tests }
-WorksheetTest >> testReadingFromEmptyTable [
+TabularWorksheetTest >> testCellsReadingWritingInteger [
+
+	ws col: 7 row: 12 putData: 1234567890.
+	self assert: (ws col: 7 row: 12) data equals: 1234567890.
+	
+]
+
+{ #category : #tests }
+TabularWorksheetTest >> testCellsReadingWritingString [
+
+	ws col: 7 row: 12 putData: 'aTest'.
+	self assert: ((ws col: 7 row: 12) data = 'aTest').
+	
+]
+
+{ #category : #tests }
+TabularWorksheetTest >> testReadingFromEmptyTable [
 	self assert: (ws col: 1 row: 10) isNil
 ]
 
 { #category : #tests }
-WorksheetTest >> testResizingOnTableFillingByData [
+TabularWorksheetTest >> testResizingOnTableFillingByData [
 	<expectedFailure>
 	self assert: ws sizeOfWorksheet equals: 0 @ 0.
 	ws col: 2 row: 100 putData: 1.
@@ -40,7 +53,7 @@ WorksheetTest >> testResizingOnTableFillingByData [
 ]
 
 { #category : #tests }
-WorksheetTest >> testSizeOfEmptyTable [
+TabularWorksheetTest >> testSizeOfEmptyTable [
 	<expectedFailure>
 	self assert: ws maxNumOfColumns equals: 0.
 	self assert: ws maxNumOfRows equals: 0.
@@ -48,7 +61,7 @@ WorksheetTest >> testSizeOfEmptyTable [
 ]
 
 { #category : #tests }
-WorksheetTest >> testTitleToStringConversion [
+TabularWorksheetTest >> testTitleToStringConversion [
 	<expectedFailure>
 	| ss |
 	ss spreadsheetTitle: (Date current).
@@ -58,7 +71,7 @@ WorksheetTest >> testTitleToStringConversion [
 ]
 
 { #category : #tests }
-WorksheetTest >> testValueErasing [
+TabularWorksheetTest >> testValueErasing [
 	ws at: 4@3 putData: 'test'.
 	self assert: (ws cells keys includes: 4@3).
 
@@ -69,7 +82,7 @@ WorksheetTest >> testValueErasing [
 ]
 
 { #category : #tests }
-WorksheetTest >> testValueWriting [
+TabularWorksheetTest >> testValueWriting [
 	ws at: 4 @ 3 putData: 'test'.
 	ws col: 5 row: 3 putData: 777.
 	self assert: (ws at: 5 @ 3) data equals: 777.

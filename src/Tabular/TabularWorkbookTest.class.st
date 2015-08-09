@@ -1,11 +1,11 @@
 Class {
-	#name : #WorkbookTest,
+	#name : #TabularWorkbookTest,
 	#superclass : #TestCase,
 	#category : #'Tabular-Tests'
 }
 
 { #category : #tests }
-WorkbookTest >> testCreation [
+TabularWorkbookTest >> testCreation [
 |w|
 	w := TabularWorkbook withSheets: 5.
 	self assert: (w worksheets size = 5).
@@ -13,7 +13,7 @@ WorkbookTest >> testCreation [
 ]
 
 { #category : #tests }
-WorkbookTest >> testCreationEmpty [
+TabularWorkbookTest >> testCreationEmpty [
 |w|
 	w := TabularWorkbook withSheets: 0.
 	self assert:  (w worksheets isEmpty).
@@ -21,7 +21,7 @@ WorkbookTest >> testCreationEmpty [
 ]
 
 { #category : #tests }
-WorkbookTest >> testNew [
+TabularWorkbookTest >> testNew [
 |w|
 	w := TabularWorkbook new.
 	self assert:  (w worksheets isEmpty).

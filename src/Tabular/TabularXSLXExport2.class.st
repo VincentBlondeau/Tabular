@@ -1,22 +1,18 @@
 "
 I am TabularXSLXExport2 an experimental class which exports worksheets to Excel XSLX file format.
 
-NEXT STEP:
+NEXT STEPS:
 
-Refactor TabularXSLXExport2 
+1. Continue refactoring TabularXSLXExport2 
+2. Add more test cases and examples.
+3. Make workbook export functional. Currently only the first sheet is exported.
+4. Create a class TabularDOCXExport2 as a copy of this class and make it work.
 
 Keep the working TabularXSLXExport1 as reference in the image until TabularXSLXExport2 is fine.
 
-Usage: 
-
-
-TabularXSLXExport2 on: aWorkbook.
-
-TabularXSLXExport2 on: TabularWorkbook example1
 
 
 
-Note: I need to be refactored.
 "
 Class {
 	#name : #TabularXSLXExport2,
@@ -31,7 +27,7 @@ Class {
 { #category : #examples }
 TabularXSLXExport2 class >> example1b [
 
-    self workbook: (TabularWorkbook example1) fileName: 'Test1b.xlsx'
+    self workbook: (TabularWorkbook example1) fileName: 'Test21b.xlsx'
 ]
 
 { #category : #examples }
@@ -53,7 +49,7 @@ TabularXSLXExport2 >> content_types_xml [
 </Types>'.
 ]
 
-{ #category : #generating }
+{ #category : #files }
 TabularXSLXExport2 >> generate [
 	zip:= ZipArchive new.
 	zip addString: self workbook_xml as: 'workbook.xml'.
@@ -65,26 +61,7 @@ TabularXSLXExport2 >> generate [
 	
 ]
 
-{ #category : #generating }
-TabularXSLXExport2 >> generateXLSX: aWorkbook to: aStream [
-	workbook := aWorkbook.
-	sheet := workbook worksheets first.
-	^self generateXLSXto: aStream.
-]
-
-{ #category : #generating }
-TabularXSLXExport2 >> generateXLSXto: aStream [
-	zip:= ZipArchive new.
-	zip addString: self workbook_xml as: 'workbook.xml'.
-	zip addString: (self worksheet_xml convertToEncoding: 'utf-8') as: 'worksheet.xml'.
-	zip addString: self content_types_xml as: '[Content_Types].xml'.
-	zip addString: self rels as: '_rels/.rels'.
-	zip addString: self workbook_xml_rels as: '_rels/workbook.xml.rels'.
-	zip writeTo: aStream.
-	
-]
-
-{ #category : #generating }
+{ #category : #rendering }
 TabularXSLXExport2 >> mergeCells [
 |res|
 	res := Dictionary new.
@@ -106,16 +83,47 @@ TabularXSLXExport2 >> rels [
 ]
 
 { #category : #rendering }
-TabularXSLXExport2 >> renderDataCell: cell coord: coord on: writer [
+TabularXSLXExport2 >> renderCell: coord [
+	| cell |
+	cell := sheet cells at: coord.
+	^ cell data isNumber
+		ifTrue: [ self renderCellWithNumber: coord ]
+		ifFalse: [ 
+			(cell data isKindOf: Date)
+				ifTrue: [ self renderCellWithDate: coord ]
+				ifFalse: [ self renderCellWithString: coord ] ]
+]
+
+{ #category : #rendering }
+TabularXSLXExport2 >> renderCellWithDate: coord [
 	writer tag
 		name: 'c';
 		attributeAt: 'r' put: (self cellName: coord);
 		attributeAt: 't' put: 'inlineStr';
-		with:[ writer tag: 'is' with: [ writer tag: 't' with: (cell data ddmmyyyy)]]
+		with:[ writer tag: 'is' with: [ writer tag: 't' with: ((sheet cells at: coord) data ddmmyyyy)]]
 ]
 
 { #category : #rendering }
-TabularXSLXExport2 >> renderMergeCellsOn: writer [
+TabularXSLXExport2 >> renderCellWithNumber:  coord [
+	writer tag
+		name: 'c';
+		attributeAt: 'r' put: (self cellName: coord);
+		attributeAt: 't' put: 'n';
+		with:[ writer tag: 'v' with: ((sheet cells at: coord) data asString)]
+]
+
+{ #category : #rendering }
+TabularXSLXExport2 >> renderCellWithString: coord [
+
+	writer tag
+		name: 'c';
+		attributeAt: 'r' put: (self cellName: coord);
+		attributeAt: 't' put: 'inlineStr';
+		with:[ writer tag: 'is' with: [ writer tag: 't' with: ((sheet cells at: coord) data asString)]]
+]
+
+{ #category : #rendering }
+TabularXSLXExport2 >> renderMergeCells [
 	self mergeCells ifNotEmptyDo: [ : mergeCells |
 		writer tag: 'mergeCells' with:[
 			mergeCells keysAndValuesDo: [:topleft :bottomright|
@@ -129,48 +137,35 @@ TabularXSLXExport2 >> renderMergeCellsOn: writer [
 ]
 
 { #category : #rendering }
-TabularXSLXExport2 >> renderNumberCell: cell coord: coord on: writer [
-	writer tag
-		name: 'c';
-		attributeAt: 'r' put: (self cellName: coord);
-		attributeAt: 't' put: 'n';
-		with:[ writer tag: 'v' with: (cell data asString)]
-]
-
-{ #category : #rendering }
-TabularXSLXExport2 >> renderRow: rowN on: writer [
-|keys|
-	keys := (sheet cells keys select:[:coord| coord y = rowN]) sort: [:coord1 :coord2| coord1 x < coord2 x].
+TabularXSLXExport2 >> renderRow: rowN [
+	| keys |
+	keys := (sheet cells keys 
+	select: [ :coord | coord y = rowN ]) 
+	sort: [ :coord1 :coord2 | coord1 x < coord2 x ].	
+		
 	"cells must be sorted by column in the file"
-	keys do:[:coord||cell| 
-		cell := sheet cells at: coord.
-		cell data isNumber
-			ifTrue: [ self renderNumberCell: cell coord: coord on: writer ]
-			ifFalse: [ 
-				(cell data isKindOf: Date)
-					ifTrue: [self renderDataCell: cell coord: coord on: writer ]
-					ifFalse:  [self renderStringCell: cell coord: coord on: writer ]
-				].
-	]
+	keys do: [ :coord | self renderCell: coord ]
 ]
 
 { #category : #rendering }
-TabularXSLXExport2 >> renderRowsOn: writer [
+TabularXSLXExport2 >> renderRows [
 	sheet rows do:[:rowN|
 		writer tag
 			name: 'row';
 			attributeAt: 'r' put: rowN asString;
-			with:[ self renderRow: rowN on: writer]
+			with:[ self renderRow: rowN]
 	] 
 ]
 
 { #category : #rendering }
-TabularXSLXExport2 >> renderStringCell: cell coord: coord on: writer [
+TabularXSLXExport2 >> renderWorksheet [
 	writer tag
-		name: 'c';
-		attributeAt: 'r' put: (self cellName: coord);
-		attributeAt: 't' put: 'inlineStr';
-		with:[ writer tag: 'is' with: [ writer tag: 't' with: (cell data asString)]]
+		name: 'worksheet';
+		attributeAt: 'xmlns' put: 'http://schemas.openxmlformats.org/spreadsheetml/2006/main';
+		attributeAt: 'xmlns:r' put: 'http://schemas.openxmlformats.org/officeDocument/2006/relationships';
+		with: [ 
+					writer tag: 'sheetData' with: [ self renderRows ].
+					self renderMergeCells ]
 ]
 
 { #category : #files }
@@ -193,60 +188,8 @@ TabularXSLXExport2 >> workbook_xml_rels [
 
 { #category : #files }
 TabularXSLXExport2 >> worksheet_xml [
-|writer|
-
-
 	writer := XMLWriter new.
 	writer xml standalone: true.
-	
-	writer tag
-		name: 'worksheet';
-		attributeAt: 'xmlns' put: 'http://schemas.openxmlformats.org/spreadsheetml/2006/main';
-		attributeAt: 'xmlns:r' put: 'http://schemas.openxmlformats.org/officeDocument/2006/relationships';
-		with:[
-			writer tag: 'sheetData' with: [ self renderRowsOn: writer ].
-			self renderMergeCellsOn: writer.
-		].
-	^writer write contents.
-]
-
-{ #category : #files }
-TabularXSLXExport2 >> worksheet_xml_old [
-^'<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships">
-  <sheetData>
-    <row>
-      <c t="inlineStr">
-        <is>
-          <t>Sub Total</t>
-        </is>
-      </c>
-      <c t="inlineStr">
-        <is>
-          <t>Tax</t>
-        </is>
-      </c>
-      <c t="inlineStr">
-        <is>
-          <t>Total</t>
-        </is>
-      </c>
-    </row>
-    <row>
-      <c>
-        <v>14.95</v>
-      </c>
-    </row>
-    <row>
-      <c>
-        <v>19.95</v>
-      </c>
-    </row>
-    <row>
-      <c>
-        <v>4.95</v>
-      </c>
-    </row>
-  </sheetData>
-</worksheet>'.
+	self renderWorksheet.
+	^ writer write contents
 ]
