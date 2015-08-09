@@ -5,6 +5,14 @@ Diagram see: http://www.gliffy.com/go/publish/6148167
 
 See also http://davidgohel.github.io/ReporteRs/FlexTable.html for ideas 
 
+LATER:
+
+Add subclasses
+
+   TabularDimension
+       TabularColumn
+       TabularRow
+
 
 For the Responsibility part: Three sentences about my main responsibility, what I'm doing, what services do I offer.
 
@@ -26,6 +34,9 @@ Internal Representation and Key Implementation Points.
 
 
     Implementation Points
+
+
+
 "
 Class {
 	#name : #TabularObject,
