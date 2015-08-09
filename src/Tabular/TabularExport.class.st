@@ -6,6 +6,8 @@ Usage example:
     TabularNNNNExport on: aWorkbook
 
 
+NEXT STEP: add subclass  TabularHTMLExport1
+
 Responsibility part: I define the general export API every export class supports.
 
 Note: The API is not  fully defined yet.  Subclass TabularXSLXExport1 has hard coded parameters.
