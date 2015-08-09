@@ -3,7 +3,7 @@ I am TabularExport the root of a class of objects which export Tabular models.
 
 Usage example:   
 
-    TabularNNNNExport on: ()
+    TabularNNNNExport on: aWorkbook
 
 
 Responsibility part: I define the general export API every export class supports.
@@ -36,9 +36,15 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+TabularExport class >> example1 [
+
+    self on: (TabularWorkbook example1)
+]
+
+{ #category : #'as yet unclassified' }
 TabularExport class >> on: aWorkbook [
 
-      self new worksheet: aWorkbook; generate.
+      self new workbook: aWorkbook; generate.
 ]
 
 { #category : #accessing }
@@ -62,7 +68,7 @@ TabularExport >> generate [
 { #category : #initialization }
 TabularExport >> initialize [
 
-     workbook := TabularWorkbook withSheets: 1.
+     super initialize
 ]
 
 { #category : #accessing }

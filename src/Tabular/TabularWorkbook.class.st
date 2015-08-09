@@ -33,6 +33,22 @@ Class {
 }
 
 { #category : #'instance creation' }
+TabularWorkbook class >> example1 [
+	| workbook sheet |
+	workbook := TabularWorkbook withSheets: 1.
+	workbook filename: 'Test.xlsx'.
+	sheet := workbook worksheets first.
+	sheet
+		at: 1 @ 1 putData: '-';
+		at: 2 @ 1 putData: 'colspan test';
+		at: 1 @ 2 putData: 'rowspan test';
+		at: 2 @ 2 putData: 777.77.
+	(sheet cells at: 2 @ 1) colspan: 3.
+	(sheet cells at: 1 @ 2) rowspan: 3.
+	^ workbook
+]
+
+{ #category : #'instance creation' }
 TabularWorkbook class >> newFrom: aTabularWorkbook [
 	^ self shouldNotImplement
 ]

@@ -4,7 +4,12 @@ I am TabularXSLXExport1 an experimental class which exports worksheets to Excel 
 
 Usage: 
 
-TabularXSLXExport1 new generate.
+
+TabularXSLXExport1 on: aWorkbook.
+
+TabularXSLXExport1 on: TabularWorkbook example1
+
+
 
 Note: I need to be refactored.
 "
@@ -56,30 +61,6 @@ TabularXSLXExport1 >> generateXLSXto: aStream [
 	zip addString: self workbook_xml_rels as: '_rels/workbook.xml.rels'.
 	zip writeTo: aStream.
 	
-]
-
-{ #category : #initialization }
-TabularXSLXExport1 >> initialize [
-     super initialize.
-     self initializeTestdata
-]
-
-{ #category : #initialization }
-TabularXSLXExport1 >> initializeTestdata [
-
-	| sheet |
-	workbook filename: 'Test.xlsx'.
-	
-	sheet := workbook worksheets first.
-
-	sheet
-		at: 1@1 putData: '-';
-		at: 2@1 putData: 'colspan test';
-		at: 1@2 putData: 'rowspan test';
-		at: 2@2 putData: 777.77.
-
-	(sheet cells at: 2@1) colspan: 3.
-	(sheet cells at: 1@2) rowspan: 3.
 ]
 
 { #category : #generating }
