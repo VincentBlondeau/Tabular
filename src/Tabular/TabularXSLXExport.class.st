@@ -49,7 +49,7 @@ self workbook: (TabularWorkbook example1) fileName: 'TabularTest2ExportAndReimpo
 TabularXSLXExport class >> example3 [
 
     | file workbook |
-	file := TabularResources testfile2WithAlignment readStream.
+	file := TabularResources testExcelFile3WithAlignment readStream.
 	workbook := XLSXImporter import: file.
 
     self workbook: workbook fileName: 'TabularTest2WithAlingment.xlsx'
@@ -75,7 +75,7 @@ TabularXSLXExport >> generate [
 	zip addString: self content_types_xml as: '[Content_Types].xml'.
 	zip addString: self rels as: '_rels/.rels'.
 	zip addString: self workbook_xml_rels as: '_rels/workbook.xml.rels'.
-	zip writeToFileNamed: ((OSEnvironment default at: 'HOME') asPath / workbook filename).
+	zip writeToFileNamed: (FileLocator home / workbook filename).
 	
 ]
 
@@ -199,8 +199,11 @@ TabularXSLXExport >> workbook_xml [
 { #category : #files }
 TabularXSLXExport >> workbook_xml_rels [
 ^'<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+
 <Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
+
   <Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheet.xml"/>
+
 </Relationships>'.
 ]
 

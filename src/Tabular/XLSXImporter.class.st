@@ -46,7 +46,10 @@ XLSXImporter class >> import: aFileReferenceOrAStream onlySheetsNamed: aCollecti
 
 { #category : #extracting }
 XLSXImporter >> extractSharedStrings [
-	^sharedStrings := XLSXSharedStringsParser parse: (archive memberNamed: 'xl/sharedStrings.xml') contentStream.
+      (archive memberNamed: 'xl/sharedStrings.xml') isNil ifTrue: [ ^sharedStrings    := '']
+ifFalse: 
+	[^sharedStrings := XLSXSharedStringsParser parse: (archive memberNamed: 'xl/sharedStrings.xml') contentStream]
+	
 
 ]
 
