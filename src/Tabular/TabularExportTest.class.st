@@ -35,14 +35,18 @@ TabularExportTest >> setUp [
 { #category : #'as yet unclassified' }
 TabularExportTest >> testExport1 [
 
-	| wbk wimported |
+	| wbk  wimported |
 
 	wbk := XLSXImporter import: TabularResources testExcelFile1OneSheetOnly  readStream.
 	
 	TabularXSLXExport workbook: wbk fileName: fname.
 
 	wimported := XLSXImporter import: (FileLocator home / fname ) .
-	wimported inspect
+	
+	self assert: (wimported worksheetNamed: 'Sheet1') name equals: 'Sheet1'.
+	self should: [ (wimported worksheetNamed: 'Sheet2') name ] raise: NotFound.
+	self assert: (((wimported worksheetNamed: 'Sheet1') at: 3@9) data = '39').
+	
 ]
 
 { #category : #'as yet unclassified' }
@@ -54,8 +58,8 @@ TabularExportTest >> testExport2 [
 	w worksheets add: worksheet.
 	TabularXSLXExport workbook: w fileName: fname.
 
-	"wimported := XLSXImporter import: (FileLocator home / fname ) .
-	wimported inspect"
+	wimported := XLSXImporter import: (FileLocator home / fname ) .
+	wimported inspect
 ]
 
 { #category : #'as yet unclassified' }
