@@ -10,27 +10,24 @@ Class {
 { #category : #'tests-accessing - attributes' }
 TabularCellTest >> testColspan [
 
-  "to implement"
-   self deny: 1 = 1
+   <expectedFailure>
 ]
 
 { #category : #'tests-accessing - attributes' }
 TabularCellTest >> testRowspan [
 
- "to implement"
-   self deny: 1 = 1
+  <expectedFailure>
 ]
 
 { #category : #'tests-accessing - attributes' }
 TabularCellTest >> testStyle [
 
-   "to implement"
-   self deny: 1 = 1
+   <expectedFailure>
 ]
 
 { #category : #'tests-accessing - attributes' }
 TabularCellTest >> testType [
 
- "to implement"
-   self deny: 1 = 1
+ <expectedFailure>
+ 
 ]

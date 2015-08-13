@@ -21,10 +21,11 @@ TabularWorksheetTest >> testCells [
 { #category : #tests }
 TabularWorksheetTest >> testCellsReadingEmptyCell [
      
-	self assert: ((ws col: 100 row: 100) data notNil).  
-	self assert: ((ws col: 100 row: 100) data ='').  
+	self assert: ((ws col: 100 row: 100) isNil).  
 	
-	 "probably should return an empty string"
+	
+	
+	
 	
 ]
 
@@ -109,7 +110,7 @@ TabularWorksheetTest >> testName [
 
 { #category : #'tests-accessing' }
 TabularWorksheetTest >> testRID [
-
+ <expectedFailure>
 self assert: (ws rID notNil).  
 
 "what should be the default value? Or is it OK to have it nil?"
@@ -137,7 +138,7 @@ TabularWorksheetTest >> testResizingOnTableFillingByData [
 
 { #category : #'tests-accessing' }
 TabularWorksheetTest >> testSheetId [
-
+ <expectedFailure>
  self assert: (ws sheetId notNil).  
 
 "What should this return?"
