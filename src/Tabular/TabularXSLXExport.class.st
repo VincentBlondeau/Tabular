@@ -59,6 +59,12 @@ TabularXSLXExport class >> example3 [
 
 { #category : #files }
 TabularXSLXExport >> content_types_xml [
+
+" [Content_Types].xml file, this describes the location of the major files in the archive and the standards to which it itself adheres and the content types of those files. 
+
+hard coded at the moment, should be constructed later, I Hannes Hirzel assume.
+"
+
 ^'<?xml version="1.0" encoding="UTF-8"?>
 <Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">
 
@@ -96,19 +102,37 @@ TabularXSLXExport >> docPropsApp_xml [
 </Properties>'.
 ]
 
-{ #category : #files }
+{ #category : #'files-docPropsCore' }
 TabularXSLXExport >> docPropsCore_xml [
+^ self docPropsCore_xml_1,
+self docPropsCore_xml_2_creation_date ,
+self docPropsCore_xml_3 
+]
+
+{ #category : #'files-docPropsCore' }
+TabularXSLXExport >> docPropsCore_xml_1 [
 ^'<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <cp:coreProperties xmlns:cp="http://schemas.openxmlformats.org/package/2006/metadata/core-properties" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:dcmitype="http://purl.org/dc/dcmitype/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 
-<dcterms:created xsi:type="dcterms:W3CDTF">2015-08-11T21:03:44Z</dcterms:created>
+'.
+]
+
+{ #category : #'files-docPropsCore' }
+TabularXSLXExport >> docPropsCore_xml_2_creation_date [
+^'
+<dcterms:created xsi:type="dcterms:W3CDTF">',
+
+DateAndTime now asString,
+
+'</dcterms:created>
 
 <dc:creator>tabular </dc:creator><dc:language>en-GB</dc:language>
+'.
+]
 
-<cp:lastModifiedBy>tabular</cp:lastModifiedBy>
-
-<dcterms:modified xsi:type="dcterms:W3CDTF">2015-08-11T21:05:50Z</dcterms:modified>
-
+{ #category : #'files-docPropsCore' }
+TabularXSLXExport >> docPropsCore_xml_3 [
+^'
 <cp:revision>1</cp:revision>
 
 </cp:coreProperties>
@@ -126,6 +150,8 @@ TabularXSLXExport >> generate [
 
 	zip addString: self docPropsApp_xml as: 'docProps/app.xml'.
 	zip addString: self docPropsCore_xml as: 'docProps/core.xml'.
+
+    "Everything outside the xl/ folder is just meta data"
 
 	zip addString: self workbook_xml as: 'xl/workbook.xml'.
 	zip addString: self sharedStrings_xml  as: 'xl/sharedStrings.xml'.
