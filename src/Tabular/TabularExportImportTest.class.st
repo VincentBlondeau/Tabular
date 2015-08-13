@@ -76,14 +76,18 @@ TabularExportImportTest >> testExport1 [
 { #category : #'as yet unclassified' }
 TabularExportImportTest >> testExport1CellAccess [
 
-	| wbk  wimported |
+	| wbk  wimported cell ws |
 
 	wbk := XLSXImporter import: TabularResources testExcelFile1OneSheetOnly  readStream.
 	TabularXSLXExport workbook: wbk fileName: fname.
 
 	wimported := XLSXImporter import: (FileLocator home / fname ) .
 	
-	self assert: (((wimported worksheetNamed: 'Sheet1') at: 3@9) data = '39').
+	ws := (wimported worksheetNamed: 'Sheet1').
+	self assert: (ws cells includesKey: 3@9).
+	cell := ws at: 3@9.
+	self assert: (cell notNil).
+	self assert: (cell data = '39').
 	
 ]
 
