@@ -6,7 +6,8 @@ Class {
 		'fname4',
 		'fname5',
 		'fname6',
-		'fname7'
+		'fname7',
+		'fname8'
 	],
 	#category : #'Tabular-Tests'
 }
@@ -19,6 +20,7 @@ TabularXLSXExportTest >> setUp [
     fname5 := 'TabularConstructed5Exported.xlsx'.
     fname6 := 'TabularConstructed6Exported.xlsx'.
     fname7 := 'TabularConstructed7Exported.xlsx'.
+    fname8 := 'TabularConstructed8ExportedSharedStringsAnalysis.xlsx'.
 
 
 
@@ -123,5 +125,34 @@ TabularXLSXExportTest >> testExport7b [
 	
 	"manual inspection shows that the exported file is fine"
 	"But is the colspan command fine? Add a colspan test to TabularCell"
+
+]
+
+{ #category : #'as yet unclassified' }
+TabularXLSXExportTest >> testExport8 [
+	| wbk wsheet myString |
+	wbk := TabularWorkbook new.
+	myString := 'abcdefghijklmnopqrstuvwxyz 1234567890'.
+	self assert: wbk worksheets isEmpty.
+	wsheet := TabularWorksheet new.
+	wsheet
+		at: 'A1' asPoint putData: myString;
+		at: 'A2' asPoint putData: myString;
+		at: 'A3' asPoint putData: myString;
+		at: 'A4' asPoint putData: myString;
+		at: 'A5' asPoint putData: myString;
+		at: 'A6' asPoint putData: myString;
+		at: 'A7' asPoint putData: myString;
+		at: 'A8' asPoint putData: myString;
+		at: 'A9' asPoint putData: myString.
+	wbk worksheets add: wsheet.
+	TabularXSLXExport workbook: wbk fileName: fname8.
+	
+	"manual inspection shows that the exported file is fine"	
+	
+     "The generated code"
+
+'<row r="2">
+<c r="A2" t="inlineStr"><is><t>abcdefghijklmnopqrstuvwxyz 1234567890</t></is></c></row>'
 
 ]

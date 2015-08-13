@@ -254,6 +254,7 @@ TabularXSLXExport >> renderCellWithNumber:  coord [
 
 { #category : #rendering }
 TabularXSLXExport >> renderCellWithString: coord [
+"do NOT use the construction of a file sharedStrings.xml at the moment; all strings are inlineStr"
 
 	writer tag
 		name: 'c';
