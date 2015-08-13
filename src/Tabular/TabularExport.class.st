@@ -104,5 +104,7 @@ TabularExport >> workbook [
 { #category : #accessing }
 TabularExport >> workbook: anObject [
 	workbook := anObject.
-	sheet := workbook worksheets first.
+	workbook worksheets isEmpty ifFalse: [ sheet := workbook worksheets first  "Limitation: only first worksheet is exported"]
+									ifTrue: [ sheet := TabularWorksheet new ] 
+	
 ]
