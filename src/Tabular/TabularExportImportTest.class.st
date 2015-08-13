@@ -15,21 +15,23 @@
 	^ workbook
 "
 Class {
-	#name : #TabularExportTest,
+	#name : #TabularExportImportTest,
 	#superclass : #TestCase,
 	#instVars : [
 		'worksheet',
 		'fname',
 		'fname2',
 		'fname3',
-		'fname0'
+		'fname0',
+		'fname4'
 	],
 	#category : #'Tabular-Tests'
 }
 
 { #category : #'as yet unclassified' }
-TabularExportTest >> setUp [
+TabularExportImportTest >> setUp [
     fname0 := 'TabularEmptySheetExported.xlsx'.
+    fname4 := 'TabularConstructed4Exported.xlsx'.
 		
     fname := TabularResources fileNameOfExample1.
     (FileLocator home / fname ) ensureDelete.
@@ -43,7 +45,7 @@ TabularExportTest >> setUp [
 ]
 
 { #category : #'as yet unclassified' }
-TabularExportTest >> testExport0 [
+TabularExportImportTest >> testExport0EmptyWorkbook [
 "export empty workbook"
 
 |w  |
@@ -56,7 +58,7 @@ TabularExportTest >> testExport0 [
 ]
 
 { #category : #'as yet unclassified' }
-TabularExportTest >> testExport1 [
+TabularExportImportTest >> testExport1 [
 
 	| wbk  wimported |
 
@@ -72,7 +74,7 @@ TabularExportTest >> testExport1 [
 ]
 
 { #category : #'as yet unclassified' }
-TabularExportTest >> testExport1CellAccess [
+TabularExportImportTest >> testExport1CellAccess [
 
 	| wbk  wimported |
 
@@ -86,7 +88,7 @@ TabularExportTest >> testExport1CellAccess [
 ]
 
 { #category : #'as yet unclassified' }
-TabularExportTest >> testExport2 [
+TabularExportImportTest >> testExport2 [
 
 |  wbk wimported |
 	wbk := XLSXImporter import: TabularResources testExcelFile2withThreeSheets   readStream.
@@ -100,7 +102,7 @@ TabularExportTest >> testExport2 [
 ]
 
 { #category : #'as yet unclassified' }
-TabularExportTest >> testExport3 [
+TabularExportImportTest >> testExport3 [
 
 	| wbk  wimported |
 
@@ -117,9 +119,9 @@ TabularExportTest >> testExport3 [
 ]
 
 { #category : #'as yet unclassified' }
-TabularExportTest >> testExport4 [
+TabularExportImportTest >> testExport4 [
 
-|wbk wsheet  wimported |
+|wbk wsheet  wimported cell |
 	wbk := TabularWorkbook new.
 	self assert:  (wbk worksheets isEmpty).	
 		
@@ -129,8 +131,11 @@ TabularExportTest >> testExport4 [
 		at: 2 @ 1 putData: 21;
 		at: 3 @ 1 putData: 31.	
 	wbk worksheets add: wsheet.
-	TabularXSLXExport workbook: wbk fileName: fname.
+	TabularXSLXExport workbook: wbk fileName: fname4.
 
-	wimported := XLSXImporter import: (FileLocator home / fname ) .
-	self assert: (((wimported worksheetNamed: 'Sheet1') at: 1@1) data = 11).
+	wimported := XLSXImporter import: (FileLocator home / fname4 ) .
+	cell := ((wimported worksheetNamed: 'Sheet1') at: 1@1).
+	self assert: (cell isKindOf:  TabularCell).
+	self assert: (cell data asString= '11').
+	self assert: (cell data = 11).
 ]

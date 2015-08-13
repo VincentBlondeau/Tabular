@@ -13,6 +13,20 @@ TabularWorksheetTest >> setUp [
 ]
 
 { #category : #tests }
+TabularWorksheetTest >> testCellsReadingEmptyCell [
+
+	self assert: ((ws col: 100 row: 100) data = '').
+	
+]
+
+{ #category : #tests }
+TabularWorksheetTest >> testCellsReadingEmptyCell0 [
+
+      self assert: ((ws col: 100 row: 100) isNil).
+	
+]
+
+{ #category : #tests }
 TabularWorksheetTest >> testCellsReadingWritingDate [
 	| endOfTheWorld |
 	
