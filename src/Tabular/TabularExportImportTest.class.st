@@ -58,7 +58,25 @@ TabularExportImportTest >> testExport0EmptyWorkbook [
 ]
 
 { #category : #'as yet unclassified' }
-TabularExportImportTest >> testExport1 [
+TabularExportImportTest >> testExport1CellAccess [
+
+	| wbk  wimported cell ws |
+
+	wbk := XLSXImporter import: TabularResources testExcelFile1OneSheetOnly  readStream.
+	TabularXSLXExport workbook: wbk fileName: fname.
+
+	wimported := XLSXImporter import: (FileLocator home / fname ) .
+	
+	ws := (wimported worksheetNamed: 'Sheet1').
+	self assert: (ws cells includesKey: 3@9).
+	cell := ws at: 3@9.
+	self assert: (cell notNil).
+	self assert: (cell data = '39').
+	
+]
+
+{ #category : #'as yet unclassified' }
+TabularExportImportTest >> testExport1DefaultSheetName [
 
 	| wbk  wimported |
 
@@ -74,20 +92,21 @@ TabularExportImportTest >> testExport1 [
 ]
 
 { #category : #'as yet unclassified' }
-TabularExportImportTest >> testExport1CellAccess [
+TabularExportImportTest >> testExport1SheetName [
 
-	| wbk  wimported cell ws |
+	| wbk   sheetImported theSheetName wbkimported |
 
 	wbk := XLSXImporter import: TabularResources testExcelFile1OneSheetOnly  readStream.
+	theSheetName := 'theTestWorkSheet'.
+	wbk worksheets first name: theSheetName.
 	TabularXSLXExport workbook: wbk fileName: fname.
 
-	wimported := XLSXImporter import: (FileLocator home / fname ) .
-	
-	ws := (wimported worksheetNamed: 'Sheet1').
-	self assert: (ws cells includesKey: 3@9).
-	cell := ws at: 3@9.
-	self assert: (cell notNil).
-	self assert: (cell data = '39').
+
+	wbkimported := XLSXImporter import: (FileLocator home / fname ) .
+	sheetImported := wbkimported worksheetNamed: theSheetName. 
+	self assert: sheetImported name equals: theSheetName.
+	self should: [ (wbkimported worksheetNamed: 'Sheet2') name ] raise: NotFound.
+
 	
 ]
 
