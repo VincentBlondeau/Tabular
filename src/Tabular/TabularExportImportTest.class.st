@@ -184,7 +184,10 @@ TabularExportImportTest >> testExport4Strings [
 	self assert: (cell data asString= 'abc 11').
 	self assert: (cell data = 'abc 11').  
 	
-"The import function cannot deal with the content constructed by the export function. Reason is that it expects sharedStrings.xml and cannot deal with inline strings".
+"The import function cannot deal with the content constructed by the export function. 
+
+How does the import function treat the inlineStr (inline strings). The t property is recognized, but later that assingment to the cell does not take place.
+".
 
 
 '<row r="1">

@@ -56,6 +56,16 @@ XLSXSheetParser >> initialize [
 ]
 
 { #category : #'as yet unclassified' }
+XLSXSheetParser >> parse: aStringOrStream [
+	"Parse document in argument string or stream"
+
+	| sheet |
+	sheet := super parse: aStringOrStream.
+	self halt.
+	^ sheet
+]
+
+{ #category : #'as yet unclassified' }
 XLSXSheetParser >> parsingResult [
 	^ self worksheet
 ]
