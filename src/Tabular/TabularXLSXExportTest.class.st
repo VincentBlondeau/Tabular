@@ -103,3 +103,25 @@ TabularXLSXExportTest >> testExport7 [
 	"But is the colspan command fine? Add a colspan test to TabularCell"
 
 ]
+
+{ #category : #'as yet unclassified' }
+TabularXLSXExportTest >> testExport7b [
+"the same test as testExport7 but uses regular way of adressing spreadsheet cells"
+
+|wbk wsheet    |
+	wbk := TabularWorkbook new.
+	self assert:  (wbk worksheets isEmpty).	
+		
+	wsheet := TabularWorksheet new.
+	wsheet
+		at: 'A1' asPoint putData: 'aaa';
+		at: 'C1' asPoint putData: 'ccc'.	
+      (wsheet cells at: 'A1' asPoint) colspan: 1.
+			
+	wbk worksheets add: wsheet.
+	TabularXSLXExport workbook: wbk fileName: fname7.
+	
+	"manual inspection shows that the exported file is fine"
+	"But is the colspan command fine? Add a colspan test to TabularCell"
+
+]

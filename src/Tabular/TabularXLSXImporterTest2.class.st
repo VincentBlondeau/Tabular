@@ -16,7 +16,22 @@ TabularXLSXImporterTest2 >> setUp [
 
 { #category : #tests }
 TabularXLSXImporterTest2 >> testAccessElementFromASheet [
-	self assert: (((workbook worksheetNamed: 'Feuil1') at: 1@1) data = 'concatenation table').
+
+     | worksheet |
+worksheet := workbook worksheetNamed: 'Feuil1'.
+	self assert: ((worksheet at: 1@1) data = 'concatenation table').
+
+]
+
+{ #category : #tests }
+TabularXLSXImporterTest2 >> testAccessNumberElementFromASheet [
+
+     | worksheet cell |
+
+	worksheet := workbook worksheetNamed: 'Feuil1'.
+	cell := worksheet at: 'A3' asPoint.
+	self assert: (cell data = 1).
+
 
 ]
 

@@ -141,5 +141,5 @@ TabularExportImportTest >> testExport4 [
 	cell := ((wimported worksheetNamed: 'Sheet1') at: 1@1).
 	self assert: (cell isKindOf:  TabularCell).
 	self assert: (cell data asString= '11').
-	self assert: (cell data = 11).
+	self assert: (cell data = 11).  "cell data is aString but should be a number"
 ]
