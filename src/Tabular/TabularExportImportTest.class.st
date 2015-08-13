@@ -143,3 +143,36 @@ TabularExportImportTest >> testExport4 [
 	self assert: (cell data asString= '11').
 	self assert: (cell data = 11).  "cell data is aString but should be a number"
 ]
+
+{ #category : #'as yet unclassified' }
+TabularExportImportTest >> testExport4Strings [
+
+|wbk wsheet  wimported cell |
+	wbk := TabularWorkbook new.
+	self assert:  (wbk worksheets isEmpty).	
+		
+	wsheet := TabularWorksheet new.
+	wsheet
+		at: 1 @ 1 putData: 'abc 11';
+		at: 2 @ 1 putData: 'def 21';
+		at: 3 @ 1 putData: 'ghi 31'.	
+	wbk worksheets add: wsheet.
+	TabularXSLXExport workbook: wbk fileName: fname4.
+
+	wimported := XLSXImporter import: (FileLocator home / fname4 ) .
+	cell := ((wimported worksheetNamed: 'Sheet1') at: 1@1).
+	self assert: (cell isKindOf:  TabularCell).
+	self assert: (cell data asString= 'abc 11').
+	self assert: (cell data = 'abc 11').  
+	
+"The import function cannot deal with the content constructed by the export function. Reason is that it expects sharedStrings.xml and cannot deal with inline strings".
+
+
+'<row r="1">
+<c r="A1" t="inlineStr"><is><t>abc 11</t></is></c>
+<c r="B1" t="inlineStr"><is><t>def 21</t></is></c>
+<c r="C1" t="inlineStr"><is><t>ghi 31</t></is></c>
+</row>'
+
+
+]
