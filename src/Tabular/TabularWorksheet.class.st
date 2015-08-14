@@ -107,7 +107,7 @@ TabularWorksheet >> eraseCellAt: coord [
 
 ]
 
-{ #category : #extraction }
+{ #category : #'extraction - not used' }
 TabularWorksheet >> extractCellFromXml: aXMLElement [
 	cells
 		at: (aXMLElement attributeAt: #r) asPoint
@@ -117,7 +117,7 @@ TabularWorksheet >> extractCellFromXml: aXMLElement [
 				yourself)
 ]
 
-{ #category : #extraction }
+{ #category : #'extraction - not used' }
 TabularWorksheet >> extractContentsFromXml: aXMLDocument [
 	aXMLDocument
 		allElementsNamed: 'row'

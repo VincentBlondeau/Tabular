@@ -13,6 +13,18 @@ TabularWorksheetTest >> setUp [
 ]
 
 { #category : #'tests-accessing' }
+TabularWorksheetTest >> testCellAt [
+
+| w |
+w := TabularWorksheet new.
+w at: 1 @ 1 putData: 12.
+self assert: (w at: 1 @ 1) data equals: 12.
+
+self assert: ((w cellAt: 1 @ 1) isKindOf: TabularCell).
+self assert: (w cellAt: 1 @ 1) data equals: 12.
+]
+
+{ #category : #'tests-accessing' }
 TabularWorksheetTest >> testCells [
 
  self assert: (ws allCoord notNil).  
@@ -66,6 +78,18 @@ TabularWorksheetTest >> testCellsReadingWritingString [
 	ws col: 7 row: 12 putData: 'aTest'.
 	self assert: ((ws col: 7 row: 12) data = 'aTest').
 	
+]
+
+{ #category : #'tests-removing' }
+TabularWorksheetTest >> testEraseCellAt [
+
+| w |
+w := TabularWorksheet new.
+w at: 1 @ 1 putData: 12.
+self assert: (w at: 1 @ 1) data equals: 12.
+w eraseCellAt: 1 @ 1.
+self assert: (w at: 1 @ 1) equals: nil.
+
 ]
 
 { #category : #'tests-accessing' }
