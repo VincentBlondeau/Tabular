@@ -183,7 +183,7 @@ TabularXSLXExport >> generateOLD [
 TabularXSLXExport >> mergeCells [
 |res|
 	res := Dictionary new.
-	sheet cells keysAndValuesDo:[:coord :cell|
+	sheet cellsKeysAndValuesDo: [:coord :cell|
 		(cell colspan notNil | cell rowspan notNil) ifTrue:[ |offset|
 			offset := (cell colspan ifNil:[0]) @ (cell rowspan ifNil:[0]). "Should upgrade it with Protected Arithmetic"
 			res at: coord put: (coord + offset).
@@ -225,7 +225,7 @@ TabularXSLXExport >> relsOLD [
 { #category : #rendering }
 TabularXSLXExport >> renderCell: coord [
 	| cell |
-	cell := sheet cells at: coord.
+	cell := sheet cellAt: coord.
 	^ cell data isNumber
 		ifTrue: [ self renderCellWithNumber: coord ]
 		ifFalse: [ 
@@ -260,7 +260,7 @@ TabularXSLXExport >> renderCellWithString: coord [
 		name: 'c';
 		attributeAt: 'r' put: (self cellName: coord);
 		attributeAt: 't' put: 'inlineStr';
-		with:[ writer tag: 'is' with: [ writer tag: 't' with: ((sheet cells at: coord) data asString)]]
+		with:[ writer tag: 'is' with: [ writer tag: 't' with: ((sheet cellAt: coord) data asString)]]
 ]
 
 { #category : #rendering }
@@ -280,7 +280,7 @@ TabularXSLXExport >> renderMergeCells [
 { #category : #rendering }
 TabularXSLXExport >> renderRow: rowN [
 	| keys |
-	keys := (sheet cells keys 
+	keys := (sheet allCoord
 	select: [ :coord | coord y = rowN ]) 
 	sort: [ :coord1 :coord2 | coord1 x < coord2 x ].	
 		

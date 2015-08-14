@@ -137,7 +137,7 @@ XLSXImporter >> import: aFileReference onlySheetsNamed: aCollection [
 XLSXImporter >> resolveSharedStrings [
 "Replace shared strings pointers to real strings"
 	workbook worksheets do:[:worksheet|
-		worksheet cells do:[:cell| 
+		worksheet cellsDo:[:cell| 
 			((cell attributeAt: #xlsx:t) = 's')
 				ifTrue:[cell data: (sharedStrings at: (cell data asNumber + 1))] "XLSX uses 0-based arrays"
 		]

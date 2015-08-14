@@ -37,6 +37,11 @@ Class {
 }
 
 { #category : #accessing }
+TabularWorksheet >> allCoord [
+	^cells keys
+]
+
+{ #category : #accessing }
 TabularWorksheet >> at: coord [
 	^ cells at: coord ifAbsent: [ ^ nil ].
 
@@ -57,8 +62,9 @@ TabularWorksheet >> at: coord putData: anObject [
 ]
 
 { #category : #accessing }
-TabularWorksheet >> cells [
-	^cells
+TabularWorksheet >> cellAt: coord [
+	^ cells at: coord ifAbsent: [ ^ nil ].
+
 ]
 
 { #category : #accessing }
@@ -69,6 +75,24 @@ TabularWorksheet >> cellsAsMatrix [
 	matrix := Matrix rows: rows columns: cols.
 	cells associationsDo: [ :assoc | matrix at: assoc key y at: assoc key x put: assoc value ].
 	^ matrix
+]
+
+{ #category : #'iterating elements' }
+TabularWorksheet >> cellsDo: aBlock [
+	^ cells do: aBlock
+
+]
+
+{ #category : #'iterating elements' }
+TabularWorksheet >> cellsKeysAndValuesDo: aBlock [
+	^ cells keysAndValuesDo: aBlock
+
+]
+
+{ #category : #accessing }
+TabularWorksheet >> cellsOLD [
+    "cells should not be acessed directly -- to enforce distinction between TableCell object and its value"
+	^cells
 ]
 
 { #category : #accessing }
@@ -117,7 +141,7 @@ TabularWorksheet >> extractFromXml: aXMLElement [
 		yourself
 ]
 
-{ #category : #accessing }
+{ #category : #'accessing selection' }
 TabularWorksheet >> findCellsWithContent: aContent [
 	^ self cells select: [ :cell | cell data = aContent ]
 ]
