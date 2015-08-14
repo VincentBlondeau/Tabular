@@ -7,7 +7,8 @@ Class {
 		'fname5',
 		'fname6',
 		'fname7',
-		'fname8'
+		'fname8',
+		'fname9'
 	],
 	#category : #'Tabular-Tests'
 }
@@ -20,7 +21,8 @@ TabularXLSXExportTest >> setUp [
     fname5 := 'TabularConstructed5Exported.xlsx'.
     fname6 := 'TabularConstructed6Exported.xlsx'.
     fname7 := 'TabularConstructed7Exported.xlsx'.
-    fname8 := 'TabularConstructed8ExportedSharedStringsAnalysis.xlsx'.
+    fname8 := 'TabularConstructed8ExportedInlineStringsAnalysis.xlsx'.
+    fname9 := 'TabularConstructed9ExportedSharedStringsAnalysis.xlsx'.
 
 
 
@@ -135,6 +137,20 @@ TabularXLSXExportTest >> testExport8 [
 	myString := 'abcdefghijklmnopqrstuvwxyz 1234567890'.
 	self assert: wbk worksheets isEmpty.
 	wsheet := TabularWorksheet new.
+	wsheet at: 'A1' asPoint putData: myString.
+	wbk worksheets add: wsheet.
+	TabularXSLXExport workbook: wbk fileName: fname8.
+	"ZipArchive new readFrom: fname8."
+	
+]
+
+{ #category : #'as yet unclassified' }
+TabularXLSXExportTest >> testExport9 [
+	| wbk wsheet myString |
+	wbk := TabularWorkbook new.
+	myString := 'abcdefghijklmnopqrstuvwxyz 1234567890'.
+	self assert: wbk worksheets isEmpty.
+	wsheet := TabularWorksheet new.
 	wsheet
 		at: 'A1' asPoint putData: myString;
 		at: 'A2' asPoint putData: myString;
@@ -146,7 +162,7 @@ TabularXLSXExportTest >> testExport8 [
 		at: 'A8' asPoint putData: myString;
 		at: 'A9' asPoint putData: myString.
 	wbk worksheets add: wsheet.
-	TabularXSLXExport workbook: wbk fileName: fname8.
+	TabularXSLXExport workbook: wbk fileName: fname9.
 	
 	"manual inspection shows that the exported file is fine"	
 	

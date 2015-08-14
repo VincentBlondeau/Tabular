@@ -1,5 +1,25 @@
+"
+I am a TabularXLSXSheetParser and parse the XML of a sheet. See test case for an example. I am only interested in certain elements and ignore the rest. The elements I am interested in are defined in #registeredElements. I returen a TabularWorksheet object.
+
+
+For the Collaborators Part: State my main collaborators and one line about how I interact with them. 
+
+Public API and Key Messages
+
+TabularXLSXSheetParser parse: anXMLString.
+   
+ 
+Internal Representation and Key Implementation Points.
+
+    Instance Variables
+	colCounter:		<Object>
+	rowCounter:		<Object>
+
+
+    Implementation Points
+"
 Class {
-	#name : #XLSXSheetParser,
+	#name : #TabularXLSXSheetParser,
 	#superclass : #TabularSAXParser,
 	#instVars : [
 		'rowCounter',
@@ -9,7 +29,7 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-XLSXSheetParser class >> parse: aStringOrStream [
+TabularXLSXSheetParser class >> parse: aStringOrStream [
 	"Parse document in argument string or stream; method inserted for debugging purposes."
 
 	| sheet |
@@ -19,18 +39,18 @@ XLSXSheetParser class >> parse: aStringOrStream [
 ]
 
 { #category : #initialization }
-XLSXSheetParser >> buildRootObject [
+TabularXLSXSheetParser >> buildRootObject [
 	^ TabularWorksheet new.
 ]
 
 { #category : #elements }
-XLSXSheetParser >> c_end [
+TabularXLSXSheetParser >> c_end [
 	parsingStack pop.
 	colCounter := colCounter + 1.
 ]
 
 { #category : #elements }
-XLSXSheetParser >> c_start: properties [
+TabularXLSXSheetParser >> c_start: properties [
 |cell coord|
 	cell := TabularCell new.
 
@@ -48,7 +68,7 @@ XLSXSheetParser >> c_start: properties [
 ]
 
 { #category : #accessing }
-XLSXSheetParser >> cell [
+TabularXLSXSheetParser >> cell [
 | current |
 	current := parsingStack top.
 	^current isTabularCell
@@ -57,7 +77,7 @@ XLSXSheetParser >> cell [
 ]
 
 { #category : #initialization }
-XLSXSheetParser >> initialize [
+TabularXLSXSheetParser >> initialize [
 	super initialize.
 	colCounter := 1.
 	rowCounter := 1.
@@ -65,40 +85,40 @@ XLSXSheetParser >> initialize [
 ]
 
 { #category : #'as yet unclassified' }
-XLSXSheetParser >> parsingResult [
+TabularXLSXSheetParser >> parsingResult [
 	^ self worksheet
 ]
 
 { #category : #'handling - content' }
-XLSXSheetParser >> registeredElements [
+TabularXLSXSheetParser >> registeredElements [
 	^ #(row c v t)
 ]
 
 { #category : #elements }
-XLSXSheetParser >> row_end [
+TabularXLSXSheetParser >> row_end [
 	rowCounter := rowCounter + 1.
 ]
 
 { #category : #elements }
-XLSXSheetParser >> row_start: properties [
+TabularXLSXSheetParser >> row_start: properties [
 	properties at: 'r' ifPresent: [ :r | rowCounter := r asNumber ].
 	colCounter := 1
 ]
 
 { #category : #elements }
-XLSXSheetParser >> t_characters: aString [
+TabularXLSXSheetParser >> t_characters: aString [
 	self cell data: aString.
 ]
 
 { #category : #elements }
-XLSXSheetParser >> v_characters: aString [
+TabularXLSXSheetParser >> v_characters: aString [
 "maybe the test below is not necessary as the type is always number in a v tag?"
 (self cell type = 'n' "number") ifTrue: [ self cell data: aString  asNumber ] 
 	ifFalse: [self cell data: aString].
 ]
 
 { #category : #accessing }
-XLSXSheetParser >> worksheet [
+TabularXLSXSheetParser >> worksheet [
 	| current |
 	current := parsingStack top.
 	^ current isTabularWorksheet
