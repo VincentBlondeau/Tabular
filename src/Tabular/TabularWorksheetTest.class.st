@@ -108,7 +108,7 @@ TabularWorksheetTest >> testName [
 
 ]
 
-{ #category : #'tests-accessing' }
+{ #category : #'expected failures' }
 TabularWorksheetTest >> testRID [
  <expectedFailure>
 self assert: (ws rID notNil).  
@@ -126,7 +126,7 @@ TabularWorksheetTest >> testReadingFromEmptyTable [
 	self assert: (ws col: 1 row: 10) isNil
 ]
 
-{ #category : #tests }
+{ #category : #'expected failures' }
 TabularWorksheetTest >> testResizingOnTableFillingByData [
 	<expectedFailure>
 	self assert: ws sizeOfWorksheet equals: 0 @ 0.
@@ -136,7 +136,7 @@ TabularWorksheetTest >> testResizingOnTableFillingByData [
 	self assert: ws sizeOfWorksheet equals: 100 @ 100
 ]
 
-{ #category : #'tests-accessing' }
+{ #category : #'expected failures' }
 TabularWorksheetTest >> testSheetId [
  <expectedFailure>
  self assert: (ws sheetId notNil).  
@@ -144,15 +144,15 @@ TabularWorksheetTest >> testSheetId [
 "What should this return?"
 ]
 
-{ #category : #tests }
+{ #category : #'expected failures' }
 TabularWorksheetTest >> testSizeOfEmptyTable [
-	<expectedFailure>
+<expectedFailure>
 	self assert: ws maxNumOfColumns equals: 0.
 	self assert: ws maxNumOfRows equals: 0.
 	self assert: ws sizeOfWorksheet equals: 0 @ 0
 ]
 
-{ #category : #tests }
+{ #category : #'expected failures' }
 TabularWorksheetTest >> testTitleToStringConversion [
 	<expectedFailure>
 	| ss |

@@ -23,7 +23,8 @@ Class {
 		'fname2',
 		'fname3',
 		'fname0',
-		'fname4'
+		'fname4',
+		'fname5'
 	],
 	#category : #'Tabular-Tests'
 }
@@ -32,6 +33,7 @@ Class {
 TabularExportImportTest >> setUp [
     fname0 := 'TabularEmptySheetExported.xlsx'.
     fname4 := 'TabularConstructed4Exported.xlsx'.
+    fname5 := 'TabularConstructed5Exported.xlsx'.
 		
     fname := TabularResources fileNameOfExample1.
     (FileLocator home / fname ) ensureDelete.
@@ -95,19 +97,15 @@ TabularExportImportTest >> testExport1DefaultSheetName [
 TabularExportImportTest >> testExport1SheetName [
  <expectedFailure>
 	| wbk   sheetImported theSheetName wbkimported |
-
 	wbk := XLSXImporter import: TabularResources testExcelFile1OneSheetOnly  readStream.
 	theSheetName := 'theTestWorkSheet'.
 	wbk worksheets first name: theSheetName.
 	TabularXSLXExport workbook: wbk fileName: fname.
 
-
 	wbkimported := XLSXImporter import: (FileLocator home / fname ) .
 	sheetImported := wbkimported worksheetNamed: theSheetName. 
 	self assert: sheetImported name equals: theSheetName.
 	self should: [ (wbkimported worksheetNamed: 'Sheet2') name ] raise: NotFound.
-
-	
 ]
 
 { #category : #'as yet unclassified' }
@@ -124,9 +122,8 @@ TabularExportImportTest >> testExport2 [
 	
 ]
 
-{ #category : #'expected failures' }
+{ #category : #'as yet unclassified' }
 TabularExportImportTest >> testExport3 [
- <expectedFailure>
 	| wbk  wimported |
 
 	wbk := XLSXImporter import: TabularResources testExcelFile1OneSheetOnly  readStream.
@@ -134,8 +131,8 @@ TabularExportImportTest >> testExport3 [
 
 	wimported := XLSXImporter import: (FileLocator home / fname3 ) .
 	
-	self assert: (wimported worksheetNamed: 'Feuil1') name equals: 'Feuil1'.
-	self should: [ (wimported worksheetNamed: 'Feuil4') name ] raise: NotFound.
+	self assert: (wimported worksheetNamed: 'Sheet1') name equals: 'Sheet1'.
+	self should: [ (wimported worksheetNamed: 'Sheet4') name ] raise: NotFound.
 	
 	
 	
@@ -216,6 +213,27 @@ How does the import function treat the inlineStr (inline strings). The t propert
 <c r="B1" t="inlineStr"><is><t>def 21</t></is></c>
 <c r="C1" t="inlineStr"><is><t>ghi 31</t></is></c>
 </row>'
+
+
+]
+
+{ #category : #'tests-strings' }
+TabularExportImportTest >> testExport5 [
+|wbk wsheet  wbkimported wsheetimported cell |
+	wbk := TabularWorkbook new. wsheet := TabularWorksheet new.
+	wsheet
+		at: 1 @ 1 putData: 'abc 11';
+		at: 2 @ 1 putData: 21.
+	wbk worksheets add: wsheet.
+		TabularXSLXExport workbook: wbk fileName: fname5.
+	wbkimported := XLSXImporter import: (FileLocator home / fname5 ) .
+	wsheetimported := wbkimported worksheetNamed: 'Sheet1' .
+	cell := wsheetimported at: 1 @ 1.
+	self assert: (cell isKindOf:  TabularCell).
+	self assert: (cell data asString= 'abc 11').
+	cell := wsheetimported at: 2 @ 1.
+		self assert: (cell isKindOf:  TabularCell).
+	self assert: (cell data = 21).
 
 
 ]
