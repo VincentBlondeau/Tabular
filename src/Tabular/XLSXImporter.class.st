@@ -1,6 +1,23 @@
 "
 I am ƖXLSXImporter which imports Excel files.
 
+Key message for importing is in TabularCell>>extractFromXml: aXMLElement
+
+The attribute t=""s"" of a cell c seems to indicate that the content has
+to be interpreted as a shared string.
+
+The other variant is an inline string
+
+t=""inlineStr""
+
+<row r=""1"">
+<c r=""A1"" t=""inlineStr"">
+<is><t>abcdefghijklmnopqrstuvwxyz 1234567890</t></is>
+</c>
+
+
+
+
 For the Collaborators Part: State my main collaborators and one line about how I interact with them. 
 
 Public API and Key Messages

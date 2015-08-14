@@ -3,14 +3,21 @@ I am TabularObject, the root object of objects which model a workbook
 
 Diagram see: http://www.gliffy.com/go/publish/6148167
 
-See also 
+Standard:
+ http://standards.iso.org/ittf/PubliclyAvailableStandards/c061750_ISO_IEC_29500-1_2012.zip
+
+See also
+
 http://www.ecma-international.org/news/TC45_current_work/TC45_available_docs.htm
+
+Other links:
 
 http://davidgohel.github.io/ReporteRs/FlexTable.html for ideas 
 
 http://epplus.codeplex.com/
 
 http://stackoverflow.com/questions/151005/create-excel-xls-and-xlsx-file-from-c-sharp
+
 
 LATER:
 

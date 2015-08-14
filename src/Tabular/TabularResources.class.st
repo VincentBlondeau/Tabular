@@ -1,6 +1,12 @@
 "
 I am TabularResources and keep example Excel files in binary format and offer a service to create them.
 
+
+More examples see
+http://www.openoffice.org/sc/testdocs/index.html (the links marked with 'XML')
+
+https://github.com/GNOME/gnumeric
+
 For the Responsibility part: Three sentences about my main responsibility, what I'm doing, what services do I offer.
 
 For the Collaborators Part: State my main collaborators and one line about how I interact with them. 

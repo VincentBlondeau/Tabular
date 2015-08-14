@@ -4,6 +4,28 @@ I am TabularCell and the represent a cell in a Worksheet.
 Responsibility:
 I keep the value and type of a cell, the dimension and the formatting attributes.
 
+Standard:
+
+p. 1600
+18.3.1.4 Cell
+
+Example
+<row r=""1"" spans=""1:1"">
+<c r=""A1"" t=""inlineStr"">
+<is><t>This is inline string example</t></is>
+</c>
+</row>
+
+s attribute is style index,
+t attribute is cell data type; values are on p. 2444, 18.18.11
+
+b boolean
+d date
+e error
+inlineStr (inline string)
+n number
+s shared string
+str (formula string)
 
 For the Collaborators Part: State my main collaborators and one line about how I interact with them. 
 
@@ -59,13 +81,15 @@ TabularCell >> dataIfNotNil [
 
 { #category : #conversion }
 TabularCell >> extractDataFromXml: aXMLElement [
-
-	self data: (
-		(self type = 's')
-			ifTrue: [ (self stringAt: ((aXMLElement elementAt: 'v') ifNotNil: [ :e | e firstNode ifNotNil: [ :s | s asString ] ])) asString ]
-			ifFalse: [((aXMLElement elementAt: 'v') ifNotNil: [ :e | e firstNode ifNotNil: [ :s | s asString ] ])]
-	).
-
+"reference document p. 1600 18.3.1.4 Cell and p. 2434 18.18.11 ST_CellType"
+	self
+		data:
+			(self type = 's'
+				ifTrue: [ (self stringAt: ((aXMLElement elementAt: 'v') 
+					ifNotNil: [ :e | e firstNode ifNotNil: [ :s | s asString ] ])) asString ]
+				ifFalse: [self type = 'inlineStr' 
+					ifTrue: [ self halt.] 
+					ifFalse: [(aXMLElement elementAt: 'v') ifNotNil: [ :e | e firstNode ifNotNil: [ :s | s asString ] ] ]])
 ]
 
 { #category : #conversion }
