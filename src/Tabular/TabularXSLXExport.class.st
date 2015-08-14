@@ -249,7 +249,7 @@ TabularXSLXExport >> renderCellWithNumber:  coord [
 		name: 'c';
 		attributeAt: 'r' put: (self cellName: coord);
 		attributeAt: 't' put: 'n';
-		with:[ writer tag: 'v' with: ((sheet cells at: coord) data asString)]
+		with:[ writer tag: 'v' with: ((sheet cellAt: coord) data asString)]
 ]
 
 { #category : #rendering }

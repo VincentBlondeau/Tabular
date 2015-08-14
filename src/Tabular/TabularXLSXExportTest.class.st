@@ -96,7 +96,7 @@ TabularXLSXExportTest >> testExport7 [
 	wsheet
 		at: 1 @ 1 putData: 'aaa';
 		at: 3 @ 1 putData: 'ccc'.	
-      (wsheet cells at: 1 @ 1) colspan: 1.
+      (wsheet cellAt: 1 @ 1) colspan: 1.
 			
 	wbk worksheets add: wsheet.
 	TabularXSLXExport workbook: wbk fileName: fname7.
@@ -118,7 +118,7 @@ TabularXLSXExportTest >> testExport7b [
 	wsheet
 		at: 'A1' asPoint putData: 'aaa';
 		at: 'C1' asPoint putData: 'ccc'.	
-      (wsheet cells at: 'A1' asPoint) colspan: 1.
+      (wsheet cellAt: 'A1' asPoint) colspan: 1.
 			
 	wbk worksheets add: wsheet.
 	TabularXSLXExport workbook: wbk fileName: fname7.

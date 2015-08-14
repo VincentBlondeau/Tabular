@@ -15,7 +15,7 @@ TabularWorksheetTest >> setUp [
 { #category : #'tests-accessing' }
 TabularWorksheetTest >> testCells [
 
- self assert: (ws cells notNil).  
+ self assert: (ws allCoord notNil).  
 ]
 
 { #category : #tests }
@@ -165,11 +165,11 @@ TabularWorksheetTest >> testTitleToStringConversion [
 { #category : #tests }
 TabularWorksheetTest >> testValueErasing [
 	ws at: 4@3 putData: 'test'.
-	self assert: (ws cells keys includes: 4@3).
+	self assert: (ws allCoord includes: 4@3).
 
 	"Nil writing should erase the data"
 	ws col: 4 row: 3 putData: nil. 
-	self deny: (ws cells keys includes: 4@3).
+	self deny: (ws allCoord includes: 4@3).
 
 ]
 

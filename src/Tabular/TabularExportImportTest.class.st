@@ -68,7 +68,7 @@ TabularExportImportTest >> testExport1CellAccess [
 	wimported := XLSXImporter import: (FileLocator home / fname ) .
 	
 	ws := (wimported worksheetNamed: 'Sheet1').
-	self assert: (ws cells includesKey: 3@9).
+	self assert: (ws allCoord includes: 3@9).
 	cell := ws at: 3@9.
 	self assert: (cell notNil).
 	self assert: (cell data = '39').

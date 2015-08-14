@@ -143,7 +143,7 @@ TabularWorksheet >> extractFromXml: aXMLElement [
 
 { #category : #'accessing selection' }
 TabularWorksheet >> findCellsWithContent: aContent [
-	^ self cells select: [ :cell | cell data = aContent ]
+	^ cells select: [ :cell | cell data = aContent ]
 ]
 
 { #category : #initialization }
