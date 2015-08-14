@@ -43,6 +43,12 @@ TabularWorksheet >> at: coord [
 ]
 
 { #category : #accessing }
+TabularWorksheet >> at: coord putCell: aCell [
+	^ cells at: coord put: aCell
+
+]
+
+{ #category : #accessing }
 TabularWorksheet >> at: coord putData: anObject [
 	| cell |
 	anObject ifNil: [ ^ self eraseCellAt: coord ].

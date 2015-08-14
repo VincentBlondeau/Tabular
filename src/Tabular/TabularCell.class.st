@@ -122,8 +122,8 @@ TabularCell >> isTabularCell [
 
 { #category : #printing }
 TabularCell >> printOn: stream [
-	"super printOn: stream."
-	stream << self data asString.
+	super printOn: stream.
+	stream << '(' << self data asString <<')'.
 ]
 
 { #category : #'accessing - attributes' }

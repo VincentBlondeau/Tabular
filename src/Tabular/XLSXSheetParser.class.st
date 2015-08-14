@@ -8,6 +8,16 @@ Class {
 	#category : #'Tabular-SAXParser'
 }
 
+{ #category : #'as yet unclassified' }
+XLSXSheetParser class >> parse: aStringOrStream [
+	"Parse document in argument string or stream; method inserted for debugging purposes."
+
+	| sheet |
+	sheet := super parse: aStringOrStream.
+	"self halt."
+	^ sheet
+]
+
 { #category : #initialization }
 XLSXSheetParser >> buildRootObject [
 	^ TabularWorksheet new.
@@ -23,6 +33,7 @@ XLSXSheetParser >> c_end [
 XLSXSheetParser >> c_start: properties [
 |cell coord|
 	cell := TabularCell new.
+
 	properties at: #s ifPresent:[:styleId| cell style: styleId]. "Should be substituted by actual style upon finalisation"
 	properties at: #t ifPresent:[:type| cell attributeAt: 'xlsx:t' put: type].
 
@@ -31,9 +42,7 @@ XLSXSheetParser >> c_start: properties [
 		ifNil: [ coord := colCounter @ rowCounter  ]
 		ifNotNil: [ colCounter := coord x ]. "It's expected that row of r attribute is always points to current row. If it is not - have no idea how to manage this"
 	
-	self worksheet cells
-		at: coord
-		put: cell.
+	self worksheet at: coord putCell: cell.
 		
 	parsingStack push: cell.
 ]
@@ -53,16 +62,6 @@ XLSXSheetParser >> initialize [
 	colCounter := 1.
 	rowCounter := 1.
 
-]
-
-{ #category : #'as yet unclassified' }
-XLSXSheetParser >> parse: aStringOrStream [
-	"Parse document in argument string or stream"
-
-	| sheet |
-	sheet := super parse: aStringOrStream.
-	self halt.
-	^ sheet
 ]
 
 { #category : #'as yet unclassified' }
