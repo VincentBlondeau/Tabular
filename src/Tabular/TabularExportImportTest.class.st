@@ -28,7 +28,7 @@ Class {
 	#category : #'Tabular-Tests'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #setUp }
 TabularExportImportTest >> setUp [
     fname0 := 'TabularEmptySheetExported.xlsx'.
     fname4 := 'TabularConstructed4Exported.xlsx'.
@@ -57,7 +57,7 @@ TabularExportImportTest >> testExport0EmptyWorkbook [
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'tests-numbers' }
 TabularExportImportTest >> testExport1CellAccess [
 
 	| wbk  wimported cell ws |
@@ -91,7 +91,7 @@ TabularExportImportTest >> testExport1DefaultSheetName [
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'expected failures' }
 TabularExportImportTest >> testExport1SheetName [
  <expectedFailure>
 	| wbk   sheetImported theSheetName wbkimported |
@@ -124,7 +124,7 @@ TabularExportImportTest >> testExport2 [
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'expected failures' }
 TabularExportImportTest >> testExport3 [
  <expectedFailure>
 	| wbk  wimported |
@@ -141,8 +141,8 @@ TabularExportImportTest >> testExport3 [
 	
 ]
 
-{ #category : #'as yet unclassified' }
-TabularExportImportTest >> testExport4 [
+{ #category : #'tests-numbers' }
+TabularExportImportTest >> testExport4Numbers [
 
 |wbk wsheet  wimported cell |
 	wbk := TabularWorkbook new.
@@ -163,7 +163,29 @@ TabularExportImportTest >> testExport4 [
 	self assert: (cell data = 11).  "cell data is aString but should be a number"
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'tests-numbers' }
+TabularExportImportTest >> testExport4NumbersStringContent [
+
+|wbk wsheet  wimported cell |
+	wbk := TabularWorkbook new.
+	self assert:  (wbk worksheets isEmpty).	
+		
+	wsheet := TabularWorksheet new.
+	wsheet
+		at: 1 @ 1 putData: 11;
+		at: 2 @ 1 putData: 21;
+		at: 3 @ 1 putData: 31.	
+	wbk worksheets add: wsheet.
+	TabularXSLXExport workbook: wbk fileName: fname4.
+
+	wimported := XLSXImporter import: (FileLocator home / fname4 ) .
+	cell := ((wimported worksheetNamed: 'Sheet1') at: 1@1).
+	self assert: (cell isKindOf:  TabularCell).
+	self assert: (cell data asString= '11').  "content OK"
+     "cell data is aString but should be a number"
+]
+
+{ #category : #'tests-strings' }
 TabularExportImportTest >> testExport4Strings [
 
 |wbk wsheet  wimported cell |
@@ -182,7 +204,6 @@ TabularExportImportTest >> testExport4Strings [
 	cell := ((wimported worksheetNamed: 'Sheet1') at: 1@1).
 	self assert: (cell isKindOf:  TabularCell).
 	self assert: (cell data asString= 'abc 11').
-	self assert: (cell data = 'abc 11').  
 	
 "The import function cannot deal with the content constructed by the export function. 
 
