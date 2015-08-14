@@ -71,7 +71,7 @@ XLSXSheetParser >> parsingResult [
 
 { #category : #'handling - content' }
 XLSXSheetParser >> registeredElements [
-	^ #(row c v)
+	^ #(row c v t)
 ]
 
 { #category : #elements }
@@ -83,6 +83,11 @@ XLSXSheetParser >> row_end [
 XLSXSheetParser >> row_start: properties [
 	properties at: 'r' ifPresent: [ :r | rowCounter := r asNumber ].
 	colCounter := 1
+]
+
+{ #category : #elements }
+XLSXSheetParser >> t_characters: aString [
+	self cell data: aString.
 ]
 
 { #category : #elements }
