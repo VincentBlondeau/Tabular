@@ -16,7 +16,7 @@ TabularXLSXImporterTest1 >> setUp [
 
 { #category : #tests }
 TabularXLSXImporterTest1 >> testAccessElementFromASheet [
-	self assert: (((workbook worksheetNamed: 'Sheet1') at: 3@9) data = '39').
+	self assert: (((workbook worksheetNamed: 'Sheet1') at: 3@9) data = 39).
 ]
 
 { #category : #tests }

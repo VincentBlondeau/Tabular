@@ -71,7 +71,7 @@ TabularExportImportTest >> testExport1CellAccess [
 	self assert: (ws allCoord includes: 3@9).
 	cell := ws at: 3@9.
 	self assert: (cell notNil).
-	self assert: (cell data = '39').
+	self assert: (cell data = 39).
 	
 ]
 

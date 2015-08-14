@@ -79,7 +79,7 @@ TabularCell >> dataIfNotNil [
 	^ self data ifNil: [ NotFound signal: 'The accessed data is nil!' ]
 ]
 
-{ #category : #conversion }
+{ #category : #'conversion-not-used' }
 TabularCell >> extractDataFromXml: aXMLElement [
 "reference document p. 1600 18.3.1.4 Cell and p. 2434 18.18.11 ST_CellType"
 	self
@@ -92,7 +92,7 @@ TabularCell >> extractDataFromXml: aXMLElement [
 					ifFalse: [(aXMLElement elementAt: 'v') ifNotNil: [ :e | e firstNode ifNotNil: [ :s | s asString ] ] ]])
 ]
 
-{ #category : #conversion }
+{ #category : #'conversion-not-used' }
 TabularCell >> extractFromXml: aXMLElement [
 
 	self style: (aXMLElement attributeAt: 's') asString.

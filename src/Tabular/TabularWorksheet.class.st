@@ -90,12 +90,6 @@ TabularWorksheet >> cellsKeysAndValuesDo: aBlock [
 ]
 
 { #category : #accessing }
-TabularWorksheet >> cellsOLD [
-    "cells should not be acessed directly -- to enforce distinction between TableCell object and its value"
-	^cells
-]
-
-{ #category : #accessing }
 TabularWorksheet >> col: col row: row [
 	^self at: (col @ row).
 

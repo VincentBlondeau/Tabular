@@ -35,7 +35,7 @@ XLSXSheetParser >> c_start: properties [
 	cell := TabularCell new.
 
 	properties at: #s ifPresent:[:styleId| cell style: styleId]. "Should be substituted by actual style upon finalisation"
-	properties at: #t ifPresent:[:type| cell attributeAt: 'xlsx:t' put: type].
+	properties at: #t ifPresent:[:type| cell attributeAt: 'xlsx:t' put: type. cell type: type].
 
 	properties at: #r ifPresent: [:r| coord := r asPoint].
 	coord
@@ -92,7 +92,9 @@ XLSXSheetParser >> t_characters: aString [
 
 { #category : #elements }
 XLSXSheetParser >> v_characters: aString [
-	self cell data: aString.
+"maybe the test below is not necessary as the type is always number in a v tag?"
+(self cell type = 'n' "number") ifTrue: [ self cell data: aString  asNumber ] 
+	ifFalse: [self cell data: aString].
 ]
 
 { #category : #accessing }
