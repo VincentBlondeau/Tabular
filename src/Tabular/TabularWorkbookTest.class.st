@@ -5,6 +5,23 @@ Class {
 }
 
 { #category : #'tests-as yet unclassified' }
+TabularWorkbookTest >> testAccessToSecondWorksheet [
+
+| wbk wsheet |
+wbk := TabularWorkbook new.
+wsheet := TabularWorksheet new.
+wsheet name: 'mySheet'.
+wbk addSheet: wsheet.
+
+wsheet := TabularWorksheet new.
+wsheet name: 'mySecondSheet'.
+wbk addSheet: wsheet.
+
+self assert:  wbk worksheets size equals: 2.
+self assert: ((wbk worksheetNamed: 'mySecondSheet') isKindOf:  TabularWorksheet)
+]
+
+{ #category : #'tests-as yet unclassified' }
 TabularWorkbookTest >> testContainsWorksheetNamed [
 
 | wbk wsheet |

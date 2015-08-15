@@ -20,7 +20,7 @@ Class {
 	#superclass : #TabularExport,
 	#instVars : [
 		'zip',
-		'worksheetName'
+		'xmlSheetsForWorkbookXML'
 	],
 	#category : #'Tabular-Exporters'
 }
@@ -56,27 +56,16 @@ TabularXSLXExport class >> example3 [
 "merged cells are not properly rendered; alingment is not rendered"
 ]
 
-{ #category : #files }
+{ #category : #'files-content-types' }
 TabularXSLXExport >> content_types_xml [
 
 " [Content_Types].xml file, this describes the location of the major files in the archive and the standards to which it itself adheres and the content types of those files. 
-
-hard coded at the moment, should be constructed later, I Hannes Hirzel assume.
+hard coded at the moment, should be constructed later.
 "
 
-^'<?xml version="1.0" encoding="UTF-8"?>
-<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">
-
-<Override PartName="/_rels/.rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Override PartName="/docProps/app.xml" ContentType="application/vnd.openxmlformats-officedocument.extended-properties+xml"/>
-
-<Override PartName="/docProps/core.xml" ContentType="application/vnd.openxmlformats-package.core-properties+xml"/>
-
-<Override PartName="/xl/_rels/workbook.xml.rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Override PartName="/xl/sharedStrings.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sharedStrings+xml"/>
-
-<Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>
-
-<Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/>
-</Types>'.
+^self content_types_xml_start ,
+self content_types_xml_sheets ,
+self content_types_xml_end 
 ]
 
 { #category : #'files-OLD' }
@@ -87,6 +76,63 @@ TabularXSLXExport >> content_types_xmlOLD [
   <Override PartName="/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/>
   <Override PartName="/worksheet.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>
 </Types>'.
+]
+
+{ #category : #'files-content-types' }
+TabularXSLXExport >> content_types_xml_end [
+
+" [Content_Types].xml file, this describes the location of the major files in the archive and the standards to which it itself adheres and the content types of those files. 
+hard coded at the moment, should be constructed later.
+"
+
+^'
+<Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/>
+</Types>'.
+]
+
+{ #category : #'files-content-types' }
+TabularXSLXExport >> content_types_xml_sheets [
+
+" [Content_Types].xml file, this describes the location of the major files in the archive and the standards to which it itself adheres and the content types of those files. 
+hard coded at the moment for two sheets, should be generalized later.
+"
+
+| xmlString |
+xmlString := '<Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>
+'.
+
+(workbook worksheets size > 1) ifTrue: [ 
+xmlString := xmlString, '<Override PartName="/xl/worksheets/sheet2.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>
+'].
+
+(workbook worksheets size > 2) ifTrue: [ 
+xmlString := xmlString, '<Override PartName="/xl/worksheets/sheet3.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>
+'].
+	
+^xmlString
+]
+
+{ #category : #'files-content-types' }
+TabularXSLXExport >> content_types_xml_start [
+
+" [Content_Types].xml file, this describes the location of the major files in the archive and the standards to which it itself adheres and the content types of those files. 
+hard coded at the moment, should be constructed later.
+"
+
+^'<?xml version="1.0" encoding="UTF-8"?>
+<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">
+
+<Override PartName="/_rels/.rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>
+
+<Override PartName="/docProps/app.xml" ContentType="application/vnd.openxmlformats-officedocument.extended-properties+xml"/>
+
+<Override PartName="/docProps/core.xml" ContentType="application/vnd.openxmlformats-package.core-properties+xml"/>
+
+<Override PartName="/xl/_rels/workbook.xml.rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>
+
+<Override PartName="/xl/sharedStrings.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sharedStrings+xml"/>
+
+'.
 ]
 
 { #category : #files }
@@ -140,9 +186,7 @@ TabularXSLXExport >> docPropsCore_xml_3 [
 
 { #category : #files }
 TabularXSLXExport >> generate [
-   
 	| fname |
-	zip:= ZipArchive new.
 	fname := workbook filename.
 	zip addString: self content_types_xml as: '[Content_Types].xml'.
 	zip addString: self rels as: '_rels/.rels'.
@@ -184,10 +228,30 @@ TabularXSLXExport >> generateWorksheets [
 	
 	workbook worksheets isEmpty ifFalse: [ worksheet := workbook worksheets first  ]
 									ifTrue: [ worksheet := TabularWorksheet new ] .
-	
+									
 	zip addString: (TabularWorksheetWriter for: worksheet) as: 'xl/worksheets/sheet1.xml'.
+	xmlSheetsForWorkbookXML := self workbook_xml_sheetNamed: worksheet name rId: 'rId2'.
 	
-	worksheetName := worksheet name. "will be used by workbook_xml_sheets"
+    (workbook worksheets size > 1) ifTrue: [ 
+	 worksheet := workbook worksheets second.
+	zip addString: (TabularWorksheetWriter for: worksheet) as: 'xl/worksheets/sheet2.xml'.
+	xmlSheetsForWorkbookXML := xmlSheetsForWorkbookXML ,
+	                           (self workbook_xml_sheetNamed: worksheet name rId: 'rId3').
+	].
+
+ (workbook worksheets size > 2) ifTrue: [ 
+	 worksheet := workbook worksheets third.
+	zip addString: (TabularWorksheetWriter for: worksheet) as: 'xl/worksheets/sheet3.xml'.
+	xmlSheetsForWorkbookXML := xmlSheetsForWorkbookXML ,
+	                           (self workbook_xml_sheetNamed: worksheet name rId: 'rId4').
+	]
+]
+
+{ #category : #initialize }
+TabularXSLXExport >> initialize [
+
+zip:= ZipArchive new.
+xmlSheetsForWorkbookXML := ''.
 ]
 
 { #category : #files }
@@ -269,18 +333,18 @@ TabularXSLXExport >> workbook_xml_end [
 </workbook>'.
 ]
 
-{ #category : #files }
+{ #category : #'files-workbook-xml-rels' }
 TabularXSLXExport >> workbook_xml_rels [
-^'<?xml version="1.0" encoding="UTF-8"?>
-<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
+	| xml |
+	xml := self workbook_xml_rels_part1.
 
-<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/>
+	workbook worksheets size > 2
+		ifTrue: [ ^ xml , self workbook_xml_rels_part2_threeWorksheets ].
 
-<Relationship Id="rId2" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet1.xml"/>
-
-<Relationship Id="rId3" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/sharedStrings" Target="sharedStrings.xml"/>
-
-</Relationships>'.
+	workbook worksheets size > 1
+		ifTrue: [ ^ xml , self workbook_xml_rels_part2_twoWorksheets ].
+		
+	^ xml , self workbook_xml_rels_part2_oneWorksheet
 ]
 
 { #category : #'files-OLD' }
@@ -294,14 +358,70 @@ TabularXSLXExport >> workbook_xml_relsOLD [
 </Relationships>'.
 ]
 
+{ #category : #'files-workbook-xml-rels' }
+TabularXSLXExport >> workbook_xml_rels_part1 [
+^'<?xml version="1.0" encoding="UTF-8"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
+
+<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/>
+'.
+]
+
+{ #category : #'files-workbook-xml-rels' }
+TabularXSLXExport >> workbook_xml_rels_part2_oneWorksheet [
+^'
+<Relationship Id="rId2" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet1.xml"/>
+
+<Relationship Id="rId3" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/sharedStrings" Target="sharedStrings.xml"/>
+
+</Relationships>'.
+]
+
+{ #category : #'files-workbook-xml-rels' }
+TabularXSLXExport >> workbook_xml_rels_part2_threeWorksheets [
+^'
+<Relationship Id="rId2" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet1.xml"/>
+
+<Relationship Id="rId3" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet2.xml"/>
+
+<Relationship Id="rId4" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet3.xml"/>
+
+<Relationship Id="rId5" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/sharedStrings" Target="sharedStrings.xml"/>
+
+</Relationships>'.
+]
+
+{ #category : #'files-workbook-xml-rels' }
+TabularXSLXExport >> workbook_xml_rels_part2_twoWorksheets [
+^'
+<Relationship Id="rId2" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet1.xml"/>
+
+<Relationship Id="rId3" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet2.xml"/>
+
+<Relationship Id="rId4" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/sharedStrings" Target="sharedStrings.xml"/>
+
+</Relationships>'.
+]
+
+{ #category : #'files-workbook-xml' }
+TabularXSLXExport >> workbook_xml_sheetNamed: aString rId: aRidString [
+
+^ ('<sheet name="',
+aString,
+'" sheetId="1" state="visible" r:id="',
+aRidString, 
+'"/>
+')
+]
+
 { #category : #'files-workbook-xml' }
 TabularXSLXExport >> workbook_xml_sheets [
 
-^'<sheets><sheet name="',
-worksheetName,
-'" sheetId="1" state="visible" r:id="rId2"/>
-</sheets>
-'.
+| beginTag endTag  |
+beginTag := '<sheets>'.
+endTag := '</sheets>'.
+^ (beginTag, xmlSheetsForWorkbookXML, endTag)
+
 ]
 
 { #category : #'files-workbook-xml' }

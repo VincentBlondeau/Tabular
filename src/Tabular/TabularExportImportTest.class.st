@@ -24,7 +24,9 @@ Class {
 		'fname3',
 		'fname0',
 		'fname4',
-		'fname5'
+		'fname5',
+		'fname6',
+		'fname7'
 	],
 	#category : #'Tabular-Tests'
 }
@@ -34,6 +36,9 @@ TabularExportImportTest >> setUp [
     fname0 := 'TabularEmptySheetExported.xlsx'.
     fname4 := 'TabularConstructed4Exported.xlsx'.
     fname5 := 'TabularConstructed5Exported.xlsx'.
+    fname6 := 'TabularConstructed6ExportedTwoWorksheets.xlsx'.
+    fname7 := 'TabularConstructed7ExportedThreeWorksheets.xlsx'.
+		
 		
     fname := TabularResources fileNameOfExample1.
     (FileLocator home / fname ) ensureDelete.
@@ -239,4 +244,98 @@ TabularExportImportTest >> testExport5 [
 	self assert: (cell data = 21).
 
 
+]
+
+{ #category : #'tests-strings' }
+TabularExportImportTest >> testExport6ExportTwoWorksheets [
+
+"The import part is tested by testExport6aImportTwoWorksheets"
+
+| wbk wsheet wbkimported wsheetimported cell |
+wbk := TabularWorkbook new.
+wsheet := TabularWorksheet new.
+wsheet name: 'mySheet'.
+wsheet at: 1 @ 1 putData: 123.
+wbk addSheet: wsheet.
+
+wsheet := TabularWorksheet new.
+wsheet name: 'mySecondSheet'.
+wsheet at: 1 @ 1 putData: 456.
+wsheet at: 1 @ 2 putData: 'abc'.
+wbk addSheet: wsheet.
+
+TabularXSLXExport workbook: wbk fileName: fname6.
+
+wbkimported := XLSXImporter import: (FileLocator home / fname6 ) .
+ 
+     wsheetimported := wbkimported worksheets first.
+	cell := wsheetimported at: 1 @ 1.
+	self assert: (cell data = 123).
+
+	wsheetimported := wbkimported worksheets second.
+	cell := wsheetimported at: 1 @ 1.
+	self assert: (cell data = 456).
+	cell := wsheetimported at: 1 @ 2.
+	self assert: (cell data = 'abc').
+]
+
+{ #category : #'tests-strings' }
+TabularExportImportTest >> testExport6aImportTwoWorksheets [
+
+	| file wbkimported wsheetimported cell |
+	file := TabularResources testExcelFile6aTwoWorksheets  readStream.
+	wbkimported := XLSXImporter import: file.
+ 
+     wsheetimported := wbkimported worksheets first.
+	cell := wsheetimported at: 1 @ 1.
+	self assert: (cell data = 123).
+
+	wsheetimported := wbkimported worksheets second.
+	cell := wsheetimported at: 1 @ 1.
+	self assert: (cell data = 456).
+	cell := wsheetimported at: 1 @ 2.
+	self assert: (cell data = 'abc').
+]
+
+{ #category : #'tests-strings' }
+TabularExportImportTest >> testExport7ExportThreeWorksheets [
+
+"The import part is tested by testExport6aImportTwoWorksheets"
+
+| wbk wsheet wbkimported wsheetimported cell |
+wbk := TabularWorkbook new.
+wsheet := TabularWorksheet new.
+wsheet name: 'mySheet'.
+wsheet at: 1 @ 1 putData: 123.
+wbk addSheet: wsheet.
+
+wsheet := TabularWorksheet new.
+wsheet name: 'mySecondSheet'.
+wsheet at: 1 @ 1 putData: 456.
+wsheet at: 1 @ 2 putData: 'abc'.
+wbk addSheet: wsheet.
+
+wsheet := TabularWorksheet new.
+wsheet name: 'myThirdSheet'.
+wsheet at: 1 @ 1 putData: 789.
+wbk addSheet: wsheet.
+
+
+TabularXSLXExport workbook: wbk fileName: fname7.
+
+wbkimported := XLSXImporter import: (FileLocator home / fname7 ) .
+ 
+     wsheetimported := wbkimported worksheets first.
+	cell := wsheetimported at: 1 @ 1.
+	self assert: (cell data = 123).
+
+	wsheetimported := wbkimported worksheets second.
+	cell := wsheetimported at: 1 @ 1.
+	self assert: (cell data = 456).
+	cell := wsheetimported at: 1 @ 2.
+	self assert: (cell data = 'abc').
+	
+	wsheetimported := wbkimported worksheets third.
+	cell := wsheetimported at: 1 @ 1.
+	self assert: (cell data = 789).
 ]

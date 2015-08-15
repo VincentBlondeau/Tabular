@@ -8,7 +8,8 @@ Class {
 		'fname6',
 		'fname7',
 		'fname8',
-		'fname9'
+		'fname9',
+		'fname10'
 	],
 	#category : #'Tabular-Tests'
 }
@@ -23,7 +24,7 @@ TabularXLSXExportTest >> setUp [
     fname7 := 'TabularConstructed7Exported.xlsx'.
     fname8 := 'TabularConstructed8ExportedInlineStringsAnalysis.xlsx'.
     fname9 := 'TabularConstructed9ExportedSharedStringsAnalysis.xlsx'.
-
+    fname10 := 'TabularConstructed10TwoWorksheets.xlsx'.
 
 
 ]
