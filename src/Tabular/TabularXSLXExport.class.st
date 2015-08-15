@@ -1,16 +1,17 @@
 "
-I am TabularXSLXExport and exports worksheets to Excel XSLX file format.
+I am TabularXSLXExport and export worksheets to Excel XSLX file format.
 
 NEXT STEPS:
 
-1. Make workbook export do several worksheets.
+1. Generalize worksheets export mechanism. Use rIds in the
+    worksheet objects.
+
 2. Create a class TabularDOCXExport as a copy of this class and make it work.
 
 
 LIMITATIONS:
 
-- Currently only the first sheet is exported.
-- Worksheet name is a default name
+- Currently only the first three worksheets are exported.
 
 
 
