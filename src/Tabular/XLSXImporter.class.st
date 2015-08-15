@@ -101,7 +101,7 @@ XLSXImporter >> extractWorksheets [
 { #category : #extracting }
 XLSXImporter >> extractWorksheetsList [
 | list |
-	list:=XLSXWorkbookParser parse: (archive memberNamed: 'xl/workbook.xml') contentStream.
+	list:=TabularXLSXWorkbookParser parse: (archive memberNamed: 'xl/workbook.xml') contentStream.
 	sheetsToExtract ifNotNil:[list := list associationsSelect: [:assoc| sheetsToExtract includes: assoc value] ].
 	^list.
 

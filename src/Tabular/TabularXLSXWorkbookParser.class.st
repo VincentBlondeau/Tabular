@@ -1,20 +1,20 @@
 Class {
-	#name : #XLSXWorkbookParser,
+	#name : #TabularXLSXWorkbookParser,
 	#superclass : #TabularSAXParser,
 	#category : #'Tabular-SAXParser'
 }
 
 { #category : #'as yet unclassified' }
-XLSXWorkbookParser >> buildRootObject [
+TabularXLSXWorkbookParser >> buildRootObject [
 	^ StandardOrderedDictionary new.
 ]
 
 { #category : #'as yet unclassified' }
-XLSXWorkbookParser >> registeredElements [
+TabularXLSXWorkbookParser >> registeredElements [
 	^ #(sheet)
 ]
 
 { #category : #'as yet unclassified' }
-XLSXWorkbookParser >> sheet_start: properties [
+TabularXLSXWorkbookParser >> sheet_start: properties [
 	parsingStack top at: (properties at: #r:id) put: (properties at: #name)
 ]
