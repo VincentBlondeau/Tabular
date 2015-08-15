@@ -3,7 +3,7 @@ I am TabularXSLXExport and exports worksheets to Excel XSLX file format.
 
 NEXT STEPS:
 
-1. Make workbook export functional. 
+1. Make workbook export do several worksheets.
 2. Create a class TabularDOCXExport as a copy of this class and make it work.
 
 
@@ -19,7 +19,8 @@ Class {
 	#name : #TabularXSLXExport,
 	#superclass : #TabularExport,
 	#instVars : [
-		'zip'
+		'zip',
+		'worksheetName'
 	],
 	#category : #'Tabular-Exporters'
 }
@@ -150,12 +151,11 @@ TabularXSLXExport >> generate [
 	zip addString: self docPropsCore_xml as: 'docProps/core.xml'.
 
     "Everything outside the xl/ folder is just meta data"
-
-	zip addString: self workbook_xml as: 'xl/workbook.xml'.
 	zip addString: self sharedStrings_xml  as: 'xl/sharedStrings.xml'.
 	zip addString: self styles_xml   as: 'xl/styles.xml'.
-	
 	self generateWorksheets.
+	zip addString: self workbook_xml as: 'xl/workbook.xml'.
+	
 	zip addString: self workbook_xml_rels as: 'xl/_rels/workbook.xml.rels'.
 
 	zip writeToFileNamed: (FileLocator home / fname ).
@@ -180,9 +180,14 @@ TabularXSLXExport >> generateOLD [
 { #category : #files }
 TabularXSLXExport >> generateWorksheets [
 "LIMITATION: currently only the first worksheet is generated"
-
-	zip addString: self worksheet_xml as: 'xl/worksheets/sheet1.xml'.
+	| worksheet |
 	
+	workbook worksheets isEmpty ifFalse: [ worksheet := workbook worksheets first  ]
+									ifTrue: [ worksheet := TabularWorksheet new ] .
+	
+	zip addString: (TabularWorksheetWriter for: worksheet) as: 'xl/worksheets/sheet1.xml'.
+	
+	worksheetName := worksheet name. "will be used by workbook_xml_sheets"
 ]
 
 { #category : #files }
@@ -293,7 +298,7 @@ TabularXSLXExport >> workbook_xml_relsOLD [
 TabularXSLXExport >> workbook_xml_sheets [
 
 ^'<sheets><sheet name="',
-worksheet name,
+worksheetName,
 '" sheetId="1" state="visible" r:id="rId2"/>
 </sheets>
 '.
@@ -307,10 +312,4 @@ TabularXSLXExport >> workbook_xml_start [
 <workbookPr backupFile="false" showObjects="all" date1904="false"/>
 <workbookProtection/>
 '.
-]
-
-{ #category : #files }
-TabularXSLXExport >> worksheet_xml [
-	^TabularWorksheetWriter for: worksheet
-
 ]

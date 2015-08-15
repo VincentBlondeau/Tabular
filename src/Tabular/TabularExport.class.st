@@ -34,7 +34,6 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'workbook',
-		'worksheet',
 		'stream'
 	],
 	#category : #'Tabular-Exporters'
@@ -94,7 +93,5 @@ TabularExport >> workbook [
 { #category : #accessing }
 TabularExport >> workbook: anObject [
 	workbook := anObject.
-	workbook worksheets isEmpty ifFalse: [ worksheet := workbook worksheets first  "Limitation: only first worksheet is exported"]
-									ifTrue: [ worksheet := TabularWorksheet new ] 
-	
+
 ]
