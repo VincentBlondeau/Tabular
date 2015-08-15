@@ -158,8 +158,8 @@ TabularWorksheet >> name [
 ]
 
 { #category : #accessing }
-TabularWorksheet >> name: aString [ 
-	self attributeAt: #name put: aString
+TabularWorksheet >> name: anObject [ 
+	self attributeAt: #name put: anObject asString
 ]
 
 { #category : #printing }

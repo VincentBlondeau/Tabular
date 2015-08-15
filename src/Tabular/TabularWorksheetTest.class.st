@@ -133,6 +133,15 @@ TabularWorksheetTest >> testName [
 ]
 
 { #category : #'expected failures' }
+TabularWorksheetTest >> testNameToStringConversion [
+	
+	ws name: (Date current).
+	self assert: (ws name isKindOf: String).
+	
+
+]
+
+{ #category : #'expected failures' }
 TabularWorksheetTest >> testRID [
  <expectedFailure>
 self assert: (ws rID notNil).  
@@ -175,16 +184,6 @@ TabularWorksheetTest >> testSizeOfEmptyTable [
 	self assert: ws maxNumOfColumns equals: 0.
 	self assert: ws maxNumOfRows equals: 0.
 	self assert: ws sizeOfWorksheet equals: 0 @ 0
-]
-
-{ #category : #'expected failures' }
-TabularWorksheetTest >> testTitleToStringConversion [
-	<expectedFailure>
-	| ss |
-	ss spreadsheetTitle: (Date current).
-	self assert: (ss spreadsheetTitle isKindOf: String).
-	
-
 ]
 
 { #category : #tests }
