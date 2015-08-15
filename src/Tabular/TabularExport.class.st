@@ -74,18 +74,6 @@ TabularExport class >> workbook: aWorkbook fileName: aFileNameString [
       
 ]
 
-{ #category : #accessing }
-TabularExport >> cellName: coord [
-	^((self columnName: coord x), (coord y asString))
-]
-
-{ #category : #accessing }
-TabularExport >> columnName: n [
-	(n <= 26) ifTrue: [^(Character value: 64 + n) asString].
-	
-	^(self columnName: ((n-1) quo: 26)), (self columnName: ((n-1) rem: 26) +1 )
-]
-
 { #category : #generating }
 TabularExport >> generate [
 

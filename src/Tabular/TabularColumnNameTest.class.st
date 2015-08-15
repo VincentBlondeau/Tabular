@@ -9,7 +9,7 @@ Class {
 
 { #category : #running }
 TabularColumnNameTest >> setUp [
-	t:=TabularXSLXExport new.
+	t:=TabularWorksheetWriter new.
 ]
 
 { #category : #tests }
