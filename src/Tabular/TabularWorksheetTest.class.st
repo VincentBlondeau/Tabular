@@ -132,7 +132,7 @@ TabularWorksheetTest >> testName [
 
 ]
 
-{ #category : #'expected failures' }
+{ #category : #tests }
 TabularWorksheetTest >> testNameToStringConversion [
 	
 	ws name: (Date current).
