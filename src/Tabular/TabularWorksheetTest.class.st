@@ -7,7 +7,7 @@ Class {
 	#category : #'Tabular-Tests'
 }
 
-{ #category : #running }
+{ #category : #setUp }
 TabularWorksheetTest >> setUp [
 	ws := TabularWorksheet new.
 ]
@@ -171,6 +171,7 @@ TabularWorksheetTest >> testSheetId [
 { #category : #'expected failures' }
 TabularWorksheetTest >> testSizeOfEmptyTable [
 <expectedFailure>
+"all methods below are not implemented"
 	self assert: ws maxNumOfColumns equals: 0.
 	self assert: ws maxNumOfRows equals: 0.
 	self assert: ws sizeOfWorksheet equals: 0 @ 0

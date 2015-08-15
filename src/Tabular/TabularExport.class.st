@@ -8,6 +8,8 @@ Usage example:
 
 NEXT STEP: add subclass  TabularHTMLExport1
 
+LIMITATION: only the first worksheet is exported. See #workbook:
+
 Responsibility part: I define the general export API every export class supports.
 
 Note: The API is not  fully defined yet.  Subclass TabularXSLXExport1 has hard coded parameters.
@@ -32,7 +34,7 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'workbook',
-		'sheet',
+		'worksheet',
 		'stream'
 	],
 	#category : #'Tabular-Exporters'
@@ -104,7 +106,7 @@ TabularExport >> workbook [
 { #category : #accessing }
 TabularExport >> workbook: anObject [
 	workbook := anObject.
-	workbook worksheets isEmpty ifFalse: [ sheet := workbook worksheets first  "Limitation: only first worksheet is exported"]
-									ifTrue: [ sheet := TabularWorksheet new ] 
+	workbook worksheets isEmpty ifFalse: [ worksheet := workbook worksheets first  "Limitation: only first worksheet is exported"]
+									ifTrue: [ worksheet := TabularWorksheet new ] 
 	
 ]

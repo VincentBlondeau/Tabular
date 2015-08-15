@@ -93,19 +93,36 @@ TabularExportImportTest >> testExport1DefaultSheetName [
 	
 ]
 
-{ #category : #'expected failures' }
+{ #category : #'as yet unclassified' }
 TabularExportImportTest >> testExport1SheetName [
- <expectedFailure>
 	| wbk   sheetImported theSheetName wbkimported |
 	wbk := XLSXImporter import: TabularResources testExcelFile1OneSheetOnly  readStream.
-	theSheetName := 'theTestWorkSheet'.
-	wbk worksheets first name: theSheetName.
+	self assert: wbk worksheets size equals: 1.
+	theSheetName := wbk worksheets first name.
 	TabularXSLXExport workbook: wbk fileName: fname.
 
 	wbkimported := XLSXImporter import: (FileLocator home / fname ) .
 	sheetImported := wbkimported worksheetNamed: theSheetName. 
 	self assert: sheetImported name equals: theSheetName.
-	self should: [ (wbkimported worksheetNamed: 'Sheet2') name ] raise: NotFound.
+	self assert: wbkimported worksheets size equals: 1.
+
+]
+
+{ #category : #'as yet unclassified' }
+TabularExportImportTest >> testExport1SheetName2 [
+	| wbk   sheetImported theSheetName wbkimported |
+	wbk := XLSXImporter import: TabularResources testExcelFile1OneSheetOnly  readStream.
+	theSheetName := 'theTestWorkSheet'.
+	wbk worksheets first name: theSheetName.
+	self assert: wbk worksheets size equals: 1.
+	self assert: wbk worksheets first name equals: theSheetName. 
+	TabularXSLXExport workbook: wbk fileName: fname.
+
+	wbkimported := XLSXImporter import: (FileLocator home / fname ) .
+	sheetImported := wbkimported worksheetNamed: theSheetName. 
+	self assert: sheetImported name equals: theSheetName.
+	self assert: wbkimported worksheets size equals: 1.
+
 ]
 
 { #category : #'as yet unclassified' }
@@ -141,7 +158,7 @@ TabularExportImportTest >> testExport3 [
 { #category : #'tests-numbers' }
 TabularExportImportTest >> testExport4Numbers [
 
-|wbk wsheet  wimported cell |
+|wbk wsheet  wimported cell nameOfSheet |
 	wbk := TabularWorkbook new.
 	self assert:  (wbk worksheets isEmpty).	
 		
@@ -150,11 +167,12 @@ TabularExportImportTest >> testExport4Numbers [
 		at: 1 @ 1 putData: 11;
 		at: 2 @ 1 putData: 21;
 		at: 3 @ 1 putData: 31.	
+	nameOfSheet := wsheet name.		
 	wbk worksheets add: wsheet.
 	TabularXSLXExport workbook: wbk fileName: fname4.
 
 	wimported := XLSXImporter import: (FileLocator home / fname4 ) .
-	cell := ((wimported worksheetNamed: 'Sheet1') at: 1@1).
+	cell := ((wimported worksheetNamed: nameOfSheet) at: 1@1).
 	self assert: (cell isKindOf:  TabularCell).
 	self assert: (cell data asString= '11').
 	self assert: (cell data = 11).  "cell data is aString but should be a number"
@@ -176,7 +194,7 @@ TabularExportImportTest >> testExport4NumbersStringContent [
 	TabularXSLXExport workbook: wbk fileName: fname4.
 
 	wimported := XLSXImporter import: (FileLocator home / fname4 ) .
-	cell := ((wimported worksheetNamed: 'Sheet1') at: 1@1).
+	cell := wimported worksheets first at: 1@1.
 	self assert: (cell isKindOf:  TabularCell).
 	self assert: (cell data asString= '11').  "content OK"
      "cell data is aString but should be a number"
@@ -186,8 +204,7 @@ TabularExportImportTest >> testExport4NumbersStringContent [
 TabularExportImportTest >> testExport4Strings [
 
 |wbk wsheet  wimported cell |
-	wbk := TabularWorkbook new.
-	self assert:  (wbk worksheets isEmpty).	
+	wbk := TabularWorkbook new. self assert:  (wbk worksheets isEmpty).	
 		
 	wsheet := TabularWorksheet new.
 	wsheet
@@ -198,23 +215,9 @@ TabularExportImportTest >> testExport4Strings [
 	TabularXSLXExport workbook: wbk fileName: fname4.
 
 	wimported := XLSXImporter import: (FileLocator home / fname4 ) .
-	cell := ((wimported worksheetNamed: 'Sheet1') at: 1@1).
+	cell := wimported worksheets first cellAt:  1@1.
 	self assert: (cell isKindOf:  TabularCell).
 	self assert: (cell data asString= 'abc 11').
-	
-"The import function cannot deal with the content constructed by the export function. 
-
-How does the import function treat the inlineStr (inline strings). The t property is recognized, but later that assingment to the cell does not take place.
-".
-
-
-'<row r="1">
-<c r="A1" t="inlineStr"><is><t>abc 11</t></is></c>
-<c r="B1" t="inlineStr"><is><t>def 21</t></is></c>
-<c r="C1" t="inlineStr"><is><t>ghi 31</t></is></c>
-</row>'
-
-
 ]
 
 { #category : #'tests-strings' }
@@ -227,7 +230,7 @@ TabularExportImportTest >> testExport5 [
 	wbk worksheets add: wsheet.
 		TabularXSLXExport workbook: wbk fileName: fname5.
 	wbkimported := XLSXImporter import: (FileLocator home / fname5 ) .
-	wsheetimported := wbkimported worksheetNamed: 'Sheet1' .
+	wsheetimported := wbkimported worksheets first.
 	cell := wsheetimported at: 1 @ 1.
 	self assert: (cell isKindOf:  TabularCell).
 	self assert: (cell data asString= 'abc 11').
