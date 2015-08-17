@@ -17,5 +17,7 @@ TabularXLSXImporterTest3 >> setUp [
 { #category : #'as yet unclassified' }
 TabularXLSXImporterTest3 >> testAccessSheetByName [
 	self assert: (workbook worksheetNamed: 'Sheet1') name equals: 'Sheet1'.
-	self should: [ (workbook worksheetNamed: 'Sheet2') name ] raise: NotFound
+	self should: [ (workbook worksheetNamed: 'Sheet2') name ] raise: NotFound.
+	
+
 ]

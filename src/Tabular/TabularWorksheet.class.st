@@ -31,7 +31,7 @@ Class {
 	#instVars : [
 		'cells',
 		'rows',
-		'cols'
+		'columnAttributes'
 	],
 	#category : #'Tabular-Model'
 }
@@ -90,15 +90,25 @@ TabularWorksheet >> cellsKeysAndValuesDo: aBlock [
 ]
 
 { #category : #accessing }
-TabularWorksheet >> col: col row: row [
-	^self at: (col @ row).
+TabularWorksheet >> col: colIndex row: rowIndex [
+	^self at: (colIndex @ rowIndex).
 
 ]
 
 { #category : #accessing }
-TabularWorksheet >> col: col row: row putData: anObject [
-	^self at: (col @ row) putData: anObject.
+TabularWorksheet >> col: colIndex row: rowIndex putData: anObject [
+	^self at: (colIndex @ rowIndex) putData: anObject.
 
+]
+
+{ #category : #accessing }
+TabularWorksheet >> columnAttributes [
+	^ columnAttributes
+]
+
+{ #category : #accessing }
+TabularWorksheet >> columnAttributes: anObject [
+	columnAttributes := anObject
 ]
 
 { #category : #removing }
@@ -144,6 +154,7 @@ TabularWorksheet >> findCellsWithContent: aContent [
 TabularWorksheet >> initialize [
 	super initialize.
 	cells := Dictionary new.
+	columnAttributes  := OrderedCollection  new.
 	self name: 'New sheet'.
 ]
 

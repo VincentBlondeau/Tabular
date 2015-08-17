@@ -1,14 +1,10 @@
 "
 I am TabularExport the root of a class of objects which export Tabular models.
 
-Usage example:   
 
-    TabularNNNNExport on: aWorkbook
+More comment see TabularXSLXExport
 
 
-NEXT STEP: add subclass  TabularHTMLExport1
-
-LIMITATION: only the first worksheet is exported. See #workbook:
 
 Responsibility part: I define the general export API every export class supports.
 

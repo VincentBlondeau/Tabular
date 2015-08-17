@@ -3,18 +3,49 @@ I am TabularXSLXExport and export worksheets to Excel XSLX file format.
 
 NEXT STEPS:
 
-1. Generalize worksheets export mechanism. Use rIds in the
+1. Add styles to export
+
+2. Generalize worksheets export mechanism. Use rIds in the
     worksheet objects.
 
-2. Create a class TabularDOCXExport as a copy of this class and make it work.
+3. Create a class TabularDOCXExport as a copy of this class and make it work.
 
 
 LIMITATIONS:
 
 - Currently only the first three worksheets are exported.
 
+Reference:
+
+http://officeopenxml.com/anatomyofOOXML-xlsx.php
+
+Content Types
+
+Every package must have a [Content_Types].xml, found at the root of the package. This file contains a list of all of the content types of the parts in the package. Every part and its type must be listed in [Content_Types].xml. The following is a content type for the main content part:
+
+<Override PartName=""/xl/workbook.xml"" ContentType=""application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml""/>
+
+It's important to keep this in mind when adding new parts to the package.
 
 
+
+Relationships
+
+Every package contains a relationships part that defines the relationships between the other parts and to resources outside of the package. This separates the relationships from content and makes it easy to change relationships without changing the sources that reference targets.
+package relationships part
+
+For an OOXML package, there is always a relationships part (.rels) within the _rels folder that identifies the starting parts of the package, or the package relationships. For example, the following defines the identity of the start part for the content:
+
+<Relationship Id=""rId1"" Type=""http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument"" Target=""xl/workbook.xml""/>.
+
+There are also typically relationships within .rels for app.xml and core.xml.
+
+In addition to the relationships part for the package, each part that is the source of one or more relationships will have its own relationships part. Each such relationship part is found within a _rels sub-folder of the part and is named by appending '.rels' to the name of the part.
+
+Typically the main content part (workbook.xml) has its own relationships part (workbook.xml.rels). It will contain relationships to the other parts of the content, such as sheet1.xml, sharedStrings.xml, styles.xml, theme1,xml, as well as the URIs for external links. 
+
+
+https://msdn.microsoft.com/en-us/library/office/gg278316.aspx
 "
 Class {
 	#name : #TabularXSLXExport,
@@ -203,7 +234,7 @@ TabularXSLXExport >> generate [
 	
 	zip addString: self workbook_xml_rels as: 'xl/_rels/workbook.xml.rels'.
 
-	zip writeToFileNamed: (FileLocator home / fname ).
+	zip writeToFileNamed: fname.
 	
 ]
 

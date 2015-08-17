@@ -23,7 +23,8 @@ Class {
 	#superclass : #TabularSAXParser,
 	#instVars : [
 		'rowCounter',
-		'colCounter'
+		'colCounter',
+		'columnAttributes'
 	],
 	#category : #'Tabular-SAXParser'
 }
@@ -76,22 +77,31 @@ TabularXLSXSheetParser >> cell [
 		ifFalse: [ self error: '(Tabular)Cell expected at this stage of parsing, but found: ', current class name]
 ]
 
+{ #category : #elements }
+TabularXLSXSheetParser >> col_start: properties [
+	columnAttributes add: properties.
+]
+
 { #category : #initialization }
 TabularXLSXSheetParser >> initialize [
 	super initialize.
 	colCounter := 1.
 	rowCounter := 1.
+	columnAttributes := OrderedCollection new.
 
 ]
 
 { #category : #'as yet unclassified' }
 TabularXLSXSheetParser >> parsingResult [
-	^ self worksheet
+       | ws |
+       ws := self worksheet.
+       ws columnAttributes: columnAttributes. 
+	^ ws
 ]
 
 { #category : #'handling - content' }
 TabularXLSXSheetParser >> registeredElements [
-	^ #(row c v t)
+	^ #(row c v t col)
 ]
 
 { #category : #elements }

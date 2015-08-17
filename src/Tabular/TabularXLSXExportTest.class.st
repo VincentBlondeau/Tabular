@@ -9,7 +9,8 @@ Class {
 		'fname7',
 		'fname8',
 		'fname9',
-		'fname10'
+		'fname10',
+		'wsheetNumbersInRow1'
 	],
 	#category : #'Tabular-Tests'
 }
@@ -17,14 +18,24 @@ Class {
 { #category : #'as yet unclassified' }
 TabularXLSXExportTest >> setUp [
     
+	| dir |
+	wsheetNumbersInRow1 := TabularWorksheet new.
+	wsheetNumbersInRow1
+		at: 1 @ 1 putData: 11;
+		at: 2 @ 1 putData: 21;
+		at: 3 @ 1 putData: 31.
 
-    fname4 := 'TabularConstructed4Exported.xlsx'.
-    fname5 := 'TabularConstructed5Exported.xlsx'.
-    fname6 := 'TabularConstructed6Exported.xlsx'.
-    fname7 := 'TabularConstructed7Exported.xlsx'.
-    fname8 := 'TabularConstructed8ExportedInlineStringsAnalysis.xlsx'.
-    fname9 := 'TabularConstructed9ExportedSharedStringsAnalysis.xlsx'.
-    fname10 := 'TabularConstructed10TwoWorksheets.xlsx'.
+     dir := FileLocator temp.  "use temporary directory to put the exported test files."
+
+    fname4 := dir / 'TabularConstructed4Exported.xlsx'. 
+    fname5 := dir / 'TabularConstructed5Exported.xlsx'.
+    fname6 := dir / 'TabularConstructed6Exported.xlsx'.
+    fname7 := dir / 'TabularConstructed7Exported.xlsx'.
+    fname8 := dir / 'TabularConstructed8ExportedInlineStringsAnalysis.xlsx'.
+    fname9 := dir / 'TabularConstructed9ExportedSharedStringsAnalysis.xlsx'.
+    fname10 :=dir /  'TabularConstructed10TwoWorksheets.xlsx'.
+
+
 
 
 ]
@@ -34,14 +45,10 @@ TabularXLSXExportTest >> testExport4 [
 
 |wbk wsheet    |
 	wbk := TabularWorkbook new.
-	self assert:  (wbk worksheets isEmpty).	
-		
-	wsheet := TabularWorksheet new.
-	wsheet
-		at: 1 @ 1 putData: 11;
-		at: 2 @ 1 putData: 21;
-		at: 3 @ 1 putData: 31.	
+	self assert:  (wbk worksheets isEmpty).		
+	wsheet := wsheetNumbersInRow1.
 	wbk worksheets add: wsheet.
+	fname4  ensureDelete.
 	TabularXSLXExport workbook: wbk fileName: fname4.
 	
 	"manual inspection shows that the exported file is fine"
@@ -54,15 +61,10 @@ TabularXLSXExportTest >> testExport5 [
 |wbk wsheet    |
 	wbk := TabularWorkbook new.
 	self assert:  (wbk worksheets isEmpty).	
-		
-	wsheet := TabularWorksheet new.
-	wsheet
-		at: 1 @ 1 putData: 11;
-		at: 2 @ 1 putData: 21;
-		at: 3 @ 1 putData: 31;
-			
-		at: 9 @ 9 putData: 99.		
+	wsheet := wsheetNumbersInRow1.
+	wsheet	at: 9 @ 9 putData: 99.		
 	wbk worksheets add: wsheet.
+	fname5  ensureDelete.
 	TabularXSLXExport workbook: wbk fileName: fname5.
 	
 	"manual inspection shows that the exported file is fine"
@@ -71,19 +73,17 @@ TabularXLSXExportTest >> testExport5 [
 
 { #category : #'as yet unclassified' }
 TabularXLSXExportTest >> testExport6 [
-
 |wbk wsheet    |
 	wbk := TabularWorkbook new.
-	self assert:  (wbk worksheets isEmpty).	
-		
+	self assert:  (wbk worksheets isEmpty).			
 	wsheet := TabularWorksheet new.
 	wsheet
 		at: 1 @ 1 putData: 'aaa';
 		at: 2 @ 1 putData: 'bbb';
 		at: 3 @ 1 putData: 'ccc'.	
 	wbk worksheets add: wsheet.
-	TabularXSLXExport workbook: wbk fileName: fname6.
-	
+	fname6  ensureDelete.
+	TabularXSLXExport workbook: wbk fileName: fname6.	
 	"manual inspection shows that the exported file is fine"
 
 ]
@@ -102,6 +102,7 @@ TabularXLSXExportTest >> testExport7 [
       (wsheet cellAt: 1 @ 1) colspan: 1.
 			
 	wbk worksheets add: wsheet.
+	fname7  ensureDelete.
 	TabularXSLXExport workbook: wbk fileName: fname7.
 	
 	"manual inspection shows that the exported file is fine"
@@ -124,6 +125,7 @@ TabularXLSXExportTest >> testExport7b [
       (wsheet cellAt: 'A1' asPoint) colspan: 1.
 			
 	wbk worksheets add: wsheet.
+	fname7 ensureDelete.
 	TabularXSLXExport workbook: wbk fileName: fname7.
 	
 	"manual inspection shows that the exported file is fine"
@@ -140,6 +142,7 @@ TabularXLSXExportTest >> testExport8 [
 	wsheet := TabularWorksheet new.
 	wsheet at: 'A1' asPoint putData: myString.
 	wbk worksheets add: wsheet.
+	fname8  ensureDelete.
 	TabularXSLXExport workbook: wbk fileName: fname8.
 	"ZipArchive new readFrom: fname8."
 	
@@ -163,6 +166,7 @@ TabularXLSXExportTest >> testExport9 [
 		at: 'A8' asPoint putData: myString;
 		at: 'A9' asPoint putData: myString.
 	wbk worksheets add: wsheet.
+	fname9  ensureDelete.
 	TabularXSLXExport workbook: wbk fileName: fname9.
 	
 	"manual inspection shows that the exported file is fine"	
