@@ -106,6 +106,16 @@ TabularWorksheetWriterWordML class >> document_xml_example_table [
 </w:tbl>'
 ]
 
+{ #category : #'as yet unclassified' }
+TabularWorksheetWriterWordML class >> for: aWorkSheet writer: aWriter [
+
+	| twriter |
+
+	twriter := self new worksheet: aWorkSheet.
+	twriter writer: aWriter.
+	twriter renderWorksheet.
+]
+
 { #category : #'useful documentation' }
 TabularWorksheetWriterWordML class >> wordProcessingMLdocumentation [
 
@@ -192,31 +202,6 @@ TabularWorksheetWriterWordML >> renderName [
 ]
 
 { #category : #'as yet unclassified' }
-TabularWorksheetWriterWordML >> renderNameOLD [
-	writer tag
-		name: 'w:p';
-		with: [ 
-					writer tag: 'w:pPr' with: [
-						writer tag name: 'w:pStyle';
-						attributeAt: 'val' put: 'Heading1'].
-					writer tag: 'w:r' with: [writer tag: 'w:t' with: worksheet name]
-					].
-	
-				
-			'<w:p>
-
-<w:pPr>
-<w:pStyle w:val="H End of statement list encountered ->eading1"/>
-<w:spacing w:before="240" w:after="120"/>
-</w:pPr>
-
-<w:r><w:t>The first tabular table</w:t></w:r>
-
-</w:p>
-'
-]
-
-{ #category : #'as yet unclassified' }
 TabularWorksheetWriterWordML >> renderRows [
 	worksheet rows do:[:rowN|
 		writer tag
@@ -254,26 +239,9 @@ writer raw: '
 
 { #category : #'as yet unclassified' }
 TabularWorksheetWriterWordML >> renderWorksheet [
-	writer tag
-		name: 'w:document';
-		attributeAt: 'xmlns:w' put: 'http://schemas.openxmlformats.org/wordprocessingml/2006/main';
-		with: [ 
-					writer tag: 'w:body' with: [
-						self renderHeadingWithName.
-						(worksheet rows size > 0) ifTrue: [ self renderSheetData]
-					"self renderMergeCells" ]
-				]
-]
-
-{ #category : #'as yet unclassified' }
-TabularWorksheetWriterWordML >> renderWorksheetOLD [
-
-	writer tag
-		name: 'w:body';
-		with: [ 
-					self renderSheetData.
-					"self renderMergeCells" ].
-				
-			'<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">'
+	self renderHeadingWithName.
+	worksheet rows size > 0
+		ifTrue: [ self renderSheetData ]	
+			"self renderMergeCells"
 ]
 

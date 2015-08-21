@@ -106,6 +106,26 @@ TabularDOCXExperimentalExport3 export: aWorkbook fileName: (FileLocator home / '
 ]
 
 { #category : #'as yet unclassified' }
+TabularDOCXExperimentalExportTest3 >> testExport2Worksheets [
+
+| aWorkbook aWorksheet |
+
+aWorkbook := TabularWorkbook new.
+aWorksheet := TabularDOCXExperimentalExport3 sampleWorksheetWith2RowsAnd3Columns.
+aWorksheet name: 'The first worksheet'.
+aWorkbook addSheet: aWorksheet.
+
+aWorksheet := TabularWorksheet new.
+aWorksheet	 at: 1 @ 1 putData: 11;
+		at: 2 @ 1 putData: 21;
+		at: 3 @ 1 putData: 31;
+		at: 4 @ 1 putData: 31.
+aWorksheet name: 'The second worksheet'.
+aWorkbook addSheet: aWorksheet.
+TabularDOCXExperimentalExport3 export: aWorkbook fileName: (FileLocator home / 'testExport3Write2Worksheets.docx').
+]
+
+{ #category : #'as yet unclassified' }
 TabularDOCXExperimentalExportTest3 >> testExport3ColumnTable [
 
 | aWorkbook |

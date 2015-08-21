@@ -115,3 +115,13 @@ TabularXMLWriter >> worksheet: anObject [
 	worksheet := anObject.
 	
 ]
+
+{ #category : #accessing }
+TabularXMLWriter >> writer [
+	^ writer
+]
+
+{ #category : #accessing }
+TabularXMLWriter >> writer: anObject [
+	writer := anObject
+]

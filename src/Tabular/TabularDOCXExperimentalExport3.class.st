@@ -187,10 +187,47 @@ TabularDOCXExperimentalExport3 >> generate [
 	| documentString |
 	zip := ZipArchive new 
 			readFrom:  self class tabularTestTableWithoutDocumentXML readStream.
-documentString := ((TabularWorksheetWriterWordML  for: self workbook worksheets first ) convertToEncoding: 'utf-8').
-
+documentString := (self generateDocumentXML convertToEncoding: 'utf-8').
 zip addString: documentString as: 'word/document.xml'.
 self writeZip
+
+
+]
+
+{ #category : #'as yet unclassified' }
+TabularDOCXExperimentalExport3 >> generateDocumentXML [ 
+| aWriter |
+aWriter := XMLWriter new enablePrettyPrinting.
+aWriter xml standalone: true.
+
+aWriter tag
+		name: 'w:document';
+		attributeAt: 'xmlns:w' put: 'http://schemas.openxmlformats.org/wordprocessingml/2006/main';
+		with: [  aWriter tag: 'w:body' with: [
+						self renderWorksheets: aWriter]
+				].
+			
+ ^aWriter contents
+
+
+
+]
+
+{ #category : #'as yet unclassified' }
+TabularDOCXExperimentalExport3 >> generateDocumentXMLfirstOnly [ 
+
+^(TabularWorksheetWriterWordML  for: self workbook worksheets first ) 
+
+
+]
+
+{ #category : #'as yet unclassified' }
+TabularDOCXExperimentalExport3 >> renderWorksheets: aWriter [
+
+self workbook worksheets do: [ :worksheet |
+	 TabularWorksheetWriterWordML  for: worksheet writer: aWriter].
+	
+
 
 
 ]
