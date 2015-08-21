@@ -35,12 +35,7 @@ aWorksheet col: 1 row: 1 putData: 'abc'.
 <w:tblPr>
 <w:tblW w:w="9638" w:type="dxa"/><w:jc w:val="left"/><w:tblInd w:w="55" w:type="dxa"/><w:tblBorders><w:top w:val="single" w:sz="2" w:space="0" w:color="000000"/><w:left w:val="single" w:sz="2" w:space="0" w:color="000000"/><w:bottom w:val="single" w:sz="2" w:space="0" w:color="000000"/><w:insideH w:val="single" w:sz="2" w:space="0" w:color="000000"/></w:tblBorders><w:tblCellMar><w:top w:w="55" w:type="dxa"/><w:left w:w="54" w:type="dxa"/><w:bottom w:w="55" w:type="dxa"/><w:right w:w="55" w:type="dxa"/></w:tblCellMar>
 </w:tblPr>
-<w:tblGrid>
-<w:gridCol w:w="3212"/>
-<w:gridCol w:w="3213"/>
-<w:gridCol w:w="3213"/>
-</w:tblGrid>
-<w:tr>
+<<w:tblGrid>><w:gridCol w:w="3212"/><w:gridCol w:w="3212"/><w:gridCol w:w="3212"/></<w:tblGrid>><w:tr>
                 <w:tc><w:tcPr><w:tcW w:w="3212" w:type="dxa"/><w:tcBorders><w:top w:val="single" w:sz="2" w:space="0" w:color="000000"/><w:left w:val="single" w:sz="2" w:space="0" w:color="000000"/><w:bottom w:val="single" w:sz="2" w:space="0" w:color="000000"/><w:insideH w:val="single" w:sz="2" w:space="0" w:color="000000"/></w:tcBorders><w:shd w:fill="auto" w:val="clear"/><w:tcMar><w:left w:w="54" w:type="dxa"/></w:tcMar>
 </w:tcPr>
 <w:p>

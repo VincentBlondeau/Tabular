@@ -20,14 +20,14 @@ Class {
 	#category : #'Tabular-Tests'
 }
 
-{ #category : #setUp6 }
+{ #category : #string }
 TabularDOCXExperimentalExportTest2 >> app_xml_String [
 
 ^'<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Properties xmlns="http://schemas.openxmlformats.org/officeDocument/2006/extended-properties" xmlns:vt="http://schemas.openxmlformats.org/officeDocument/2006/docPropsVTypes"><TotalTime>311</TotalTime><Application>LibreOffice/4.3.5.2$Linux_x86 LibreOffice_project/430m0$Build-2</Application><Paragraphs>13</Paragraphs></Properties>'
 ]
 
-{ #category : #setUp6 }
+{ #category : #string }
 TabularDOCXExperimentalExportTest2 >> contentTypesString [
 
  ^'<?xml version="1.0" encoding="UTF-8"?>
@@ -54,14 +54,14 @@ TabularDOCXExperimentalExportTest2 >> contentTypesString [
 
 ]
 
-{ #category : #setUp6 }
+{ #category : #string }
 TabularDOCXExperimentalExportTest2 >> core_xml_String [
 
 ^ '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <cp:coreProperties xmlns:cp="http://schemas.openxmlformats.org/package/2006/metadata/core-properties" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:dcmitype="http://purl.org/dc/dcmitype/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><dcterms:created xsi:type="dcterms:W3CDTF">2015-08-18T09:03:27Z</dcterms:created><dc:creator>user </dc:creator><dc:language>en-GB</dc:language><cp:lastModifiedBy>user </cp:lastModifiedBy><dcterms:modified xsi:type="dcterms:W3CDTF">2015-08-18T09:08:38Z</dcterms:modified><cp:revision>1</cp:revision></cp:coreProperties>'
 ]
 
-{ #category : #setUp6 }
+{ #category : #string }
 TabularDOCXExperimentalExportTest2 >> documentString [
 
 ^'<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
@@ -72,7 +72,7 @@ TabularDOCXExperimentalExportTest2 >> documentString [
 
 ]
 
-{ #category : #setUp6 }
+{ #category : #string }
 TabularDOCXExperimentalExportTest2 >> document_xml_rels [
 
 ^'<?xml version="1.0" encoding="UTF-8"?>
@@ -92,7 +92,7 @@ TabularDOCXExperimentalExportTest2 >> document_xml_rels [
 
 ]
 
-{ #category : #setUp6 }
+{ #category : #string }
 TabularDOCXExperimentalExportTest2 >> fontTableString [
 
 ^'<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
@@ -100,7 +100,7 @@ TabularDOCXExperimentalExportTest2 >> fontTableString [
 
 ]
 
-{ #category : #setUp6 }
+{ #category : #string }
 TabularDOCXExperimentalExportTest2 >> numberingString [
 
 ^'<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
@@ -108,7 +108,7 @@ TabularDOCXExperimentalExportTest2 >> numberingString [
 
 ]
 
-{ #category : #setUp6 }
+{ #category : #string }
 TabularDOCXExperimentalExportTest2 >> relsString [
 
 ^'<?xml version="1.0" encoding="UTF-8"?>
@@ -124,8 +124,8 @@ TabularDOCXExperimentalExportTest2 >> relsString [
 
 ]
 
-{ #category : #setUp6 }
-TabularDOCXExperimentalExportTest2 >> setUp6 [
+{ #category : #setUp }
+TabularDOCXExperimentalExportTest2 >> setUp [
   
 	fname6 := FileLocator temp / 'TabularDOCX6Exported.docx'. 
 
@@ -133,7 +133,7 @@ TabularDOCXExperimentalExportTest2 >> setUp6 [
 
 ]
 
-{ #category : #setUp6 }
+{ #category : #string }
 TabularDOCXExperimentalExportTest2 >> settingsString [
 
 ^'<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
@@ -141,7 +141,7 @@ TabularDOCXExperimentalExportTest2 >> settingsString [
 
 ]
 
-{ #category : #setUp6 }
+{ #category : #string }
 TabularDOCXExperimentalExportTest2 >> stylesString [
 
 ^'<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
@@ -149,9 +149,9 @@ TabularDOCXExperimentalExportTest2 >> stylesString [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #test }
 TabularDOCXExperimentalExportTest2 >> test [
-self setUp6. fname6 ensureDelete.
+self setUp. fname6 ensureDelete.
 zip:= ZipArchive new. 
 zip addString: self contentTypesString as: '[Content_Types].xml'.
 zip addString: self relsString as: '_rels/.rels'.

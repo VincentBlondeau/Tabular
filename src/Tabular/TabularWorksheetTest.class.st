@@ -124,6 +124,25 @@ TabularWorksheetTest >> testFindCellsWithContent2 [
 
 ]
 
+{ #category : #tests }
+TabularWorksheetTest >> testMaxNumberOfColumns [
+
+       ws col: 1 row: 1 putData: 11.
+       ws col: 2 row: 1 putData: 21.
+
+	self assert: ws maxNumberOfColumns equals: 2.
+
+]
+
+{ #category : #tests }
+TabularWorksheetTest >> testMaxNumberOfColumns0 [
+
+	self assert: ws maxNumberOfColumns equals: 0.
+
+
+
+]
+
 { #category : #'tests-accessing' }
 TabularWorksheetTest >> testName [
 

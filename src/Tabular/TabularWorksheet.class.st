@@ -69,7 +69,7 @@ TabularWorksheet >> cellAt: coord [
 
 { #category : #accessing }
 TabularWorksheet >> cellsAsMatrix [
-	| matrix |
+	| matrix cols|
 	cols := self cells keys max x.
 	rows := self cells keys max y.
 	matrix := Matrix rows: rows columns: cols.
@@ -161,6 +161,14 @@ TabularWorksheet >> initialize [
 { #category : #testing }
 TabularWorksheet >> isTabularWorksheet [
 	^true
+]
+
+{ #category : #accessing }
+TabularWorksheet >> maxNumberOfColumns [
+
+	(cells keys size = 0) ifTrue: [ ^0 ] ifFalse:  [	^ cells keys max x  ]
+
+
 ]
 
 { #category : #accessing }

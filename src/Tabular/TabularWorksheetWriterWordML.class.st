@@ -128,6 +128,15 @@ self document_xml_example1
 ]
 
 { #category : #'as yet unclassified' }
+TabularWorksheetWriterWordML >> renderCell: coord [
+	| cell |
+	cell := worksheet cellAt: coord.
+	^ (cell data isKindOf: Date)
+		ifTrue: [ self renderCellWithDate: coord ]
+		ifFalse: [ self renderCellWithString: coord ] 
+]
+
+{ #category : #'as yet unclassified' }
 TabularWorksheetWriterWordML >> renderCellProperties [
 
 writer raw: '<w:tcPr><w:tcW w:w="3212" w:type="dxa"/><w:tcBorders><w:top w:val="single" w:sz="2" w:space="0" w:color="000000"/><w:left w:val="single" w:sz="2" w:space="0" w:color="000000"/><w:bottom w:val="single" w:sz="2" w:space="0" w:color="000000"/><w:insideH w:val="single" w:sz="2" w:space="0" w:color="000000"/></w:tcBorders><w:shd w:fill="auto" w:val="clear"/><w:tcMar><w:left w:w="54" w:type="dxa"/></w:tcMar>
@@ -227,13 +236,10 @@ TabularWorksheetWriterWordML >> renderSheetData [
 
 { #category : #'as yet unclassified' }
 TabularWorksheetWriterWordML >> renderTableGrid [
-"should later depend on the number of columns"
-writer raw: '<w:tblGrid>
-<w:gridCol w:w="3212"/>
-<w:gridCol w:w="3213"/>
-<w:gridCol w:w="3213"/>
-</w:tblGrid>
-'
+"later on take width into account"
+	writer tag: 'w:tblGrid' with: [ 
+		worksheet maxNumberOfColumns timesRepeat:  [ 
+			writer raw: '<w:gridCol w:w="3212"/>' ] ]
 ]
 
 { #category : #'as yet unclassified' }
