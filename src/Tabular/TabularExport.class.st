@@ -29,6 +29,7 @@ Class {
 	#name : #TabularExport,
 	#superclass : #Object,
 	#instVars : [
+		'zip',
 		'workbook',
 		'stream'
 	],
@@ -90,4 +91,10 @@ TabularExport >> workbook [
 TabularExport >> workbook: anObject [
 	workbook := anObject.
 
+]
+
+{ #category : #'as yet unclassified' }
+TabularExport >> writeZip [
+
+	zip writeToFileNamed: workbook filename
 ]

@@ -51,7 +51,6 @@ Class {
 	#name : #TabularXSLXExport,
 	#superclass : #TabularExport,
 	#instVars : [
-		'zip',
 		'xmlSheetsForWorkbookXML'
 	],
 	#category : #'Tabular-Exporters'
@@ -218,8 +217,7 @@ TabularXSLXExport >> docPropsCore_xml_3 [
 
 { #category : #files }
 TabularXSLXExport >> generate [
-	| fname |
-	fname := workbook filename.
+	
 	zip addString: self content_types_xml as: '[Content_Types].xml'.
 	zip addString: self rels as: '_rels/.rels'.
 
@@ -234,8 +232,7 @@ TabularXSLXExport >> generate [
 	
 	zip addString: self workbook_xml_rels as: 'xl/_rels/workbook.xml.rels'.
 
-	zip writeToFileNamed: fname.
-	
+	self writeZip.
 ]
 
 { #category : #'files-OLD' }
@@ -261,19 +258,19 @@ TabularXSLXExport >> generateWorksheets [
 	workbook worksheets isEmpty ifFalse: [ worksheet := workbook worksheets first  ]
 									ifTrue: [ worksheet := TabularWorksheet new ] .
 									
-	zip addString: (TabularWorksheetWriter for: worksheet) as: 'xl/worksheets/sheet1.xml'.
+	zip addString: (TabularWorksheetWriterXL for: worksheet) as: 'xl/worksheets/sheet1.xml'.
 	xmlSheetsForWorkbookXML := self workbook_xml_sheetNamed: worksheet name rId: 'rId2'.
 	
     (workbook worksheets size > 1) ifTrue: [ 
 	 worksheet := workbook worksheets second.
-	zip addString: (TabularWorksheetWriter for: worksheet) as: 'xl/worksheets/sheet2.xml'.
+	zip addString: (TabularWorksheetWriterXL for: worksheet) as: 'xl/worksheets/sheet2.xml'.
 	xmlSheetsForWorkbookXML := xmlSheetsForWorkbookXML ,
 	                           (self workbook_xml_sheetNamed: worksheet name rId: 'rId3').
 	].
 
  (workbook worksheets size > 2) ifTrue: [ 
 	 worksheet := workbook worksheets third.
-	zip addString: (TabularWorksheetWriter for: worksheet) as: 'xl/worksheets/sheet3.xml'.
+	zip addString: (TabularWorksheetWriterXL for: worksheet) as: 'xl/worksheets/sheet3.xml'.
 	xmlSheetsForWorkbookXML := xmlSheetsForWorkbookXML ,
 	                           (self workbook_xml_sheetNamed: worksheet name rId: 'rId4').
 	]

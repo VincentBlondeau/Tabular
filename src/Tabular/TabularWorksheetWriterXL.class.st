@@ -1,8 +1,6 @@
 "
 I am TabularWorksheetWriter and generate the XML for a worksheet.
 
-IMPLEMENTATION STARTED BUT NOT TESTED YET.
-
 
 For the Class part:  State the name of the class with one line description: For example, I'm xxx the root of the hierarchy of visitor objects.
 
@@ -24,54 +22,13 @@ Internal Representation and Key Implementation Points.
     Implementation Points
 "
 Class {
-	#name : #TabularWorksheetWriter,
-	#superclass : #Object,
-	#instVars : [
-		'worksheet',
-		'writer'
-	],
+	#name : #TabularWorksheetWriterXL,
+	#superclass : #TabularXMLWriter,
 	#category : #'Tabular-Exporters'
 }
 
-{ #category : #'as yet unclassified' }
-TabularWorksheetWriter class >> for: aWorkSheet [
-
-	| twriter |
-	twriter := self new worksheet: aWorkSheet.
-	twriter renderWorksheet.
-	^twriter contents
-]
-
-{ #category : #utilities }
-TabularWorksheetWriter >> cellName: coord [
-	^((self columnName: coord x), (coord y asString))
-]
-
-{ #category : #utilities }
-TabularWorksheetWriter >> columnName: n [
-	(n <= 26) ifTrue: [^(Character value: 64 + n) asString].
-	
-	^(self columnName: ((n-1) quo: 26)), (self columnName: ((n-1) rem: 26) +1 )
-]
-
 { #category : #rendering }
-TabularWorksheetWriter >> contents [
-
-    ^ writer write contents convertToEncoding: 'utf-8'
-]
-
-{ #category : #initalize }
-TabularWorksheetWriter >> initialize [
-
-	writer := XMLWriter new.
-	writer xml standalone: true.
-	writer enablePrettyPrinting.
-	
-
-]
-
-{ #category : #rendering }
-TabularWorksheetWriter >> mergeCells [
+TabularWorksheetWriterXL >> mergeCells [
 |res|
 	res := Dictionary new.
 	worksheet cellsKeysAndValuesDo: [:coord :cell|
@@ -84,19 +41,7 @@ TabularWorksheetWriter >> mergeCells [
 ]
 
 { #category : #rendering }
-TabularWorksheetWriter >> renderCell: coord [
-	| cell |
-	cell := worksheet cellAt: coord.
-	^ cell data isNumber
-		ifTrue: [ self renderCellWithNumber: coord ]
-		ifFalse: [ 
-			(cell data isKindOf: Date)
-				ifTrue: [ self renderCellWithDate: coord ]
-				ifFalse: [ self renderCellWithString: coord ] ]
-]
-
-{ #category : #rendering }
-TabularWorksheetWriter >> renderCellWithDate: coord [
+TabularWorksheetWriterXL >> renderCellWithDate: coord [
 	writer tag
 		name: 'c';
 		attributeAt: 'r' put: (self cellName: coord);
@@ -105,7 +50,7 @@ TabularWorksheetWriter >> renderCellWithDate: coord [
 ]
 
 { #category : #rendering }
-TabularWorksheetWriter >> renderCellWithNumber:  coord [
+TabularWorksheetWriterXL >> renderCellWithNumber:  coord [
 	writer tag
 		name: 'c';
 		attributeAt: 'r' put: (self cellName: coord);
@@ -114,7 +59,7 @@ TabularWorksheetWriter >> renderCellWithNumber:  coord [
 ]
 
 { #category : #rendering }
-TabularWorksheetWriter >> renderCellWithString: coord [
+TabularWorksheetWriterXL >> renderCellWithString: coord [
 "do NOT use the construction of a file sharedStrings.xml at the moment; all strings are inlineStr"
 
 	writer tag
@@ -125,7 +70,7 @@ TabularWorksheetWriter >> renderCellWithString: coord [
 ]
 
 { #category : #rendering }
-TabularWorksheetWriter >> renderMergeCells [
+TabularWorksheetWriterXL >> renderMergeCells [
 	self mergeCells ifNotEmptyDo: [ : mergeCells |
 		writer tag: 'mergeCells' with:[
 			mergeCells keysAndValuesDo: [:topleft :bottomright|
@@ -139,18 +84,7 @@ TabularWorksheetWriter >> renderMergeCells [
 ]
 
 { #category : #rendering }
-TabularWorksheetWriter >> renderRow: rowN [
-	| keys |
-	keys := (worksheet allCoord
-	select: [ :coord | coord y = rowN ]) 
-	sort: [ :coord1 :coord2 | coord1 x < coord2 x ].	
-		
-	"cells must be sorted by column in the file"
-	keys do: [ :coord | self renderCell: coord ]
-]
-
-{ #category : #rendering }
-TabularWorksheetWriter >> renderRows [
+TabularWorksheetWriterXL >> renderRows [
 	worksheet rows do:[:rowN|
 		writer tag
 			name: 'row';
@@ -160,13 +94,13 @@ TabularWorksheetWriter >> renderRows [
 ]
 
 { #category : #rendering }
-TabularWorksheetWriter >> renderSheetData [
+TabularWorksheetWriterXL >> renderSheetData [
 
     writer tag: 'sheetData' with: [ self renderRows ]
 ]
 
 { #category : #rendering }
-TabularWorksheetWriter >> renderWorksheet [
+TabularWorksheetWriterXL >> renderWorksheet [
 	writer tag
 		name: 'worksheet';
 		attributeAt: 'xmlns' put: 'http://schemas.openxmlformats.org/spreadsheetml/2006/main';
@@ -174,15 +108,4 @@ TabularWorksheetWriter >> renderWorksheet [
 		with: [ 
 					self renderSheetData.
 					self renderMergeCells ]
-]
-
-{ #category : #accessing }
-TabularWorksheetWriter >> worksheet [
-	^ worksheet
-]
-
-{ #category : #accessing }
-TabularWorksheetWriter >> worksheet: anObject [
-	worksheet := anObject.
-	
 ]

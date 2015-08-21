@@ -140,10 +140,10 @@ TabularXLSXSheetParserTest >> testParsingResult3 [
 |  worksheet |
 worksheet := TabularXLSXSheetParser	parse: xmlString3.
 	
-"worksheet inspect.	"
-	
 self assert: ((worksheet cellAt: 'A1' asPoint) data isKindOf: String).
-self assert: (worksheet cellAt: 'A1' asPoint) data equals: 'widthDefault'
+self assert: (worksheet columnAttributes first at: 'min')  equals: '1'.
+self assert: (worksheet columnAttributes first at: 'max')  equals: '1'.
+self assert: (worksheet columnAttributes first at: 'width')  equals: '11.5204081632653'.
 
 
 
