@@ -3,13 +3,15 @@ I am TabularDOCXExperimentalExport and export a TabularWorkbook to a DOCX file.
 
 Responsibility part:  I only export one worksheet (table) at the moment.
 
-
 THIS IS A DEMO CLASS which shows how a DOCX file is constructed from the parts.  Besides that NO FUNCTION.
 
-TabularDOCXExperimentalExport uses imported template and only generates document.xml.
+
+TabularDOCXExperimentalExport3 uses an imported template and only generates document.xml.
+
+Later as more parametrization will come in parts from here will be moved to TabularDOCXExperimentalExport3 thus removing parts from there.
 
 
-Collaborators Part:  I use TabularTableWriterWordML to help generating the code for the document.xml file contained in the DOCX archive.
+Collaborators Part:  I use TabularWorksheetWriterWordML to help generating the code for the document.xml file contained in the DOCX archive.
 
 
 Public API and Key Messages

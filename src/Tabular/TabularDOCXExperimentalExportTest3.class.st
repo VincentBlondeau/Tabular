@@ -93,3 +93,25 @@ archive addString: (self documentString convertToEncoding: 'utf-8') as: 'word/do
 archive writeToFileNamed: (FileLocator home / 'test.docx')
 
 ]
+
+{ #category : #'as yet unclassified' }
+TabularDOCXExperimentalExportTest3 >> test [
+
+| aWorkbook |
+
+aWorkbook := TabularWorkbook new.
+aWorkbook addSheet: (TabularDOCXExperimentalExport3 sampleWorksheetWith2RowsAnd3Columns).
+
+TabularDOCXExperimentalExport3 export: aWorkbook fileName: (FileLocator home / 'testExport3Write7.docx').
+]
+
+{ #category : #'as yet unclassified' }
+TabularDOCXExperimentalExportTest3 >> testExport3ColumnTable [
+
+| aWorkbook |
+
+aWorkbook := TabularWorkbook new.
+aWorkbook addSheet: (TabularDOCXExperimentalExport3 sampleWorksheetWith2RowsAnd3Columns).
+
+TabularDOCXExperimentalExport3 export: aWorkbook fileName: (FileLocator home / 'testExport3Write7.docx').
+]

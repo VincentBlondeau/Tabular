@@ -252,7 +252,7 @@ TabularXSLXExport >> generateOLD [
 
 { #category : #files }
 TabularXSLXExport >> generateWorksheets [
-"LIMITATION: currently only the first worksheet is generated"
+"LIMITATION: currently only the first three worksheets are generated"
 	| worksheet |
 	
 	workbook worksheets isEmpty ifFalse: [ worksheet := workbook worksheets first  ]
