@@ -56,14 +56,6 @@ TabularExport class >> export: aWorkbook fileName: aFileNameString [
 ]
 
 { #category : #exporting }
-TabularExport class >> export: aWorkbook stream: aStream [
-
-   self halt.
-
-"Implementation ???"
-]
-
-{ #category : #exporting }
 TabularExport class >> workbook: aWorkbook fileName: aFileNameString [
 
       self export: aWorkbook fileName: aFileNameString
