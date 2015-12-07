@@ -102,6 +102,11 @@ TabularWorksheet >> col: colIndex row: rowIndex putData: anObject [
 ]
 
 { #category : #accessing }
+TabularWorksheet >> cols [
+	^self columns
+]
+
+{ #category : #accessing }
 TabularWorksheet >> columnAttributes [
 	^ columnAttributes
 ]
@@ -109,6 +114,51 @@ TabularWorksheet >> columnAttributes [
 { #category : #accessing }
 TabularWorksheet >> columnAttributes: anObject [
 	columnAttributes := anObject
+]
+
+{ #category : #accessing }
+TabularWorksheet >> columns [
+	^(cells keys collect: [ :coord| coord x]) asSet asOrderedCollection sort
+	"ToDo: It's neccessary to avoid code dublication with #rows"
+	
+]
+
+{ #category : #removing }
+TabularWorksheet >> compactify [
+	self compactifyCols.
+	self compactifyRows.
+]
+
+{ #category : #removing }
+TabularWorksheet >> compactifyCols [
+| colsSubst|
+	colsSubst := (self cols collectWithIndex: [ :col :i | col->i]) asDictionary.
+
+	self allCoord do:[:oldCoord||newX newY|
+		newX := colsSubst at: (oldCoord x) ifAbsent: oldCoord x.
+		newY := oldCoord y.
+		
+		self moveCellFrom: oldCoord to: newX@newY.
+	].
+
+]
+
+{ #category : #removing }
+TabularWorksheet >> compactifyRows [
+|rowsSubst |
+	rowsSubst := (self rows collectWithIndex: [ :row :i | row->i]) asDictionary.
+
+	self allCoord do:[:oldCoord||newX newY|
+		newY := rowsSubst at: (oldCoord y) ifAbsent: oldCoord y.
+		newX := oldCoord x.
+		
+		self moveCellFrom: oldCoord to: newX@newY.
+	].
+]
+
+{ #category : #accessing }
+TabularWorksheet >> dataAt: aPoint [
+	^(self at: aPoint) ifNotNil:[:cell| cell data]
 ]
 
 { #category : #removing }
@@ -172,6 +222,15 @@ TabularWorksheet >> maxNumberOfColumns [
 ]
 
 { #category : #accessing }
+TabularWorksheet >> moveCellFrom: aPoint to: aPoint2 [
+|cell|
+	cell := cells at: aPoint ifAbsent: nil.
+	cells at: aPoint2 put:cell.
+	cells removeKey: aPoint ifAbsent: [].
+	^cell.
+]
+
+{ #category : #accessing }
 TabularWorksheet >> name [
 	^ self attributeAt: #name 
 ]
@@ -202,6 +261,7 @@ TabularWorksheet >> rID: aString [
 { #category : #accessing }
 TabularWorksheet >> rows [
 	^(cells keys collect: [ :coord| coord y]) asSet asOrderedCollection sort
+	"ToDo: It's neccessary to avoid code dublication with #columns"
 	
 ]
 

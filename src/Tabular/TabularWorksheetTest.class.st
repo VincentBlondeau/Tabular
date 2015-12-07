@@ -81,6 +81,20 @@ TabularWorksheetTest >> testCellsReadingWritingString [
 ]
 
 { #category : #'tests-removing' }
+TabularWorksheetTest >> testCompactify [
+
+ws at: 2@2 putData: 1. ws at: 5@2 putData: 2.
+ws at: 4@4 putData: 3. ws at: 6@4 putData: 4.
+
+ws compactify.
+
+self assert: ((ws dataAt: 1@1) = 1). self assert: ((ws dataAt: 3@1) = 2).
+self assert: ((ws dataAt: 2@2) = 3). self assert: ((ws dataAt: 4@2) = 4).
+
+
+]
+
+{ #category : #'tests-removing' }
 TabularWorksheetTest >> testEraseCellAt [
 
 | w |
@@ -141,6 +155,19 @@ TabularWorksheetTest >> testMaxNumberOfColumns0 [
 
 
 
+]
+
+{ #category : #'tests-accessing' }
+TabularWorksheetTest >> testMoveCellFromTo [
+
+ws at: 1@1 putData: 'test'.
+ws moveCellFrom: 1@1 to: 2@3.
+
+self assert: (ws dataAt: 2@3) = 'test'.
+self assert: (ws dataAt: 1@1) = nil.
+
+ws moveCellFrom: 2@2 to: 2@3. "Erasing by moving empty cell over filled one" 
+self assert: (ws dataAt: 2@3) = nil.
 ]
 
 { #category : #'tests-accessing' }
