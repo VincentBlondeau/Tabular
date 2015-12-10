@@ -161,6 +161,12 @@ TabularWorksheet >> dataAt: aPoint [
 	^(self at: aPoint) ifNotNil:[:cell| cell data]
 ]
 
+{ #category : #accessing }
+TabularWorksheet >> dataAtCol: col row: row [
+	^(self col: col row: row) ifNotNil: [:cell| cell data].
+
+]
+
 { #category : #removing }
 TabularWorksheet >> eraseCellAt: coord [
 	cells removeKey: coord ifAbsent: [^self].
