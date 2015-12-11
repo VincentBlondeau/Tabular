@@ -1,6 +1,6 @@
 Class {
 	#name : #TanderExporter,
-	#superclass : #TanderComponent,
+	#superclass : #PaeoniaComponent,
 	#instVars : [
 		'orders',
 		'date',

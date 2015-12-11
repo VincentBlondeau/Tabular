@@ -1,5 +1,5 @@
 Class {
-	#name : #TanderComponent,
+	#name : #PaeoniaComponent,
 	#superclass : #WAComponent,
 	#instVars : [
 		'errors'
@@ -8,40 +8,40 @@ Class {
 }
 
 { #category : #rendering }
-TanderComponent >> back [
+PaeoniaComponent >> back [
 	self answer
 ]
 
 { #category : #rendering }
-TanderComponent >> renderBackOn: aRenderer [
+PaeoniaComponent >> renderBackOn: aRenderer [
 	aRenderer submitButton
 		callback: [ self back ];
 		with: 'Назад'
 ]
 
 { #category : #rendering }
-TanderComponent >> renderContentOn: aRenderer [
+PaeoniaComponent >> renderContentOn: aRenderer [
 	aRenderer unorderedList
 		class: 'errors';
 		list: errors.
 ]
 
 { #category : #rendering }
-TanderComponent >> renderErrorsOn: aRenderer [
+PaeoniaComponent >> renderErrorsOn: aRenderer [
 	aRenderer unorderedList
 		class: 'errors';
 		list: errors.
 ]
 
 { #category : #rendering }
-TanderComponent >> renderNextOn: aRenderer [
+PaeoniaComponent >> renderNextOn: aRenderer [
 	aRenderer submitButton
 		callback: [ self next ];
 		with: 'Далее'
 ]
 
 { #category : #rendering }
-TanderComponent >> renderRedoOn: aRenderer [
+PaeoniaComponent >> renderRedoOn: aRenderer [
 	aRenderer button
 		callback: [ self redo ];
 		with: 'Ещё раз'.
@@ -49,7 +49,7 @@ TanderComponent >> renderRedoOn: aRenderer [
 ]
 
 { #category : #hooks }
-TanderComponent >> style [
+PaeoniaComponent >> style [
 ^'
 	ul.errors { color: red}
 

@@ -1,6 +1,6 @@
 Class {
 	#name : #TanderImporter,
-	#superclass : #TanderComponent,
+	#superclass : #PaeoniaComponent,
 	#instVars : [
 		'colShop',
 		'colPrice',

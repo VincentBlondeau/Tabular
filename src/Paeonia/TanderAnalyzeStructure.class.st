@@ -1,17 +1,12 @@
 Class {
 	#name : #TanderAnalyzeStructure,
-	#superclass : #TanderComponent,
+	#superclass : #PaeoniaComponent,
 	#instVars : [
 		'colmeaning',
 		'firstRow'
 	],
 	#category : #'Paeonia-Components'
 }
-
-{ #category : #'as yet unclassified' }
-TanderAnalyzeStructure class >> canBeRoot [
-	^ true
-]
 
 { #category : #actions }
 TanderAnalyzeStructure >> back [
@@ -63,8 +58,8 @@ TanderAnalyzeStructure >> renderAnalyzerOn: aRenderer [
 	| cols rows headSelector worksheet|
 	super renderErrorsOn: aRenderer.
 	worksheet := self session worksheet.
-	cols := worksheet cols.
-	rows := worksheet rows.
+	cols := worksheet cols size.
+	rows := worksheet rows size.
 	aRenderer
 		form: [ 
 			self renderBackOn: aRenderer.
@@ -76,22 +71,28 @@ TanderAnalyzeStructure >> renderAnalyzerOn: aRenderer [
 			aRenderer
 				table: [ 
 					aRenderer
-						tableRow: [ 
-							aRenderer tableData: 'Первая строка данных'.
-							(1 to: cols)
-								do: [ :col | 
-									aRenderer
-										tableData: [ 
+						tableHead
+							
+							with:[
+								aRenderer tableRow "style: 'position: fixed';" with: [ 
+									aRenderer tableData: 'Первая строка данных'.
+									(1 to: cols) do: [ :col | 
+										aRenderer tableData: [ 
 											aRenderer select
 												beOptional;
 												list: self meanings;
-												callback: [ :value | colmeaning at: value put: col ] ] ] ].
-					(1 to: rows)
+												callback: [ :value | colmeaning at: value put: col ]
+										]
+									]
+								]
+							].
+					
+					aRenderer tableBody: [(1 to: rows)
 						do: [ :row | 
 							aRenderer
 								tableRow: [ 
 									aRenderer tableData: [ headSelector radioButton value: row ].
-									(1 to: cols) do: [ :col | aRenderer tableData: (worksheet col: col row: row) ] ] ] ] ]
+									(1 to: cols) do: [ :col | aRenderer tableData: (worksheet dataAt: col@row) ] ] ] ] ]]
 ]
 
 { #category : #rendering }

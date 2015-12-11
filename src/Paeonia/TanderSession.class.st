@@ -132,5 +132,7 @@ TanderSession >> worksheetErase [
 
 { #category : #accessing }
 TanderSession >> worksheetFrom: aWAFile [
-	worksheet := (XLSXImporter import: aWAFile rawContents readStream) worksheetNamed: 'Лист1'.
+"self halt."
+	worksheet := (XLSXImporter import: aWAFile rawContents readStream) worksheets first. "Named: 'Лист1'."
+	worksheet compactify.
 ]
