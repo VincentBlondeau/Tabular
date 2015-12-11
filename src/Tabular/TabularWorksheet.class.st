@@ -89,6 +89,14 @@ TabularWorksheet >> cellsKeysAndValuesDo: aBlock [
 
 ]
 
+{ #category : #removing }
+TabularWorksheet >> cleanup [
+"Removes the cells without data.
+MIND: empty cells may still contain formatting"
+	cells keysAndValuesRemove: [ :coord :cell| cell data isNil ].
+
+]
+
 { #category : #accessing }
 TabularWorksheet >> col: colIndex row: rowIndex [
 	^self at: (colIndex @ rowIndex).
@@ -125,35 +133,19 @@ TabularWorksheet >> columns [
 
 { #category : #removing }
 TabularWorksheet >> compactify [
-	self compactifyCols.
-	self compactifyRows.
-]
-
-{ #category : #removing }
-TabularWorksheet >> compactifyCols [
-| colsSubst|
+"Removes rows and columns without cells.
+MIND: 'empty' cells may still contain formatting. in this case they will not be removed. If you need to remove them, use #cleanup beforehead"
+| colsSubst rowsSubst |	
 	colsSubst := (self cols collectWithIndex: [ :col :i | col->i]) asDictionary.
-
-	self allCoord do:[:oldCoord||newX newY|
-		newX := colsSubst at: (oldCoord x) ifAbsent: oldCoord x.
-		newY := oldCoord y.
-		
-		self moveCellFrom: oldCoord to: newX@newY.
-	].
-
-]
-
-{ #category : #removing }
-TabularWorksheet >> compactifyRows [
-|rowsSubst |
 	rowsSubst := (self rows collectWithIndex: [ :row :i | row->i]) asDictionary.
-
-	self allCoord do:[:oldCoord||newX newY|
-		newY := rowsSubst at: (oldCoord y) ifAbsent: oldCoord y.
-		newX := oldCoord x.
-		
-		self moveCellFrom: oldCoord to: newX@newY.
-	].
+	
+	cells := cells associationsCollect:[:assoc|
+		assoc key: 
+			(colsSubst at: (assoc key x) ifAbsent: assoc key x)
+			@
+			(rowsSubst at: (assoc key y) ifAbsent: assoc key y).
+		assoc
+	]
 ]
 
 { #category : #accessing }
@@ -225,15 +217,6 @@ TabularWorksheet >> maxNumberOfColumns [
 	(cells keys size = 0) ifTrue: [ ^0 ] ifFalse:  [	^ cells keys max x  ]
 
 
-]
-
-{ #category : #accessing }
-TabularWorksheet >> moveCellFrom: aPoint to: aPoint2 [
-|cell|
-	cell := cells at: aPoint ifAbsent: nil.
-	cells at: aPoint2 put:cell.
-	cells removeKey: aPoint ifAbsent: [].
-	^cell.
 ]
 
 { #category : #accessing }
