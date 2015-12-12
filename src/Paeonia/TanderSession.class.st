@@ -126,6 +126,11 @@ TanderSession >> worksheet [
 ]
 
 { #category : #accessing }
+TanderSession >> worksheet: anObject [
+	worksheet := anObject 
+]
+
+{ #category : #accessing }
 TanderSession >> worksheetErase [
 	worksheet := nil
 ]

@@ -2,11 +2,32 @@ Class {
 	#name : #PaeoniaOrder,
 	#superclass : #PaeoniaObject,
 	#instVars : [
-		'shop',
+		'customer',
+		'desc',
 		'entries'
 	],
 	#category : #'Paeonia-Model'
 }
+
+{ #category : #accessing }
+PaeoniaOrder >> customer [
+	^ customer
+]
+
+{ #category : #accessing }
+PaeoniaOrder >> customer: anObject [
+	customer := anObject
+]
+
+{ #category : #accessing }
+PaeoniaOrder >> desc [
+	^ desc
+]
+
+{ #category : #accessing }
+PaeoniaOrder >> desc: anObject [
+	desc := anObject
+]
 
 { #category : #accessing }
 PaeoniaOrder >> entries [

@@ -16,7 +16,7 @@ PaeoniaFilePicker >> eraseFile [
 
 { #category : #'as yet unclassified' }
 PaeoniaFilePicker >> next [
-	self answer: worksheet
+	self answer: {#next . worksheet}
 ]
 
 { #category : #accessing }
@@ -27,30 +27,29 @@ PaeoniaFilePicker >> pickFile: aWAFile [
 ]
 
 { #category : #rendering }
-PaeoniaFilePicker >> renderContentOn: aRenderer [
-	super renderContentOn: aRenderer.
-	self renderNextOn: aRenderer.
-	self renderFilePickerOn: aRenderer.
-	self renderTypeSelectorOn: aRenderer.
-	self renderWorksheetSelectorOn: aRenderer.
-]
-
-{ #category : #rendering }
 PaeoniaFilePicker >> renderFilePickerOn: aRenderer [
 	workbook
 		ifNil: [ 
-			aRenderer form
-				multipart;
-				with: [ 
-							aRenderer heading: 'Выберите файл для импорта'.
+
 							aRenderer fileUpload
 								onChange: 'submit()';
-								on: #pickFile of: self	"callback: [ : file1 | self pickFile: file1 ]" ] ]
+								on: #pickFile of: self	"callback: [ : file1 | self pickFile: file1 ]" ]
 		ifNotNil: [ 
 			aRenderer text: file fileName.
 			aRenderer anchor
 				callback: [ self eraseFile ];
 				with: 'Загрузить другой' ]
+]
+
+{ #category : #rendering }
+PaeoniaFilePicker >> renderFormContentOn: aRenderer [
+	self renderNextOn: aRenderer.
+
+	aRenderer heading: 'Выберите файл для импорта'.
+
+	self renderFilePickerOn: aRenderer.
+	self renderTypeSelectorOn: aRenderer.
+	self renderWorksheetSelectorOn: aRenderer.
 ]
 
 { #category : #rendering }

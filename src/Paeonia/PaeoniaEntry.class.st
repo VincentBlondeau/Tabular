@@ -2,6 +2,8 @@ Class {
 	#name : #PaeoniaEntry,
 	#superclass : #PaeoniaObject,
 	#instVars : [
+		'id',
+		'desc',
 		'article',
 		'price',
 		'amount'

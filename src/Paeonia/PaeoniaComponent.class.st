@@ -9,7 +9,12 @@ Class {
 
 { #category : #rendering }
 PaeoniaComponent >> back [
-	self answer
+	self answer: #(back)
+]
+
+{ #category : #rendering }
+PaeoniaComponent >> next [
+	self answer: #(next)
 ]
 
 { #category : #rendering }
@@ -24,6 +29,9 @@ PaeoniaComponent >> renderContentOn: aRenderer [
 	aRenderer unorderedList
 		class: 'errors';
 		list: errors.
+	aRenderer form
+		multipart;
+		with:[ self renderFormContentOn: aRenderer ]
 ]
 
 { #category : #rendering }
@@ -31,6 +39,11 @@ PaeoniaComponent >> renderErrorsOn: aRenderer [
 	aRenderer unorderedList
 		class: 'errors';
 		list: errors.
+]
+
+{ #category : #rendering }
+PaeoniaComponent >> renderFormContentOn: aRenderer [
+	self subclassResponsibility 
 ]
 
 { #category : #rendering }
