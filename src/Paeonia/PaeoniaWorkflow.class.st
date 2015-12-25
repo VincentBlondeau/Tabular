@@ -2,7 +2,9 @@ Class {
 	#name : #PaeoniaWorkflow,
 	#superclass : #WATask,
 	#instVars : [
-		'worksheet'
+		'worksheet',
+		'type',
+		'orders'
 	],
 	#category : #'Paeonia-Components'
 }
@@ -12,11 +14,10 @@ PaeoniaWorkflow class >> canBeRoot [
 	^ true
 ]
 
-{ #category : #pages }
-PaeoniaWorkflow >> analyzeStructure [
-| res |
-	res := self call: (PaeoniaAnalyzeStructure worksheet: worksheet).
-	^res first.
+{ #category : #'as yet unclassified' }
+PaeoniaWorkflow class >> register [
+	(WAAdmin register: self asApplicationAt: 'PaeoniaImporter')
+      preferenceAt: #sessionClass put: PaeoniaSession.
 ]
 
 { #category : #running }
@@ -33,16 +34,45 @@ PaeoniaWorkflow >> go [
 ]
 
 { #category : #pages }
-PaeoniaWorkflow >> pickFile [
+PaeoniaWorkflow >> step1pickFile [
 | res |
-	res:=self call: PaeoniaFilePicker new.
+	res:=self call: Paeonia1FilePicker new.
 
 	worksheet := res at: 2 ifAbsent: nil.
+	type := res at: 3 ifAbsent: nil.
+	
 	^res first.
 	
 ]
 
+{ #category : #pages }
+PaeoniaWorkflow >> step2analyzeStructure [
+| res |
+	res := self call: (
+		(Paeonia2AnalyzeStructure type: type)
+			worksheet: worksheet;
+			yourself
+	).
+	orders := res at:2 ifAbsent: nil.
+	^res first.
+]
+
+{ #category : #pages }
+PaeoniaWorkflow >> step3substitute [
+| res |
+	res := self call: (Paeonia3Substitute orders: orders).
+	orders := res at:2 ifAbsent: nil.
+	^res first.
+]
+
+{ #category : #pages }
+PaeoniaWorkflow >> step4export [
+| res |
+	res := self call: (Paeonia4Exporter orders: orders).
+	^res first.
+]
+
 { #category : #running }
 PaeoniaWorkflow >> steps [
-	^#(pickFile analyzeStructure importData exportData)
+	^#(#step1pickFile #step2analyzeStructure #step3substitute step4export)
 ]

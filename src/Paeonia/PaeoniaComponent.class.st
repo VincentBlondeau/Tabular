@@ -1,3 +1,8 @@
+"
+Answer is always a collection.
+	first element - symbol #next or #back
+	other elements - optional data, only if first one is #next
+"
 Class {
 	#name : #PaeoniaComponent,
 	#superclass : #WAComponent,
@@ -7,12 +12,23 @@ Class {
 	#category : #'Paeonia-Components'
 }
 
-{ #category : #rendering }
+{ #category : #workflow }
 PaeoniaComponent >> back [
 	self answer: #(back)
 ]
 
-{ #category : #rendering }
+{ #category : #'as yet unclassified' }
+PaeoniaComponent >> flushErrors [
+	errors := OrderedCollection new
+]
+
+{ #category : #'as yet unclassified' }
+PaeoniaComponent >> initialize [
+	super initialize.
+	self flushErrors
+]
+
+{ #category : #workflow }
 PaeoniaComponent >> next [
 	self answer: #(next)
 ]
@@ -64,7 +80,33 @@ PaeoniaComponent >> renderRedoOn: aRenderer [
 { #category : #hooks }
 PaeoniaComponent >> style [
 ^'
-	ul.errors { color: red}
+	ul.errors {
+		color: red;
+		margin: 0.3em 1em;
+	}
+	table {
+		border-collapse: collapse;
+		border: 2px black solid;
+		margin: 0.3em 0;
+	}
 
+	td, th {
+		border: 1px black solid;
+	}
+	
+	thead td {
+		font-weight: bold;
+		text-align: center;
+	}
+	
+	label { 
+		display: block;
+		margin-top: 1em;
+		margin-bottom: 1em;	
+	}
+	
+	input.submit { 
+		margin: 0.3em 1em;
+	}
 '
 ]

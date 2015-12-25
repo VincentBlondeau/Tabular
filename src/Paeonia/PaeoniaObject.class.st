@@ -1,18 +1,10 @@
 Class {
 	#name : #PaeoniaObject,
 	#superclass : #Object,
-	#instVars : [
-		'unrecognized'
-	],
 	#category : #'Paeonia-Model'
 }
 
-{ #category : #accessing }
+{ #category : #'as yet unclassified' }
 PaeoniaObject >> unrecognized [
-	^ unrecognized
-]
-
-{ #category : #accessing }
-PaeoniaObject >> unrecognized: anObject [
-	unrecognized := anObject
+	self shouldBeImplemented
 ]

@@ -2,8 +2,8 @@ Class {
 	#name : #PaeoniaOrder,
 	#superclass : #PaeoniaObject,
 	#instVars : [
+		'customerDesc',
 		'customer',
-		'desc',
 		'entries'
 	],
 	#category : #'Paeonia-Model'
@@ -20,13 +20,13 @@ PaeoniaOrder >> customer: anObject [
 ]
 
 { #category : #accessing }
-PaeoniaOrder >> desc [
-	^ desc
+PaeoniaOrder >> customerDesc [
+	^ customerDesc
 ]
 
 { #category : #accessing }
-PaeoniaOrder >> desc: anObject [
-	desc := anObject
+PaeoniaOrder >> customerDesc: anObject [
+	customerDesc := anObject asString withBlanksCondensed
 ]
 
 { #category : #accessing }
@@ -44,12 +44,7 @@ PaeoniaOrder >> initialize [
 	entries := OrderedCollection new.
 ]
 
-{ #category : #accessing }
-PaeoniaOrder >> shop [
-	^ shop
-]
-
-{ #category : #accessing }
-PaeoniaOrder >> shop: anObject [
-	shop := anObject
+{ #category : #'as yet unclassified' }
+PaeoniaOrder >> unrecognized [
+	^customer isNil
 ]

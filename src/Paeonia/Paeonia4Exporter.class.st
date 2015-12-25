@@ -1,5 +1,5 @@
 Class {
-	#name : #TanderExporter,
+	#name : #Paeonia4Exporter,
 	#superclass : #PaeoniaComponent,
 	#instVars : [
 		'orders',
@@ -9,34 +9,38 @@ Class {
 	#category : #'Paeonia-Components'
 }
 
+{ #category : #'instance creation' }
+Paeonia4Exporter class >> orders: aCollection [
+	^(self new)
+		orders: aCollection;
+		yourself.
+]
+
 { #category : #saving }
-TanderExporter >> fileNameFor: anOrder [
+Paeonia4Exporter >> fileNameFor: anOrder [
 	^(
 	date yyyymmdd,
 	' ',
-	(self session firmsNames at: anOrder shop ifAbsent: anOrder shop),
+	(anOrder customer desc),
 	'.xml'
 	)
 ]
 
 { #category : #accessing }
-TanderExporter >> orders [
+Paeonia4Exporter >> orders [
 	^ orders
 ]
 
 { #category : #accessing }
-TanderExporter >> orders: anObject [
+Paeonia4Exporter >> orders: anObject [
 	orders := anObject
 ]
 
 { #category : #rendering }
-TanderExporter >> renderContentOn: aRenderer [
-	aRenderer form:[
-		savedFiles
-			ifNil:[self renderBackOn: aRenderer]
+Paeonia4Exporter >> renderFormContentOn: aRenderer [
+	savedFiles
+		ifNil:[self renderBackOn: aRenderer]
 		ifNotNil:[self renderRestartButtonOn: aRenderer].
-
-		
 
 	aRenderer heading
 		level: 1;
@@ -48,23 +52,24 @@ TanderExporter >> renderContentOn: aRenderer [
 		aRenderer	space: 5.
 		aRenderer	submitButton
 			callback: [ self saveAll];
-			with: 'Сохранить'
-	].
+			with: 'Сохранить'.
 	
 	savedFiles ifNotNil:[ self renderSavedFilesOn: aRenderer ]
 ]
 
 { #category : #rendering }
-TanderExporter >> renderRestartButtonOn: aRenderer [
+Paeonia4Exporter >> renderRestartButtonOn: aRenderer [
+|tmp|
+	tmp := self session.
 	aRenderer break.
 	aRenderer anchor
-		url:'/TanderImporter';
+		url: self session parent url;
 		id: 'restart';
 		with: 'В начало'.
 ]
 
 { #category : #rendering }
-TanderExporter >> renderSavedArticlesFor: anOrder on: aRenderer [
+Paeonia4Exporter >> renderSavedArticlesFor: anOrder on: aRenderer [
 | unrecognized |
 	unrecognized := anOrder entries select: [:entry| entry unrecognized = true].
 	
@@ -74,7 +79,7 @@ TanderExporter >> renderSavedArticlesFor: anOrder on: aRenderer [
 			aRenderer heading
 				level: 2;
 				with: [
-					aRenderer text: (self session firmsNames at: anOrder shop ifAbsent: [anOrder shop]), ' - '.
+					aRenderer text: (anOrder customer desc), ' - '.
 					aRenderer span
 						class: 'ok';
 						with: (anOrder entries size asString), ' позиций ОК'
@@ -85,7 +90,7 @@ TanderExporter >> renderSavedArticlesFor: anOrder on: aRenderer [
 			aRenderer heading
 				level: 2;
 				with: [
-					aRenderer text: (self session firmsNames at: anOrder shop ifAbsent: [anOrder shop]), ' - '.
+					aRenderer text: (anOrder customer desc), ' - '.
 					aRenderer span: (anOrder entries size asString), ' позиций, '.
 					aRenderer span
 						class: 'unsaved';
@@ -96,31 +101,31 @@ TanderExporter >> renderSavedArticlesFor: anOrder on: aRenderer [
 				class: 'unsaved';
 				with:[unrecognized do:[:entry|
 					aRenderer listItem
-						attributeAt: 'value' put: (anOrder entries findFirst: [:entry1| entry1 article = entry article]);
-						with: entry article
+						attributeAt: 'value' put: (anOrder entries findFirst: [:entry1| entry1 articleId = entry articleId]);
+						with: entry articleDesc
 				]]
 		]
 ]
 
 { #category : #rendering }
-TanderExporter >> renderSavedFilesOn: aRenderer [
+Paeonia4Exporter >> renderSavedFilesOn: aRenderer [
 	aRenderer heading: 'Сохранено:'.
 	aRenderer paragraph: self session exportPath.
 	orders do:[:order|
 
-		savedFiles at: order shop
+		savedFiles at: order customer
 			ifPresent: [:tmp|
 				self renderSavedArticlesFor: order on: aRenderer
 			]
 			ifAbsent: [
-				aRenderer heading level: 2; class: 'unsaved'; with: (self session firmsNames at: order shop ifAbsent: [ order shop ] ).
+				aRenderer heading level: 2; class: 'unsaved'; with: (order customerDesc).
 			]
 		.
 	].
 ]
 
 { #category : #saving }
-TanderExporter >> save: anOrder [
+Paeonia4Exporter >> save: anOrder [
 | writer fileRef|
 	writer:=XMLWriter new.
 	writer tag name: 'BizTalk'; with:[
@@ -128,7 +133,7 @@ TanderExporter >> save: anOrder [
 			writer tag name: 'CommerceML'; with:[
 				self
 					saveDocument: anOrder on: writer;
-					saveBuyerFin: anOrder shop on: writer;
+					saveBuyerFin: anOrder customer on: writer;
 					saveSellerFinOn: writer.
 			]
 		]
@@ -136,38 +141,40 @@ TanderExporter >> save: anOrder [
 	writer write.
 
 	fileRef := self session exportPath asFileReference / (self fileNameFor: anOrder).
+
+	fileRef delete.
 	fileRef writeStream text; << writer contents.
-	savedFiles at: anOrder shop put: fileRef.
+	savedFiles at: anOrder customer put: fileRef.
 ]
 
 { #category : #saving }
-TanderExporter >> saveAll [
+Paeonia4Exporter >> saveAll [
 	savedFiles := Dictionary new.
-	orders do:[:order| (order unrecognized = true) ifFalse:[|cleanorder| "Only save orders from RECOGNIZED shops"
+	orders do:[:order| order unrecognized ifFalse:[|cleanorder| "Only save orders from RECOGNIZED shops"
 		cleanorder := order copy.
-		cleanorder entries: (order entries reject: [:entry| entry unrecognized = true]). "Only save a RECOGNIZED articles"
+		cleanorder entries: (order entries reject: [:entry| entry unrecognized]). "Only save a RECOGNIZED articles"
 		self save: cleanorder.
 	]]
 
 ]
 
 { #category : #saving }
-TanderExporter >> saveBuyer: GUID on: writer [
+Paeonia4Exporter >> saveBuyer: aPaeoniaCustomer on: writer [
 	writer tag
 		name: 'ПредприятиеВДокументе';
 		attributeAt: 'Роль' put: 'Buyer';
-		attributeAt: 'Контрагент' put: GUID.
+		attributeAt: 'Контрагент' put: aPaeoniaCustomer guid.
 ]
 
 { #category : #saving }
-TanderExporter >> saveBuyerFin: GUID on: writer [
+Paeonia4Exporter >> saveBuyerFin: aPaeoniaCustomer on: writer [
 	writer tag
 		name: 'Контрагент';
-		attributeAt: 'Идентификатор' put: GUID.
+		attributeAt: 'Идентификатор' put: aPaeoniaCustomer guid.
 ]
 
 { #category : #saving }
-TanderExporter >> saveDocument: anOrder on: writer [
+Paeonia4Exporter >> saveDocument: anOrder on: writer [
 	writer tag
 		name:'Документ';
 		attributeAt: 'ХозОперация' put: 'Order';
@@ -182,31 +189,38 @@ TanderExporter >> saveDocument: anOrder on: writer [
 				attributeAt: 'Сумма' put: '1';
 				attributeAt: 'ВключенВСумму' put: '1'.
 			self
-				saveBuyer: anOrder shop on: writer;
+				saveBuyer: anOrder customer on: writer;
 				saveSellerOn: writer.
-			anOrder entries do:[:entry| self saveEntry: entry on: writer ]
+			anOrder entries do:[:entry| self saveEntry: entry on: writer ].
+
 		].
 ]
 
 { #category : #saving }
-TanderExporter >> saveEntry: anEntry on: writer [
-	writer tag
+Paeonia4Exporter >> saveEntry: anEntry on: writer [
+| tag |
+	tag:=writer tag
 		name: 'ТоварнаяПозиция';
 		attributeAt: 'Каталог' put: self session catalogGUID;
-		attributeAt: 'Товар' put: anEntry article;
-		attributeAt: 'Количество' put: anEntry amount;
-		attributeAt: 'Цена' put: anEntry price
+		attributeAt: 'Товар' put: anEntry article guid;
+		attributeAt: 'Количество' put: anEntry amount asString;
+		yourself.
+
+	anEntry price ifNotNilDo:[:price|
+		tag 
+			attributeAt: 'Цена' put: anEntry price asString.
+	]
 ]
 
 { #category : #saving }
-TanderExporter >> saveSellerFinOn: writer [ 
+Paeonia4Exporter >> saveSellerFinOn: writer [ 
 	writer tag
 		name: 'Контрагент';
 		attributeAt: 'Идентификатор' put: self session sellerGUID.
 ]
 
 { #category : #saving }
-TanderExporter >> saveSellerOn: writer [
+Paeonia4Exporter >> saveSellerOn: writer [
 	writer tag
 		name: 'ПредприятиеВДокументе';
 		attributeAt: 'Роль' put: 'Saler';
@@ -214,7 +228,7 @@ TanderExporter >> saveSellerOn: writer [
 ]
 
 { #category : #hooks }
-TanderExporter >> style [
+Paeonia4Exporter >> style [
 ^super style, '
 	.unsaved { color: red}
 	h2.unsaved { text-decoration: line-through}
