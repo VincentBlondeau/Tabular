@@ -82,6 +82,11 @@ TabularXLSXSheetParser >> col_start: properties [
 	columnAttributes add: properties.
 ]
 
+{ #category : #'as yet unclassified' }
+TabularXLSXSheetParser >> guessType: aString [
+	^NumberParser parse: aString onError: [:e| aString ]
+]
+
 { #category : #initialization }
 TabularXLSXSheetParser >> initialize [
 	super initialize.
@@ -123,8 +128,13 @@ TabularXLSXSheetParser >> t_characters: aString [
 { #category : #elements }
 TabularXLSXSheetParser >> v_characters: aString [
 "maybe the test below is not necessary as the type is always number in a v tag?"
-(self cell type = 'n' "number") ifTrue: [ self cell data: aString  asNumber ] 
-	ifFalse: [self cell data: aString].
+
+	self cell type ifNil: [ self cell data: (self guessType: aString). ^self ].
+
+	(self cell type = 'n') ifTrue: [ self cell data: aString asNumber. ^self ].
+	
+	
+	self cell data: aString.
 ]
 
 { #category : #accessing }

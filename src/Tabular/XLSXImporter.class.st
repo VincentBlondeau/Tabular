@@ -61,6 +61,15 @@ XLSXImporter class >> import: aFileReferenceOrAStream onlySheetsNamed: aCollecti
 	^ self new import: aFileReferenceOrAStream onlySheetsNamed: aCollection
 ]
 
+{ #category : #importing }
+XLSXImporter >> extractArchive: aStream [
+	(ZipArchive isZipArchive: aStream)
+		ifTrue: [archive := ZipArchive new readFrom: aStream]
+		ifFalse: [  self error: 'XLSX file do not represent valid Zip archive, as it should be' ]. "Maybe you missed it with XLS file?"
+	
+	
+]
+
 { #category : #extracting }
 XLSXImporter >> extractSharedStrings [
       (archive memberNamed: 'xl/sharedStrings.xml') isNil ifTrue: [ ^sharedStrings    := '']
@@ -115,12 +124,10 @@ XLSXImporter >> getPathForSheet: rID [
 
 { #category : #importing }
 XLSXImporter >> import: aStream [
-	archive := ZipArchive new readFrom: aStream.
-	workbook := TabularWorkbook new.
-	"self extractStyles."
+	self extractArchive: aStream.
+	workbook := TabularWorkbook new.	"self extractStyles."
 	self extractSharedStrings.
 	self extractWorksheets.
-
 	self resolveSharedStrings.
 	^ workbook
 ]
