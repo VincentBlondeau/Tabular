@@ -98,7 +98,7 @@ Paeonia2AnalyzeStructure >> headerNamesArticleId [
 
 { #category : #guessing }
 Paeonia2AnalyzeStructure >> headerNamesCustomerDesc [
-	^#('ГМ')
+	^#('ГМ' 'Наименование ГМ')
 ]
 
 { #category : #guessing }

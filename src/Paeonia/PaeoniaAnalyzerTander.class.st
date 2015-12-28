@@ -34,8 +34,10 @@ PaeoniaAnalyzerTander >> loadRawData [
 			articleDesc := worksheet dataAtCol: colArticleDesc row: row.
 			amount := worksheet dataAtCol: colAmount row: row.
 			price := worksheet dataAtCol: colPrice row: row.
-
-			(articleId notNil & customerDesc notNil)
+			(price isString and:[price withBlanksCondensed isEmpty]) ifTrue:[price := nil].
+			(price = 0) ifTrue: [  price := nil].
+			
+			(articleId notNil & customerDesc notNil & price notNil )
 				ifTrue: [ | order entry |
 					order := orders at: customerDesc ifAbsentPut: [ PaeoniaOrder new customerDesc: customerDesc; yourself ].
 					entry := PaeoniaEntry new

@@ -39,7 +39,7 @@ PaeoniaSession >> buildConfiguration [
 
 	sellerGUID := worksheet dataAtCol: 2 row: 1.
 	catalogGUID := worksheet dataAtCol: 2 row: 2.
-	exportPath  := worksheet dataAtCol: 2 row: 4.
+	exportPath  := (worksheet dataAtCol: 2 row: 4) 
 
 ]
 

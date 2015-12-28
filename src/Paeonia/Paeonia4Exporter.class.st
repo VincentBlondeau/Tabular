@@ -21,7 +21,7 @@ Paeonia4Exporter >> fileNameFor: anOrder [
 	^(
 	date yyyymmdd,
 	' ',
-	(anOrder customer desc),
+	((anOrder customer desc) copyReplaceAll: '"' with: ''''),
 	'.xml'
 	)
 ]
@@ -139,10 +139,9 @@ Paeonia4Exporter >> save: anOrder [
 		]
 	].
 	writer write.
-
 	fileRef := self session exportPath asFileReference / (self fileNameFor: anOrder).
 
-	fileRef delete.
+	"fileRef delete."
 	fileRef writeStream text; << writer contents.
 	savedFiles at: anOrder customer put: fileRef.
 ]
@@ -179,7 +178,7 @@ Paeonia4Exporter >> saveDocument: anOrder on: writer [
 		name:'Документ';
 		attributeAt: 'ХозОперация' put: 'Order';
 		attributeAt: 'Номер' put: '1';
-		attributeAt: 'Дата' put: date yyyymmdd;
+		attributeAt: 'Дата' put: date ddmmyyyy;
 		attributeAt: 'Валюта' put: 'руб.';
 		attributeAt: 'Курс' put: '1';
 		with:[
