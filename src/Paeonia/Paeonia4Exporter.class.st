@@ -16,6 +16,25 @@ Paeonia4Exporter class >> orders: aCollection [
 		yourself.
 ]
 
+{ #category : #accessing }
+Paeonia4Exporter >> date [
+	^ date ifNil: [ date := self defaultDate ]
+]
+
+{ #category : #accessing }
+Paeonia4Exporter >> date: anObject [
+	^ date := anObject
+]
+
+{ #category : #accessing }
+Paeonia4Exporter >> defaultDate [
+|res|
+	res := Date current.
+	res := res + 1 day.
+	(res weekdayIndex = 1) ifTrue:[res := res +1].
+	^res.
+]
+
 { #category : #saving }
 Paeonia4Exporter >> fileNameFor: anOrder [
 	^(
@@ -48,7 +67,7 @@ Paeonia4Exporter >> renderFormContentOn: aRenderer [
 			
 		aRenderer dateInput
 			value: date;
-			callback: [:date1| date := date1].
+			on: #date of: self.
 		aRenderer	space: 5.
 		aRenderer	submitButton
 			callback: [ self saveAll];

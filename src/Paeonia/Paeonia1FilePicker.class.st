@@ -73,9 +73,10 @@ Paeonia1FilePicker >> renderFilePickerOn: aRenderer [
 			]
 			ifNotNil: [ 
 				aRenderer text: file fileName.
+				aRenderer space.
 				aRenderer anchor
 					callback: [ self eraseFile ];
-					with: 'Загрузить другой'.
+					with: '[Загрузить другой]'.
 			]
 	]
 ]
@@ -101,10 +102,9 @@ Paeonia1FilePicker >> renderTypeSelectorOn: aRenderer [
 		selected: self type;
 		callback:[:type1| self type: type1].
 
-	aRenderer label:[
-		aRenderer text: 'Тип заявки: '.
-		typeSelector radioButton value: #Tander; with:'Тандер'.
-		typeSelector radioButton value: #SK; with: 'Солнечный круг'.
+	aRenderer div:[
+		aRenderer label class: 'type'; with:[ typeSelector radioButton value: #Tander. aRenderer text:'Тандер'. ].
+		aRenderer label class: 'type'; with:[ typeSelector radioButton value: #SK. aRenderer text:'Солнечный круг'. ].
 	]
 ]
 
@@ -124,6 +124,17 @@ Paeonia1FilePicker >> renderWorksheetSelectorOn: aRenderer [
 			ifNotNil: [ selectTag list: workbook worksheets ].
 	]
 
+]
+
+{ #category : #'as yet unclassified' }
+Paeonia1FilePicker >> style [
+^super style, '
+	label.type {
+		display: block;
+		font-weight: bold;
+		font-size: 150%;
+	}
+'
 ]
 
 { #category : #accessing }
