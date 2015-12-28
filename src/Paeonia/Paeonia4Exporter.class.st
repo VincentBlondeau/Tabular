@@ -197,7 +197,7 @@ Paeonia4Exporter >> saveDocument: anOrder on: writer [
 		name:'Документ';
 		attributeAt: 'ХозОперация' put: 'Order';
 		attributeAt: 'Номер' put: '1';
-		attributeAt: 'Дата' put: date ddmmyyyy;
+		attributeAt: 'Дата' put: date yyyymmdd;
 		attributeAt: 'Валюта' put: 'руб.';
 		attributeAt: 'Курс' put: '1';
 		with:[
