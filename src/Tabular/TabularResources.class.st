@@ -27,7 +27,7 @@ Internal Representation and Key Implementation Points.
 Class {
 	#name : #TabularResources,
 	#superclass : #Object,
-	#category : #'Tabular-Tests'
+	#category : 'Tabular-Tests'
 }
 
 { #category : #examples }
@@ -85,17 +85,6 @@ TabularResources class >> fileNameOfExample3 [
 
  ^ 'TabularTestExcelFile3withAlignment.xlsx'
 
-]
-
-{ #category : #'as yet unclassified' }
-TabularResources class >> openTestFile: aTestName [
-	|  fileName writeStream |
-	fileName := FileLocator home / (aTestName asString , '.xlsx').
-	[ 
-	writeStream := StandardFileStream forceNewFileNamed: fileName.
-	writeStream << (self perform: aTestName) asString ]
-		ensure: [  writeStream close].
-	[ NBWin32Shell shellOpen: fileName fullName ] fork
 ]
 
 { #category : #examples }

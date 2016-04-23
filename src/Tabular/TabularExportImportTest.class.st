@@ -28,7 +28,7 @@ Class {
 		'fname6',
 		'fname7'
 	],
-	#category : #'Tabular-Tests'
+	#category : 'Tabular-Tests'
 }
 
 { #category : #setUp }
@@ -186,7 +186,7 @@ TabularExportImportTest >> testExport4Numbers [
 
 	wimported := XLSXImporter import: fname4.
 	cell := ((wimported worksheetNamed: nameOfSheet) at: 1@1).
-	self assert: (cell isKindOf:  TabularCell).
+	self assert: (cell isKindOf:  TabularXLSXCell).
 	self assert: (cell data asString= '11').
 	self assert: (cell data = 11).  "cell data is aString but should be a number"
 ]
@@ -209,7 +209,7 @@ TabularExportImportTest >> testExport4NumbersStringContent [
 
 	wimported := XLSXImporter import: fname4.
 	cell := wimported worksheets first at: 1@1.
-	self assert: (cell isKindOf:  TabularCell).
+	self assert: (cell isKindOf:  TabularXLSXCell).
 	self assert: (cell data asString= '11').  "content OK"
      "cell data is aString but should be a number"
 ]
@@ -231,7 +231,7 @@ TabularExportImportTest >> testExport4Strings [
 
 	wimported := XLSXImporter import: fname4.
 	cell := wimported worksheets first cellAt:  1@1.
-	self assert: (cell isKindOf:  TabularCell).
+	self assert: (cell isKindOf:  TabularXLSXCell).
 	self assert: (cell data asString= 'abc 11').
 ]
 
@@ -248,10 +248,10 @@ TabularExportImportTest >> testExport5 [
 	wbkimported := XLSXImporter import: fname5 .
 	wsheetimported := wbkimported worksheets first.
 	cell := wsheetimported at: 1 @ 1.
-	self assert: (cell isKindOf:  TabularCell).
+	self assert: (cell isKindOf:  TabularXLSXCell).
 	self assert: (cell data asString= 'abc 11').
 	cell := wsheetimported at: 2 @ 1.
-		self assert: (cell isKindOf:  TabularCell).
+		self assert: (cell isKindOf:  TabularXLSXCell).
 	self assert: (cell data = 21).
 
 

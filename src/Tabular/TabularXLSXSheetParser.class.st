@@ -26,7 +26,7 @@ Class {
 		'colCounter',
 		'columnAttributes'
 	],
-	#category : #'Tabular-SAXParser'
+	#category : 'Tabular-SAXParser'
 }
 
 { #category : #'as yet unclassified' }
@@ -53,7 +53,7 @@ TabularXLSXSheetParser >> c_end [
 { #category : #elements }
 TabularXLSXSheetParser >> c_start: properties [
 |cell coord|
-	cell := TabularCell new.
+	cell := TabularXLSXCell new.
 
 	properties at: #s ifPresent:[:styleId| cell style: styleId]. "Should be substituted by actual style upon finalisation"
 	properties at: #t ifPresent:[:type| cell attributeAt: 'xlsx:t' put: type. cell type: type].

@@ -22,7 +22,7 @@ Class {
 		'parsingStack',
 		'saxStack'
 	],
-	#category : #'Tabular-SAXParser'
+	#category : 'Tabular-SAXParser'
 }
 
 { #category : #'as yet unclassified' }
@@ -34,6 +34,12 @@ TabularSAXParser class >> generateMethods: aBuilder [
 	(aBuilder item: #'Generate XML elements handlers')
 		action: [ selectedClass new generateMethodsForRegisteredElements ].
 
+]
+
+{ #category : #private }
+TabularSAXParser >> addAttributes: attributes to: tabularObject [
+	attributes associationsDo: [ :assoc |
+		tabularObject attributeAt: assoc key put: assoc value ].
 ]
 
 { #category : #initialization }
@@ -51,7 +57,10 @@ TabularSAXParser >> characters: aString [
 
 { #category : #private }
 TabularSAXParser >> charactersMethodFor: aQualifiedName [
-	^(aQualifiedName, '_characters:') asSymbol
+
+	| mangled |
+	mangled := self methodName: aQualifiedName.
+	^(mangled, '_characters:') asSymbol
 ]
 
 { #category : #'handling - content' }
@@ -63,7 +72,9 @@ TabularSAXParser >> endElement: aQualifiedName [
 
 { #category : #private }
 TabularSAXParser >> endMethodFor: aQualifiedName [
-	^(aQualifiedName, '_end') asSymbol
+	| mangled |
+	mangled := self methodName: aQualifiedName.
+	^ (mangled , '_end') asSymbol
 ]
 
 { #category : #private }
@@ -92,6 +103,13 @@ TabularSAXParser >> initialize [
 	self buildRootObject ifNotNilDo: [:obj| parsingStack push: obj].
 	saxStack := Stack new.
 
+]
+
+{ #category : #private }
+TabularSAXParser >> methodName: aQualifiedName [
+	"Replace characters that are valid in an element name, but not a method name."
+
+	^ aQualifiedName copyWithRegex: '\-|\:' matchesReplacedWith: '_'
 ]
 
 { #category : #parsing }
@@ -128,5 +146,9 @@ TabularSAXParser >> startElement: aQualifiedName attributes: aDictionary [
 
 { #category : #private }
 TabularSAXParser >> startMethodFor: aQualifiedName [
-	^(aQualifiedName, '_start:') asSymbol
+	"Convert the supplied element name to the associated start method name."
+
+	| mangled |
+	mangled := self methodName: aQualifiedName.
+	^ (mangled , '_start:') asSymbol
 ]

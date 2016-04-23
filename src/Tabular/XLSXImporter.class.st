@@ -46,7 +46,7 @@ Class {
 		'workbookRels',
 		'sheetsToExtract'
 	],
-	#category : #'Tabular-Importers'
+	#category : 'Tabular-Importers'
 }
 
 { #category : #importing }

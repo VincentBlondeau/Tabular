@@ -17,7 +17,7 @@ Class {
 		'theFontTableString',
 		'document_xml_rels'
 	],
-	#category : #'Tabular-Tests'
+	#category : 'Tabular-Tests'
 }
 
 { #category : #string }

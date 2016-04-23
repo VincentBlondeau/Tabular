@@ -9,25 +9,24 @@ Class {
 
 { #category : #'tests-accessing - attributes' }
 TabularCellTest >> testColspan [
-
-   <expectedFailure>
+	<expectedFailure>
+	self fail
 ]
 
 { #category : #'tests-accessing - attributes' }
 TabularCellTest >> testRowspan [
-
-  <expectedFailure>
+	<expectedFailure>
+	self fail
 ]
 
 { #category : #'tests-accessing - attributes' }
 TabularCellTest >> testStyle [
-
-   <expectedFailure>
+	<expectedFailure>
+	self fail
 ]
 
 { #category : #'tests-accessing - attributes' }
 TabularCellTest >> testType [
-
- <expectedFailure>
- 
+	<expectedFailure>
+	self fail
 ]

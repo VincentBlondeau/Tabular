@@ -53,7 +53,7 @@ Class {
 	#instVars : [
 		'xmlSheetsForWorkbookXML'
 	],
-	#category : #'Tabular-Exporters'
+	#category : 'Tabular-Exporters'
 }
 
 { #category : #examples }

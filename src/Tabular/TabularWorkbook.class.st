@@ -30,7 +30,7 @@ Class {
 		'styles',
 		'strings'
 	],
-	#category : #'Tabular-Model'
+	#category : 'Tabular-Model'
 }
 
 { #category : #'instance creation' }
@@ -64,9 +64,16 @@ TabularWorkbook class >> withSheets: n [
 	^res.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #adding }
 TabularWorkbook >> addNewWorksheet [
-	worksheets add: TabularWorksheet new. "Maybe worksheet name generation should be here"
+
+	| newWorksheet |
+	
+	newWorksheet := TabularWorksheet new.
+	newWorksheet workbook: self.
+	"Maybe worksheet name generation should be here"
+	worksheets add: newWorksheet.
+	
 ]
 
 { #category : #adding }
@@ -74,7 +81,7 @@ TabularWorkbook >> addSheet: aTabularWorksheet [
 	worksheets add: aTabularWorksheet 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #finding }
 TabularWorkbook >> containsWorksheetNamed: aString [
 	self worksheetNamed: aString ifNone: [ ^ false ].
 	^ true
@@ -104,6 +111,12 @@ TabularWorkbook >> stringTable [
 { #category : #accessing }
 TabularWorkbook >> stringTable: aTabularSharedStrings [ 
 	strings := aTabularSharedStrings 
+]
+
+{ #category : #accessing }
+TabularWorkbook >> styleNamed: aString [
+
+	^styles at: aString
 ]
 
 { #category : #accessing }

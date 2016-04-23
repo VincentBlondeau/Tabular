@@ -30,10 +30,11 @@ Class {
 	#superclass : #TabularObject,
 	#instVars : [
 		'cells',
-		'rows',
+		'rowStyles',
+		'colStyles',
 		'columnAttributes'
 	],
-	#category : #'Tabular-Model'
+	#category : 'Tabular-Model'
 }
 
 { #category : #accessing }
@@ -49,16 +50,30 @@ TabularWorksheet >> at: coord [
 
 { #category : #accessing }
 TabularWorksheet >> at: coord putCell: aCell [
-	^ cells at: coord put: aCell
-
+	aCell isTabularCell ifFalse: [ self error: 'Expected a TabularCell' ].
+	cells at: coord put: aCell.
+	^aCell
 ]
 
 { #category : #accessing }
 TabularWorksheet >> at: coord putData: anObject [
 	| cell |
 	anObject ifNil: [ ^ self eraseCellAt: coord ].
-	cell := cells at: coord ifAbsentPut: [ TabularCell new ].
+	cell := cells at: coord ifAbsentPut: [ TabularXLSXCell new ].
 	cell data: anObject
+]
+
+{ #category : #accessing }
+TabularWorksheet >> atRow: rowNum [
+
+	| lastColumn row arrayIdx |
+	lastColumn := self columns last.
+	row := Array new: lastColumn.
+	arrayIdx := 1.
+	1 to: lastColumn do: [ :idx | 
+		row at: arrayIdx put: (self col: idx row: rowNum) value.
+		arrayIdx := arrayIdx + 1].
+	^row.
 ]
 
 { #category : #accessing }
@@ -68,11 +83,21 @@ TabularWorksheet >> cellAt: coord [
 ]
 
 { #category : #accessing }
+TabularWorksheet >> cellValuesAsMatrix [
+	| matrix rowMax colMax |
+	colMax := self maxNumberOfColumns.
+	rowMax := self maxNumberOfRows.
+	matrix := Matrix rows: rowMax columns: colMax.
+	cells associationsDo: [ :assoc | matrix at: assoc key y at: assoc key x put: assoc value value ].
+	^ matrix
+]
+
+{ #category : #accessing }
 TabularWorksheet >> cellsAsMatrix [
-	| matrix cols|
-	cols := self cells keys max x.
-	rows := self cells keys max y.
-	matrix := Matrix rows: rows columns: cols.
+	| matrix rowMax colMax |
+	colMax := self maxNumberOfColumns.
+	rowMax := self maxNumberOfRows.
+	matrix := Matrix rows: rowMax columns: colMax.
 	cells associationsDo: [ :assoc | matrix at: assoc key y at: assoc key x put: assoc value ].
 	^ matrix
 ]
@@ -107,6 +132,16 @@ TabularWorksheet >> col: colIndex row: rowIndex [
 TabularWorksheet >> col: colIndex row: rowIndex putData: anObject [
 	^self at: (colIndex @ rowIndex) putData: anObject.
 
+]
+
+{ #category : #accessing }
+TabularWorksheet >> colStyleAt: aString [
+	^colStyles at: aString
+]
+
+{ #category : #accessing }
+TabularWorksheet >> colStyleAt: aString put: anElement [
+	^colStyles at: aString put: anElement
 ]
 
 { #category : #accessing }
@@ -170,18 +205,9 @@ TabularWorksheet >> extractCellFromXml: aXMLElement [
 	cells
 		at: (aXMLElement attributeAt: #r) asPoint
 		put:
-			((TabularCell newFrom: self workbook)
+			((TabularXLSXCell newFrom: self workbook)
 				extractFromXml: aXMLElement;
 				yourself)
-]
-
-{ #category : #'extraction - not used' }
-TabularWorksheet >> extractContentsFromXml: aXMLDocument [
-	aXMLDocument
-		allElementsNamed: 'row'
-		do: [ :aRow | 
-			(TabularRow newFrom: self workbook) extractFromXml: aRow.
-			aRow allElementsNamed: 'c' do: [ :aCell | self extractCellFromXml: aCell ] ]
 ]
 
 { #category : #conversion }
@@ -202,6 +228,8 @@ TabularWorksheet >> findCellsWithContent: aContent [
 TabularWorksheet >> initialize [
 	super initialize.
 	cells := Dictionary new.
+	rowStyles := Dictionary new.
+	colStyles := Dictionary new.
 	columnAttributes  := OrderedCollection  new.
 	self name: 'New sheet'.
 ]
@@ -217,6 +245,12 @@ TabularWorksheet >> maxNumberOfColumns [
 	(cells keys size = 0) ifTrue: [ ^0 ] ifFalse:  [	^ cells keys max x  ]
 
 
+]
+
+{ #category : #accessing }
+TabularWorksheet >> maxNumberOfRows [
+
+	(cells keys size = 0) ifTrue: [ ^0 ] ifFalse:  [	^ cells keys max y  ]
 ]
 
 { #category : #accessing }
@@ -248,6 +282,16 @@ TabularWorksheet >> rID: aString [
 ]
 
 { #category : #accessing }
+TabularWorksheet >> rowStyleAt: aString [
+	^rowStyles at: aString
+]
+
+{ #category : #accessing }
+TabularWorksheet >> rowStyleAt: aString put: anElement [
+	^rowStyles at: aString put: anElement
+]
+
+{ #category : #accessing }
 TabularWorksheet >> rows [
 	^(cells keys collect: [ :coord| coord y]) asSet asOrderedCollection sort
 	"ToDo: It's neccessary to avoid code dublication with #columns"
@@ -267,19 +311,20 @@ TabularWorksheet >> show [
 { #category : #opening }
 TabularWorksheet >> showWithGlamour [
 	| wrapper matrix table |
-	matrix := self cellsAsMatrix.
+	matrix := self cellValuesAsMatrix.
 	wrapper := GLMWrapper new.
 	wrapper
 		show: [ :a | 
 			table := a table.
 			1 to: matrix columnCount do: [ :i | table column: i asString evaluated: [ :col | col at: i ] width: 50 ] ].
+	wrapper title: 'Worksheet: ', self name asString.
 	wrapper openOn: ((1 to: matrix rowCount) collect: [ :i | matrix atRow: i ])
 ]
 
 { #category : #opening }
 TabularWorksheet >> showWithSpec [
 	| matrix tree specCols |
-	matrix := self cellsAsMatrix.
+	matrix := self cellValuesAsMatrix.
 	tree := TreeModel new.
 	specCols := (1 to: matrix columnCount)
 		collect: [ :i | 
@@ -290,6 +335,5 @@ TabularWorksheet >> showWithSpec [
 	tree columns: specCols.
 	tree roots: ((1 to: matrix rowCount) collect: [ :i | matrix atRow: i ]).
 	tree openWithSpec.
-		
 
 ]

@@ -59,7 +59,7 @@ Class {
 		'attributes',
 		'workbook'
 	],
-	#category : #'Tabular-Model'
+	#category : 'Tabular-Model'
 }
 
 { #category : #'as yet unclassified' }
@@ -79,7 +79,7 @@ TabularObject >> attributeAt: aKeySymbol put: value [
 	attributes at: aKeySymbol put: value
 ]
 
-{ #category : #conversion }
+{ #category : #'xlsx specific' }
 TabularObject >> extractFromXml: aXmlElement [
 	self subclassResponsibility 
 ]
@@ -100,12 +100,12 @@ TabularObject >> isTabularWorksheet [
 	^false.
 ]
 
-{ #category : #accessing }
+{ #category : #'xlsx specific' }
 TabularObject >> rID: aString [
 	self attributeAt: #rID put: aString
 ]
 
-{ #category : #accessing }
+{ #category : #'xlsx specific' }
 TabularObject >> stringTable [
 	^ workbook stringTable 
 ]

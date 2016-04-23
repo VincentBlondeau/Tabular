@@ -25,7 +25,7 @@ Class {
 		'zip',
 		'fname5'
 	],
-	#category : #'Tabular-Tests'
+	#category : 'Tabular-Tests'
 }
 
 { #category : #'as yet unclassified' }

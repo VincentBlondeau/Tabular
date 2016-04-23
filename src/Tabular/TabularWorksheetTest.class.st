@@ -20,7 +20,7 @@ w := TabularWorksheet new.
 w at: 1 @ 1 putData: 12.
 self assert: (w at: 1 @ 1) data equals: 12.
 
-self assert: ((w cellAt: 1 @ 1) isKindOf: TabularCell).
+self assert: ((w cellAt: 1 @ 1) isKindOf: TabularXLSXCell).
 self assert: (w cellAt: 1 @ 1) data equals: 12.
 ]
 

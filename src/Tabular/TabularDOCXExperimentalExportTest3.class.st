@@ -24,7 +24,7 @@ Class {
 	#instVars : [
 		'zip'
 	],
-	#category : #'Tabular-Tests'
+	#category : 'Tabular-Tests'
 }
 
 { #category : #'as yet unclassified' }

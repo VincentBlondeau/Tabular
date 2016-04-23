@@ -30,7 +30,7 @@ TabularXLSXImporterTest2 >> testAccessNumberElementFromASheet [
 
 	worksheet := workbook worksheetNamed: 'Feuil1'.
 	cell := worksheet at: 'A3' asPoint.
-	self assert: (cell data = '1').
+	self assert: (cell data = 1).
 	
 
 ]

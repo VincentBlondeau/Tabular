@@ -28,8 +28,18 @@ Class {
 		'workbook',
 		'parameters'
 	],
-	#category : #'Tabular-Importers'
+	#category : 'Tabular-Importers'
 }
+
+{ #category : #'instance creation' }
+TabularImporter class >> fromFileNamed: aString [
+	^self fromStream: aString asFileReference binaryReadStream
+]
+
+{ #category : #'instance creation' }
+TabularImporter class >> fromStream: aStream [
+	^self new import: aStream.
+]
 
 { #category : #importing }
 TabularImporter >> import: aStream [
