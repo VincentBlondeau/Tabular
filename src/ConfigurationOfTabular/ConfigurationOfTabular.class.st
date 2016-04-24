@@ -267,3 +267,19 @@ ConfigurationOfTabular >> version03: spec [
 		spec package: 'Tabular' with: 'Tabular-MYI.87'. ].
 
 ]
+
+{ #category : #versions }
+ConfigurationOfTabular >> version04: spec [
+	<version: '0.4' imports: #('0.2-baseline' )>
+
+	spec for: #'common' do: [
+		spec blessing: #'stable'.
+		spec description: 'version 0.4'.
+		spec author: 'AlistairGrant'.
+		spec timestamp: '24/4/2016 08:18'.
+		spec 
+			project: 'XMLWriter' with: '2.7.0';
+			project: 'XMLParser' with: '2.7.6'.
+		spec package: 'Tabular' with: 'Tabular-AlistairGrant.90'. ].
+
+]
