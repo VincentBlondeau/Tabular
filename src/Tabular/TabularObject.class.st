@@ -1,5 +1,25 @@
 "
-I am TabularObject, the root object of objects which model a workbook 
+I am TabularObject, the root class of objects which model a workbook 
+
+Responsibility:
+
+TabularObject is the abstract superclass of all Tabular models.
+
+Example:
+
+Sample code showing how to open one of the workbooks used in the test suite is provided in ConfigurationOfTabular class>>catalogKeyClassesAndExample.
+ 
+Internal Representation and Key Implementation Points.
+
+    Instance Variables
+	attributes:		<Object>
+	workbook:		<Object>
+
+
+Implementation Points:
+
+Tabular currently supports two document formats, XLSX and ODS, the internal representation of these two formats is quite different.  This has been accomodated by splitting the relevant models in to format specific versions.
+
 
 Diagram see: http://www.gliffy.com/go/publish/6148167
 
@@ -17,38 +37,6 @@ http://davidgohel.github.io/ReporteRs/FlexTable.html for ideas
 http://epplus.codeplex.com/
 
 http://stackoverflow.com/questions/151005/create-excel-xls-and-xlsx-file-from-c-sharp
-
-
-LATER:
-
-Add subclasses
-
-   TabularDimension
-       TabularColumn
-       TabularRow
-
-
-For the Responsibility part: Three sentences about my main responsibility, what I'm doing, what services do I offer.
-
-For the Collaborators Part: State my main collaborators and one line about how I interact with them. 
-
-Public API and Key Messages
-
-- message one   
-- message two 
-- what is the way to create instances is a plus.
-
-   One simple example is simply gorgeous.
- 
-Internal Representation and Key Implementation Points.
-
-    Instance Variables
-	attributes:		<Object>
-	workbook:		<Object>
-
-
-    Implementation Points
-
 
 
 "

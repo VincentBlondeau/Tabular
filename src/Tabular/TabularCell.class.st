@@ -1,8 +1,8 @@
 "
-I am TabularCell and the represent a cell in a Worksheet.
+I  represent a single cell in a Worksheet.
 
 Responsibility:
-I keep the value and type of a cell, the dimension and the formatting attributes.
+I provide access to the value, formula, style and formatting information.  The encoding of this information follows the format used by the document type, i.e. XLSX or ODS.
 
 "
 Class {
