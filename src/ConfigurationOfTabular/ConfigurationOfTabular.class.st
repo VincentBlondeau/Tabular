@@ -1,3 +1,23 @@
+"
+Metacello configuration for the Tabular project.
+
+This configuration is normally posted to the following repositories: 
+
+MCSmalltalkhubRepository
+	owner: 'Pharo'
+	project: 'MetaRepoForPharo50'
+	user: ''
+	password: ''
+
+which exposes Tabular in the Catalog Browser, and:
+
+MCGemstoneRepository
+	location: 'http://ss3.gemstone.com/ss/Tabular'
+	user: ''
+	password: ''
+	
+which is the home of the Tabular project.
+"
 Class {
 	#name : #ConfigurationOfTabular,
 	#superclass : #Object,
@@ -52,23 +72,44 @@ ConfigurationOfTabular class >> catalogContactInfo [
 ConfigurationOfTabular class >> catalogDescription [
 	"Returns a paragraph describing the project"
 
-	^ 'Tabular is an importer/exporter of Microsoft Office and OpenOffice (to be implemented) documents. For now, it handles only the Excel importing but it can be enhanced to import any file based on the Office Open XML format.'
+	^ 'Tabular is an importer/exporter of Microsoft Office (import and export) and OpenOffice (import only) documents.'
 ]
 
 { #category : #catalog }
 ConfigurationOfTabular class >> catalogKeyClassesAndExample [
 	"Returns a paragraph or more describing the key classes of your project. You can use Pillar/Pier syntax to layout out the text i.e., ==Code== and - for bullet."
 
-	^ 'Tabular is composed of one cool key class named ==TabularXLSXImporter==. There is also ==TabularExperimenting==
-- ==TabularXLSXImporter== is responsible for the import of XLSX files. Just do ==TabularXLSXImporter fromFileNamed: <your file>== to import your file. 
-- ==TabularExperimenting== is responsible for creating XLSX file from the model'
+	^ 'An overview and description of the structure of Tabular is provided in ==TabularObject==.
+	
+To explore an ODS spreadsheet used in the automated tests, execute:
+
+==| workbook worksheet |
+
+workbook := ODSImporter fromStream: ODSImporterTest new workbook01 readStream.
+worksheet := workbook worksheetNamed: ''Sheet1''.
+worksheet show.
+workbook inspect.
+==
+
+
+To explore an XLSX spreadsheet used in the automated test:
+
+==| workbook worksheet |
+
+workbook := XLSXImporter fromStream: TabularResources testExcelFile3WithAlignment readStream.
+worksheet := workbook worksheetNamed: ''Sheet1''.
+worksheet show.
+workbook inspect.
+==
+'
+
 ]
 
 { #category : #catalog }
 ConfigurationOfTabular class >> catalogKeywords [
 	"Returns an array of symbols"
 
-	^ #(#XLSX #Excel #Importer #SAXHandler #'Office OpenXML' #Office)
+	^ #(#XLSX #Excel #Importer #SAXHandler #'Office OpenXML' #Office #ODS)
 ]
 
 { #category : #private }
