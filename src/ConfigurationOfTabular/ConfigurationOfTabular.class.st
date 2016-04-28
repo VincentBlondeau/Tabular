@@ -72,7 +72,7 @@ ConfigurationOfTabular class >> catalogContactInfo [
 ConfigurationOfTabular class >> catalogDescription [
 	"Returns a paragraph describing the project"
 
-	^ 'Tabular is an importer/exporter of Microsoft Office (import and export) and OpenOffice (import only) documents.'
+	^ 'Tabular is an importer/exporter of Microsoft Office (import and export) and OpenOffice (import only) documents.  Conversion between ODS and XLSX formats is not supported.'
 ]
 
 { #category : #catalog }
@@ -317,7 +317,7 @@ ConfigurationOfTabular >> version041: spec [
 		spec blessing: #'stable'.
 		spec description: 'version 0.4.1'.
 		spec author: 'AlistairGrant'.
-		spec timestamp: '4/27/2016 21:18'.
+		spec timestamp: '4/28/2016 09:15'.
 		spec 
 			project: 'XMLWriter' with: '2.7.0';
 			project: 'XMLParser' with: '2.7.6'.
