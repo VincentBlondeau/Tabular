@@ -12,7 +12,7 @@ When exporting only the file document.xml in the zip archive is generated.
 Class {
 	#name : #TabularDOCXExperimentalExport3,
 	#superclass : #TabularExport,
-	#category : 'Tabular-Exporters'
+	#category : #'Tabular-Exporters'
 }
 
 { #category : #'as yet unclassified' }

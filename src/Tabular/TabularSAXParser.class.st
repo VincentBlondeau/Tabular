@@ -22,7 +22,7 @@ Class {
 		'parsingStack',
 		'saxStack'
 	],
-	#category : 'Tabular-SAXParser'
+	#category : #'Tabular-SAXParser'
 }
 
 { #category : #'as yet unclassified' }

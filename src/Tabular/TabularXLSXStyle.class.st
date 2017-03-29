@@ -71,7 +71,7 @@ Class {
 		'borderId',
 		'xfId'
 	],
-	#category : 'Tabular-Model'
+	#category : #'Tabular-Model'
 }
 
 { #category : #accessing }

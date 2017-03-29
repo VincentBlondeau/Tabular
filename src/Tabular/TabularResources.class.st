@@ -30,7 +30,7 @@ Class {
 	#instVars : [
 		'odswb01'
 	],
-	#category : 'Tabular-Tests'
+	#category : #'Tabular-Tests'
 }
 
 { #category : #examples }

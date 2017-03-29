@@ -46,7 +46,7 @@ Internal Representation and Key Implementation Points.
 Class {
 	#name : #TabularWorksheetWriterWordML,
 	#superclass : #TabularXMLWriter,
-	#category : 'Tabular-Exporters'
+	#category : #'Tabular-Exporters'
 }
 
 { #category : #'useful documentation' }

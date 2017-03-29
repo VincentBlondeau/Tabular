@@ -28,7 +28,7 @@ Class {
 		'fname6',
 		'fname7'
 	],
-	#category : 'Tabular-Tests'
+	#category : #'Tabular-Tests'
 }
 
 { #category : #setUp }

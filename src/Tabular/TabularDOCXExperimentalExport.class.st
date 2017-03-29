@@ -41,7 +41,7 @@ zip writeToFileNamed: (FileLocator temp / 'myfile.zip') .
 Class {
 	#name : #TabularDOCXExperimentalExport,
 	#superclass : #TabularExport,
-	#category : 'Tabular-Exporters'
+	#category : #'Tabular-Exporters'
 }
 
 { #category : #'as yet unclassified' }

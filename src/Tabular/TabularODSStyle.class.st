@@ -14,7 +14,7 @@ Class {
 	#instVars : [
 		'details'
 	],
-	#category : 'Tabular-Model'
+	#category : #'Tabular-Model'
 }
 
 { #category : #accessing }

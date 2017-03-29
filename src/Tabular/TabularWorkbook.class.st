@@ -30,7 +30,7 @@ Class {
 		'styles',
 		'strings'
 	],
-	#category : 'Tabular-Model'
+	#category : #'Tabular-Model'
 }
 
 { #category : #'instance creation' }

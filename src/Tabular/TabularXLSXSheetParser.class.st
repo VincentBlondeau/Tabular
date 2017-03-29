@@ -26,7 +26,7 @@ Class {
 		'colCounter',
 		'columnAttributes'
 	],
-	#category : 'Tabular-SAXParser'
+	#category : #'Tabular-SAXParser'
 }
 
 { #category : #'as yet unclassified' }

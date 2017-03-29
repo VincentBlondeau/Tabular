@@ -34,7 +34,7 @@ Class {
 		'colStyles',
 		'columnAttributes'
 	],
-	#category : 'Tabular-Model'
+	#category : #'Tabular-Model'
 }
 
 { #category : #accessing }
@@ -61,6 +61,17 @@ TabularWorksheet >> at: coord putData: anObject [
 	anObject ifNil: [ ^ self eraseCellAt: coord ].
 	cell := cells at: coord ifAbsentPut: [ TabularXLSXCell new ].
 	cell data: anObject
+]
+
+{ #category : #accessing }
+TabularWorksheet >> atColumn: colNum [
+	| lastRow column |
+	lastRow := self maxNumberOfRows.
+	column := Array new: lastRow.
+	1 to: lastRow do: [ :idx | 
+		column at: idx put: (self col: colNum row: idx) value.
+		].
+	^column
 ]
 
 { #category : #accessing }
@@ -249,8 +260,7 @@ TabularWorksheet >> maxNumberOfColumns [
 
 { #category : #accessing }
 TabularWorksheet >> maxNumberOfRows [
-
-	(cells keys size = 0) ifTrue: [ ^0 ] ifFalse:  [	^ cells keys max y  ]
+	(cells keys size = 0) ifTrue: [ ^0 ] ifFalse:  [^(cells keys collect: #y) max]
 ]
 
 { #category : #accessing }

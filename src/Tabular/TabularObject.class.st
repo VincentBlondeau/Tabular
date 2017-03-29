@@ -47,7 +47,7 @@ Class {
 		'attributes',
 		'workbook'
 	],
-	#category : 'Tabular-Model'
+	#category : #'Tabular-Model'
 }
 
 { #category : #'as yet unclassified' }

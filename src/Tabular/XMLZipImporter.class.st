@@ -31,7 +31,7 @@ Class {
 		'archive',
 		'xmlDOMs'
 	],
-	#category : 'Tabular-Importers'
+	#category : #'Tabular-Importers'
 }
 
 { #category : #importing }

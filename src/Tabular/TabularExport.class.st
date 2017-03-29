@@ -33,7 +33,7 @@ Class {
 		'workbook',
 		'stream'
 	],
-	#category : 'Tabular-Exporters'
+	#category : #'Tabular-Exporters'
 }
 
 { #category : #examples }

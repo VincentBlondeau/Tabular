@@ -28,7 +28,7 @@ Class {
 		'workbook',
 		'parameters'
 	],
-	#category : 'Tabular-Importers'
+	#category : #'Tabular-Importers'
 }
 
 { #category : #'instance creation' }

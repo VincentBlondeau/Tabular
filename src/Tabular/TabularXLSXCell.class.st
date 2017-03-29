@@ -47,7 +47,7 @@ Class {
 		'type',
 		'formula'
 	],
-	#category : 'Tabular-Model'
+	#category : #'Tabular-Model'
 }
 
 { #category : #'accessing - attributes' }
