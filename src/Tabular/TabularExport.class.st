@@ -45,7 +45,7 @@ TabularExport class >> example1 [
 { #category : #exporting }
 TabularExport class >> export: aWorkbook [
 
-      self new workbook: aWorkbook; generate.
+      ^self new workbook: aWorkbook; generate.
 ]
 
 { #category : #exporting }
