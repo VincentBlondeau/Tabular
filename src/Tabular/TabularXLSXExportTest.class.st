@@ -49,7 +49,7 @@ TabularXLSXExportTest >> testExport4 [
 	wsheet := wsheetNumbersInRow1.
 	wbk worksheets add: wsheet.
 	fname4  ensureDelete.
-	TabularXSLXExport workbook: wbk fileName: fname4.
+	TabularXLSXExport workbook: wbk fileName: fname4.
 	
 	"manual inspection shows that the exported file is fine"
 
@@ -65,7 +65,7 @@ TabularXLSXExportTest >> testExport5 [
 	wsheet	at: 9 @ 9 putData: 99.		
 	wbk worksheets add: wsheet.
 	fname5  ensureDelete.
-	TabularXSLXExport workbook: wbk fileName: fname5.
+	TabularXLSXExport workbook: wbk fileName: fname5.
 	
 	"manual inspection shows that the exported file is fine"
 
@@ -83,7 +83,7 @@ TabularXLSXExportTest >> testExport6 [
 		at: 3 @ 1 putData: 'ccc'.	
 	wbk worksheets add: wsheet.
 	fname6  ensureDelete.
-	TabularXSLXExport workbook: wbk fileName: fname6.	
+	TabularXLSXExport workbook: wbk fileName: fname6.	
 	"manual inspection shows that the exported file is fine"
 
 ]
@@ -103,7 +103,7 @@ TabularXLSXExportTest >> testExport7 [
 			
 	wbk worksheets add: wsheet.
 	fname7  ensureDelete.
-	TabularXSLXExport workbook: wbk fileName: fname7.
+	TabularXLSXExport workbook: wbk fileName: fname7.
 	
 	"manual inspection shows that the exported file is fine"
 	"But is the colspan command fine? Add a colspan test to TabularCell"
@@ -126,7 +126,7 @@ TabularXLSXExportTest >> testExport7b [
 			
 	wbk worksheets add: wsheet.
 	fname7 ensureDelete.
-	TabularXSLXExport workbook: wbk fileName: fname7.
+	TabularXLSXExport workbook: wbk fileName: fname7.
 	
 	"manual inspection shows that the exported file is fine"
 	"But is the colspan command fine? Add a colspan test to TabularCell"
@@ -143,7 +143,7 @@ TabularXLSXExportTest >> testExport8 [
 	wsheet at: 'A1' asPoint putData: myString.
 	wbk worksheets add: wsheet.
 	fname8  ensureDelete.
-	TabularXSLXExport workbook: wbk fileName: fname8.
+	TabularXLSXExport workbook: wbk fileName: fname8.
 	"ZipArchive new readFrom: fname8."
 	
 ]
@@ -167,7 +167,7 @@ TabularXLSXExportTest >> testExport9 [
 		at: 'A9' asPoint putData: myString.
 	wbk worksheets add: wsheet.
 	fname9  ensureDelete.
-	TabularXSLXExport workbook: wbk fileName: fname9.
+	TabularXLSXExport workbook: wbk fileName: fname9.
 	
 	"manual inspection shows that the exported file is fine"	
 	
@@ -176,4 +176,47 @@ TabularXLSXExportTest >> testExport9 [
 '<row r="2">
 <c r="A2" t="inlineStr"><is><t>abcdefghijklmnopqrstuvwxyz 1234567890</t></is></c></row>'
 
+]
+
+{ #category : #tests }
+TabularXLSXExportTest >> testExportSharedStrings [
+	| xml dom wbk sheet strings |
+	wbk := TabularWorkbook new.
+	sheet := TabularWorksheet new.
+	sheet name: 'Sheet1'.
+	sheet at: 1@1 putData: 'shared'.
+	sheet at: 2@1 putData: 'shared'.
+	sheet at: 3@1 putData: ' shared'. "not really"
+	sheet at: 4@1 putData: 25.
+	wbk addSheet: sheet.
+	xml := TabularXLSXExport new
+		workbook: wbk;
+		countSharedStrings;
+		sharedStrings_xml.
+	dom := xml parseXML.
+	self assert: (dom root attributeAt: 'count') equals: '3'.
+	self assert: (dom root attributeAt: 'uniqueCount') equals: '2'.
+	strings := (dom root elements collect: [:el | el rawContentStringAt: 't']) asSortedCollection asArray.
+	self assert: strings equals: #(' shared' 'shared')
+]
+
+{ #category : #tests }
+TabularXLSXExportTest >> testExportStyles [
+	| xml dom |
+	xml := TabularXLSXExport new
+		workbook: TabularWorkbook new;
+		styles_xml.
+	dom := xml parseXML.
+	{(#numFmts -> 1).
+	(#fonts -> 4).
+	(#fills -> 2).
+	(#borders -> 1).
+	(#cellStyleXfs -> 20).
+	(#cellXfs -> 1).
+	(#cellStyles -> 6)}
+		do: [ :assoc | 
+			| element |
+			element := dom root elementAt: assoc key asString.
+			self assert: (element attributeAt: 'count') equals: assoc value printString.
+			self assert: element elements size equals: assoc value ]
 ]

@@ -211,16 +211,6 @@ TabularWorksheet >> eraseCellAt: coord [
 
 ]
 
-{ #category : #'extraction - not used' }
-TabularWorksheet >> extractCellFromXml: aXMLElement [
-	cells
-		at: (aXMLElement attributeAt: #r) asPoint
-		put:
-			((TabularXLSXCell newFrom: self workbook)
-				extractFromXml: aXMLElement;
-				yourself)
-]
-
 { #category : #conversion }
 TabularWorksheet >> extractFromXml: aXMLElement [
 	^ self

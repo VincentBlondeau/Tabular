@@ -60,28 +60,6 @@ TabularXLSXCell >> colspan: anObject [
 	^ self attributeAt: #colspan put: anObject
 ]
 
-{ #category : #'conversion-not-used' }
-TabularXLSXCell >> extractDataFromXml: aXMLElement [
-"reference document p. 1600 18.3.1.4 Cell and p. 2434 18.18.11 ST_CellType"
-	self
-		data:
-			(self type = 's'
-				ifTrue: [ (self stringAt: ((aXMLElement elementAt: 'v') 
-					ifNotNil: [ :e | e firstNode ifNotNil: [ :s | s asString ] ])) asString ]
-				ifFalse: [self type = 'inlineStr' 
-					ifTrue: [ self halt.] 
-					ifFalse: [(aXMLElement elementAt: 'v') ifNotNil: [ :e | e firstNode ifNotNil: [ :s | s asString ] ] ]])
-]
-
-{ #category : #'conversion-not-used' }
-TabularXLSXCell >> extractFromXml: aXMLElement [
-
-	self style: (aXMLElement attributeAt: 's') asString.
-	self type: ((aXMLElement attributeAt: 't') asString ifEmpty: [ nil ]).
-     self extractDataFromXml: aXMLElement.
-	self formula: ((aXMLElement elementAt: 'f') ifNotNil: [ :e | e firstNode asString ])
-]
-
 { #category : #'accessing - attributes' }
 TabularXLSXCell >> formula [
 	"not in attributes for performance issues"
@@ -94,6 +72,12 @@ TabularXLSXCell >> formula: anObject [
 	"not in attributes for performance issues"
 
 	formula := anObject
+]
+
+{ #category : #testing }
+TabularXLSXCell >> hasSharableString [
+	"strings can be shared when they have not been computed by a formula"
+	^data isString and: [ formula isNil ]
 ]
 
 { #category : #'accessing - attributes' }

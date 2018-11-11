@@ -71,16 +71,16 @@ TabularWorksheetWriterXL >> renderCellWithString: coord [
 
 { #category : #rendering }
 TabularWorksheetWriterXL >> renderMergeCells [
-	self mergeCells ifNotEmptyDo: [ : mergeCells |
-		writer tag: 'mergeCells' with:[
-			mergeCells keysAndValuesDo: [:topleft :bottomright|
-				writer tag
-					name: 'mergeCell';
-					attributeAt: 'ref' put: ((self cellName: topleft),':', (self cellName: bottomright)).
-			]
-		]
-	 ]
-
+	self mergeCells
+		ifNotEmpty: [ :mergeCells | 
+			writer
+				tag: 'mergeCells'
+				with: [ mergeCells
+						keysAndValuesDo: [ :topleft :bottomright | 
+							writer tag
+								name: 'mergeCell';
+								attributeAt: 'ref'
+									put: (self cellName: topleft) , ':' , (self cellName: bottomright) ] ] ]
 ]
 
 { #category : #rendering }

@@ -100,9 +100,8 @@ TabularSAXParser >> generateMethodsForRegisteredElements [
 TabularSAXParser >> initialize [
 	super initialize.
 	parsingStack := Stack new.
-	self buildRootObject ifNotNilDo: [:obj| parsingStack push: obj].
-	saxStack := Stack new.
-
+	self buildRootObject ifNotNil: [ :obj | parsingStack push: obj ].
+	saxStack := Stack new
 ]
 
 { #category : #private }

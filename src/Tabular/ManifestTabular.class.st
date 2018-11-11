@@ -6,3 +6,8 @@ Class {
 	#superclass : #PackageManifest,
 	#category : #Tabular
 }
+
+{ #category : #'meta-data - dependency analyser' }
+ManifestTabular class >> manuallyResolvedDependencies [
+	^ #(#'Regex-Core')
+]
