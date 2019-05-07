@@ -2,11 +2,14 @@
 A migration of the project: http://ss3.gemtalksystems.com/ss/Tabular.html
 
 # Installation
+To install this project run the following script in a playground.
 
-    Gofer it 
-        squeaksource3: 'Tabular';
-        configuration;
-        loadStable
+```st
+Metacello new
+	baseline: 'Tabular';
+	repository: 'github://VincentBlondeau/Tabular/src';
+	load
+```
 
 Architectural diagram: http://www.gliffy.com/go/publish/6148167
 
