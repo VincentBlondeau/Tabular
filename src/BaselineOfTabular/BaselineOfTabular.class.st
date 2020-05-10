@@ -14,6 +14,6 @@ BaselineOfTabular >> baseline: spec [
 					with: [ spec repository: 'github://pharo-contributions/XML-XMLParser' ].
 			spec
 				package: 'Tabular'
-				with: [ spec requires: #('XMLWriter' 'XMLParser') ].
+				with: [ spec requires: #('XMLParser') ].
 			spec group: 'Core' with: #('Tabular') ]
 ]
