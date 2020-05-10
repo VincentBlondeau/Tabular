@@ -7,7 +7,7 @@ To install this project run the following script in a playground.
 ```st
 Metacello new
 	baseline: 'Tabular';
-	repository: 'github://VincentBlondeau/Tabular/src';
+	repository: 'github://VincentBlondeau/Tabular';
 	load
 ```
 
