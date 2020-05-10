@@ -10,8 +10,6 @@ BaselineOfTabular >> baseline: spec [
 	spec
 		for: #common
 		do: [ spec
-				baseline: 'XMLWriter'
-					with: [ spec repository: 'github://pharo-contributions/XML-XMLWriter' ];
 				baseline: 'XMLParser'
 					with: [ spec repository: 'github://pharo-contributions/XML-XMLParser' ].
 			spec
