@@ -357,22 +357,28 @@ TabularExportImportTest >> testExport8ExportManyWorksheets [
 	| wbk wsheet wbkimported wsheetimported rnd sheetNames cellPositions values |
 	wbk := TabularWorkbook new.
 	rnd := Random new.
-	sheetNames := (1 to: 10) collect: [ :i | 'Sheet ', i printString].
-	values := (1 to: 10) collect: [ :i | i even ifTrue: [rnd nextInt: 1000] ifFalse: [ (rnd nextInt: 100) printStringRadix: 16 ] ].
-	cellPositions := (1 to: 10) collect: [ :i | (rnd nextInt: 5) @ (rnd nextInt: 10) ].
-	1 to: 10 do: [ :i |
+	sheetNames := (1 to: 10) collect: [ :i | 'Sheet ' , i printString ].
+	values := (1 to: 10) collect: [ :i | 
+		          i even
+			          ifTrue: [ rnd nextInteger: 1000 ]
+			          ifFalse: [ (rnd nextInteger: 100) printStringRadix: 16 ] ].
+	cellPositions := (1 to: 10) collect: [ :i | 
+		                 (rnd nextInteger: 5) @ (rnd nextInteger: 10) ].
+	1 to: 10 do: [ :i | 
 		wsheet := TabularWorksheet new.
 		wsheet name: (sheetNames at: i).
 		wsheet at: (cellPositions at: i) putData: (values at: i).
-		wbk addSheet: wsheet].
+		wbk addSheet: wsheet ].
 
 	fname7 ensureDelete.
 	TabularXLSXExport workbook: wbk fileName: fname7.
 
-	wbkimported := XLSXImporter import: fname7 .
- 
-	1 to: 10 do: [ :i |
+	wbkimported := XLSXImporter import: fname7.
+
+	1 to: 10 do: [ :i | 
 		wsheetimported := wbkimported worksheets at: i.
 		self assert: wsheetimported name equals: (sheetNames at: i).
-		self assert: (wsheetimported at: (cellPositions at: i)) data equals: (values at: i)]
+		self
+			assert: (wsheetimported at: (cellPositions at: i)) data
+			equals: (values at: i) ]
 ]
