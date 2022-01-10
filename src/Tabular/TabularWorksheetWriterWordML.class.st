@@ -244,4 +244,3 @@ TabularWorksheetWriterWordML >> renderWorksheet [
 		ifTrue: [ self renderSheetData ]	
 			"self renderMergeCells"
 ]
-
