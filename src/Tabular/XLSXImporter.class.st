@@ -1,7 +1,9 @@
 "
 I am ƖXLSXImporter which imports Excel files.
 
-Key message for importing is in TabularCell>>extractFromXml: aXMLElement
+When using a variant of my #import:Xyz: messages, you may pass a binary read stream or a FileReference. However, it is safer to pass a FileReference due to issues in Pharo's stream library and ZipArchive's use thereof. If interested in the gory details, see <https://github.com/pharo-project/pharo/issues/8657>
+
+Key message for importing is TabularWorksheet>>#extractFromXml:
 
 The attribute t=""s"" of a cell c seems to indicate that the content has
 to be interpreted as a shared string.
@@ -50,21 +52,23 @@ Class {
 }
 
 { #category : #importing }
-XLSXImporter class >> import: aStream [
-	^ self new import: aStream
+XLSXImporter class >> import: aFileReferenceOrStream [
+	"See class comment RE argument"
+	^ self new import: aFileReferenceOrStream
 
 	
 ]
 
 { #category : #importing }
-XLSXImporter class >> import: aFileReferenceOrAStream onlySheetsNamed: aCollection [
-	^ self new import: aFileReferenceOrAStream onlySheetsNamed: aCollection
+XLSXImporter class >> import: aFileReferenceOrStream onlySheetsNamed: aCollection [
+	"See class comment RE argument"
+	^ self new import: aFileReferenceOrStream onlySheetsNamed: aCollection
 ]
 
 { #category : #importing }
 XLSXImporter >> extractArchive: aStream [
 	(ZipArchive isZipArchive: aStream)
-		ifTrue: [archive := ZipArchive new readFrom: aStream]
+		ifTrue: [archive := ZipArchive new readFrom: (aStream position: 0) ]
 		ifFalse: [  self error: 'XLSX file do not represent valid Zip archive, as it should be' ]. "Maybe you missed it with XLS file?"
 	
 	
@@ -123,8 +127,9 @@ XLSXImporter >> getPathForSheet: rID [
 ]
 
 { #category : #importing }
-XLSXImporter >> import: aStream [
-	self extractArchive: aStream.
+XLSXImporter >> import: aFileReferenceOrStream [
+	"See class comment RE argument"
+	self extractArchive: aFileReferenceOrStream.
 	workbook := TabularWorkbook new.	"self extractStyles."
 	self extractSharedStrings.
 	self extractWorksheets.
@@ -133,11 +138,11 @@ XLSXImporter >> import: aStream [
 ]
 
 { #category : #importing }
-XLSXImporter >> import: aFileReference onlySheetsNamed: aCollection [
-
+XLSXImporter >> import: aFileReferenceOrStream onlySheetsNamed: aCollection [
+	"See class comment RE argument"
 
 	sheetsToExtract := aCollection.
-	^ self import: aFileReference
+	^ self import: aFileReferenceOrStream
 ]
 
 { #category : #'as yet unclassified' }
