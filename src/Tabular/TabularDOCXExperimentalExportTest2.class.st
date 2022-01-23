@@ -164,6 +164,6 @@ zip addString: self settingsString as: 'word/settings.xml'.
 zip addString: self numberingString as: 'word/numbering.xml'.
 zip addString: self fontTableString as: 'word/fontTable.xml'.
 zip addString: self document_xml_rels as: 'word/_rels/document.xml.rels'.
-zip writeToFileNamed: fname6 .
+zip writeToFile: fname6 .
 
 ]
