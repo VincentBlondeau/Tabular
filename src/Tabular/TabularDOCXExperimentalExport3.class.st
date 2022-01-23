@@ -37,7 +37,7 @@ TabularDOCXExperimentalExport3 class >> example1Write [
 aStream := self tabularTestTable readStream.
 archive := ZipArchive new readFrom: aStream.
 
-archive writeToFileNamed: (FileLocator home / 'testExport3Write1.docx')
+archive writeToFile: (FileLocator home / 'testExport3Write1.docx')
 
 ]
 

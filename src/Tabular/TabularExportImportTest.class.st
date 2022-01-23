@@ -358,8 +358,8 @@ TabularExportImportTest >> testExport8ExportManyWorksheets [
 	wbk := TabularWorkbook new.
 	rnd := Random new.
 	sheetNames := (1 to: 10) collect: [ :i | 'Sheet ', i printString].
-	values := (1 to: 10) collect: [ :i | i even ifTrue: [rnd nextInt: 1000] ifFalse: [ (rnd nextInt: 100) printStringRadix: 16 ] ].
-	cellPositions := (1 to: 10) collect: [ :i | (rnd nextInt: 5) @ (rnd nextInt: 10) ].
+	values := (1 to: 10) collect: [ :i | i even ifTrue: [rnd nextInteger: 1000] ifFalse: [ (rnd nextInteger: 100) printStringRadix: 16 ] ].
+	cellPositions := (1 to: 10) collect: [ :i | (rnd nextInteger: 5) @ (rnd nextInteger: 10) ].
 	1 to: 10 do: [ :i |
 		wsheet := TabularWorksheet new.
 		wsheet name: (sheetNames at: i).

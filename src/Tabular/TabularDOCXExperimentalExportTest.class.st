@@ -59,7 +59,7 @@ theString := '<?xml version="1.0" encoding="UTF-8"?>
 
 zip:= ZipArchive new. 
 zip addString: theString as: '[Content_Types].xml'.
-zip writeToFileNamed: fname1 .
+zip writeToFile: fname1 .
 
 ]
 
@@ -82,7 +82,7 @@ theContentString :='<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 zip:= ZipArchive new. 
 zip addString: theString as: '[Content_Types].xml'.
 zip addString: theContentString as: 'word/document.xml'.
-zip writeToFileNamed: fname2 .
+zip writeToFile: fname2 .
 ]
 
 { #category : #'as yet unclassified' }
@@ -115,5 +115,5 @@ zip:= ZipArchive new.
 zip addString: theString as: '[Content_Types].xml'.
 zip addString: (theContentString convertToEncoding: 'utf-8') as: 'word/document.xml'.
 zip addString: theRelsString as: '_rels/.rels'.
-zip writeToFileNamed: fname3 .
+zip writeToFile: fname3 .
 ]
