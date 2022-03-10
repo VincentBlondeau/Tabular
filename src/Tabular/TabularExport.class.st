@@ -85,8 +85,8 @@ TabularExport >> workbook: anObject [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #private }
 TabularExport >> writeZip [
 
-	zip writeToFile: workbook filename
+	workbook filename asFileReference binaryWriteStreamDo: [  :str | zip writeTo: str ]
 ]

@@ -28,8 +28,10 @@ Class {
 	#category : #'Tabular-Tests'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #running }
 TabularDOCXExperimentalExportTest >> setUp [
+
+	super setUp.
 	wsheetNumbersInRow1 := TabularWorksheet new.
 	wsheetNumbersInRow1
 		at: 1 @ 1 putData: 11;
@@ -48,7 +50,7 @@ TabularDOCXExperimentalExportTest >> setUp [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 TabularDOCXExperimentalExportTest >> test1 [
 "Basic code to create a zip file."
 | theString |
@@ -59,11 +61,11 @@ theString := '<?xml version="1.0" encoding="UTF-8"?>
 
 zip:= ZipArchive new. 
 zip addString: theString as: '[Content_Types].xml'.
-zip writeToFileNamed: fname1 .
+zip writeToFile: fname1 .
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 TabularDOCXExperimentalExportTest >> test2 [
 
 "Basic code to create an initial DOCX file. File does not open. It is 'corrupt' "
@@ -82,10 +84,10 @@ theContentString :='<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 zip:= ZipArchive new. 
 zip addString: theString as: '[Content_Types].xml'.
 zip addString: theContentString as: 'word/document.xml'.
-zip writeToFileNamed: fname2 .
+zip writeToFile: fname2 .
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 TabularDOCXExperimentalExportTest >> test3 [
 "Basic code to create a DOCX file. It opens but content supplied with document.xml is incomplete"
 
@@ -113,7 +115,7 @@ theRelsString := '<?xml version="1.0" encoding="UTF-8"?>
 
 zip:= ZipArchive new. 
 zip addString: theString as: '[Content_Types].xml'.
-zip addString: (theContentString convertToEncoding: 'utf-8') as: 'word/document.xml'.
+zip addString: (theContentString encodeWith: #utf8) as: 'word/document.xml'.
 zip addString: theRelsString as: '_rels/.rels'.
-zip writeToFileNamed: fname3 .
+zip writeToFile: fname3 .
 ]
