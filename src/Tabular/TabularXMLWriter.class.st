@@ -33,7 +33,7 @@ TabularXMLWriter >> columnName: n [
 { #category : #rendering }
 TabularXMLWriter >> contents [
 
-    ^ writer write contents encodeWith: #utf8
+    ^ writer write contents
 ]
 
 { #category : #initalize }
