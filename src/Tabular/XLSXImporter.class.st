@@ -72,11 +72,12 @@ XLSXImporter >> extractArchive: aStream [
 
 { #category : #extracting }
 XLSXImporter >> extractSharedStrings [
-      (archive memberNamed: 'xl/sharedStrings.xml') isNil ifTrue: [ ^sharedStrings    := '']
-ifFalse: 
-	[^sharedStrings := TabularXLSXSharedStringsParser parse: (archive memberNamed: 'xl/sharedStrings.xml') contentStream]
-	
+	(archive memberNamed: 'xl/sharedStrings.xml') ifNil: [ ^sharedStrings := ''].
 
+	"sharedStrings := TabularXLSXSharedStringsParser parse: (archive memberNamed: 'xl/sharedStrings.xml') contentStream."
+	self flag:'PLA : how to detect the good encoding ?'.
+	sharedStrings := TabularXLSXSharedStringsParser parse: ((archive memberNamed: 'xl/sharedStrings.xml') contentStreamFromEncoding: 'utf8').
+	^sharedStrings
 ]
 
 { #category : #extracting }
@@ -125,7 +126,8 @@ XLSXImporter >> getPathForSheet: rID [
 { #category : #importing }
 XLSXImporter >> import: aStream [
 	self extractArchive: aStream.
-	workbook := TabularWorkbook new.	"self extractStyles."
+	workbook := TabularWorkbook new.	
+	"self extractStyles."
 	self extractSharedStrings.
 	self extractWorksheets.
 	self resolveSharedStrings.
