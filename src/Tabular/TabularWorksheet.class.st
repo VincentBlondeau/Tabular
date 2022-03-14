@@ -298,6 +298,11 @@ TabularWorksheet >> rows [
 	
 ]
 
+{ #category : #'iterating elements' }
+TabularWorksheet >> rowsDo: aBlock [
+	1 to: self maxNumberOfRows do: [ :i | aBlock value: (self atRow: i) ]
+]
+
 { #category : #accessing }
 TabularWorksheet >> sheetId: aString [ 
 	self attributeAt: #sheetId put: aString
