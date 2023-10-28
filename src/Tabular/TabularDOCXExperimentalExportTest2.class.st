@@ -149,7 +149,7 @@ TabularDOCXExperimentalExportTest2 >> stylesString [
 
 ]
 
-{ #category : #test }
+{ #category : #tests }
 TabularDOCXExperimentalExportTest2 >> test [
 self setUp. fname6 ensureDelete.
 zip:= ZipArchive new. 
@@ -158,12 +158,12 @@ zip addString: self relsString as: '_rels/.rels'.
 zip addString: self app_xml_String as: 'docProps/app.xml'.
 zip addString: self core_xml_String as: 'docProps/core.xml'.
 
-zip addString: (self documentString convertToEncoding: 'utf-8')   as: 'word/document.xml'.
+zip addString: (self documentString encodeWith: #utf8)   as: 'word/document.xml'.
 zip addString: self stylesString as: 'word/styles.xml'.
 zip addString: self settingsString as: 'word/settings.xml'.
 zip addString: self numberingString as: 'word/numbering.xml'.
 zip addString: self fontTableString as: 'word/fontTable.xml'.
 zip addString: self document_xml_rels as: 'word/_rels/document.xml.rels'.
-zip writeToFileNamed: fname6 .
+zip writeToFile: fname6.
 
 ]
